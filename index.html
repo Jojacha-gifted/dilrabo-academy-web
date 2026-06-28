@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Dilrabo Academy is a premium mentoring platform for academics, coding, test preparation, and research consulting."
+      content="Dilrabo Academy is a mobile-responsive educational academy landing page for ambitious learners seeking mentorship, confidence, and academic growth."
     />
-    <title>Dilrabo Academy | Academic Excellence, Coding, Research</title>
+    <title>Dilrabo Academy | Educational Academy</title>
     <link rel="icon" type="image/jpeg" href="./favicon.jpg?v=3" />
     <link rel="shortcut icon" type="image/jpeg" href="./favicon.jpg?v=3" />
     <link rel="apple-touch-icon" href="./favicon.jpg?v=3" />
@@ -26,9 +26,16 @@
               sans: ["Manrope", "sans-serif"],
               display: ["Cormorant Garamond", "serif"],
             },
+            colors: {
+              ink: "#1E2A44",
+              rose: "#A23E48",
+              sand: "#F6F0E8",
+              gold: "#D5B67A",
+              mist: "#EDF3F8",
+            },
             boxShadow: {
-              soft: "0 24px 80px rgba(244, 63, 94, 0.18)",
-              glow: "0 18px 50px rgba(59, 130, 246, 0.18)",
+              panel: "0 22px 60px rgba(30, 42, 68, 0.12)",
+              soft: "0 16px 40px rgba(162, 62, 72, 0.12)",
             },
           },
         },
@@ -46,9 +53,9 @@
 
       body {
         background:
-          radial-gradient(circle at top left, rgba(244, 63, 94, 0.14), transparent 30%),
-          radial-gradient(circle at top right, rgba(59, 130, 246, 0.12), transparent 30%),
-          linear-gradient(180deg, #ffffff 0%, #fff8fa 52%, #f8fbff 100%);
+          radial-gradient(circle at top left, rgba(213, 182, 122, 0.18), transparent 32%),
+          radial-gradient(circle at 90% 10%, rgba(162, 62, 72, 0.1), transparent 24%),
+          linear-gradient(180deg, #fdfaf6 0%, #f8efe5 42%, #eff5f8 100%);
       }
 
       .reveal {
@@ -64,46 +71,46 @@
     </style>
   </head>
   <body class="font-sans text-slate-700 antialiased">
-    <header class="sticky top-0 z-50 border-b border-white/70 bg-white/90 backdrop-blur-xl">
-      <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+    <header class="sticky top-0 z-40 border-b border-white/70 bg-white/85 backdrop-blur-xl">
+      <nav class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-6 lg:px-8">
         <a href="#home" class="flex items-center gap-3">
-          <span
-            class="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full shadow-glow"
-          >
+          <span class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full shadow-soft">
             <img
               src="./favicon.jpg"
               alt="Dilrabo Academy logo"
-              class="h-full w-full scale-[1.22] rounded-full object-cover brightness-110 contrast-125 saturate-150"
+              class="h-full w-full object-cover"
             />
           </span>
-          <span class="flex flex-col">
-            <span class="font-display text-2xl font-semibold leading-none text-[#F43F5E]">
-              Dilrabo Academy
-            </span>
-            <span class="text-[0.68rem] font-semibold uppercase tracking-[0.34em] text-slate-500">
-              Precision Mentorship
+          <span>
+            <span class="block font-display text-2xl font-semibold text-ink">Dilrabo Academy</span>
+            <span class="block text-[0.65rem] font-semibold uppercase tracking-[0.35em] text-rose">
+              Learn with intention
             </span>
           </span>
         </a>
 
         <div class="hidden items-center gap-8 md:flex">
-          <a class="text-sm font-semibold text-slate-600 transition duration-300 hover:text-[#F43F5E]" href="#services">Services</a>
-          <a class="text-sm font-semibold text-slate-600 transition duration-300 hover:text-[#F43F5E]" href="#about">Why Us</a>
-          <a class="text-sm font-semibold text-slate-600 transition duration-300 hover:text-[#F43F5E]" href="#contact">Contact</a>
+          <a href="#about" class="text-sm font-semibold text-slate-600 transition hover:text-rose">
+            About
+          </a>
+          <a href="#programs" class="text-sm font-semibold text-slate-600 transition hover:text-rose">
+            Programs
+          </a>
+          <a href="#gallery" class="text-sm font-semibold text-slate-600 transition hover:text-rose">
+            Why Choose Us
+          </a>
           <a
-            href="https://wa.me/998996732961?text=Hello%20Dilrabo%20Academy%2C%20I%20would%20like%20to%20book%20a%20session."
-            target="_blank"
-            rel="noreferrer"
-            class="rounded-full bg-[#F43F5E] px-5 py-3 text-sm font-semibold text-white shadow-soft transition duration-300 hover:scale-[1.03] hover:bg-[#E11D48]"
+            href="tel:+998772040896"
+            class="rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white transition hover:bg-rose"
           >
-            Book a Session
+            Call the Academy
           </a>
         </div>
 
         <button
           id="menu-toggle"
           type="button"
-          class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 text-[#F43F5E] transition duration-300 hover:border-[#3B82F6] hover:text-[#3B82F6] md:hidden"
+          class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 text-ink transition hover:border-rose hover:text-rose md:hidden"
           aria-label="Toggle menu"
           aria-expanded="false"
           aria-controls="mobile-menu"
@@ -112,173 +119,128 @@
         </button>
       </nav>
 
-      <div id="mobile-menu" class="hidden border-t border-slate-200 bg-white md:hidden">
-        <div class="space-y-2 px-6 py-5">
-          <a class="block rounded-2xl px-4 py-3 font-semibold text-slate-700 transition duration-300 hover:bg-rose-50 hover:text-[#F43F5E]" href="#services">Services</a>
-          <a class="block rounded-2xl px-4 py-3 font-semibold text-slate-700 transition duration-300 hover:bg-rose-50 hover:text-[#F43F5E]" href="#about">Why Us</a>
-          <a class="block rounded-2xl px-4 py-3 font-semibold text-slate-700 transition duration-300 hover:bg-rose-50 hover:text-[#F43F5E]" href="#contact">Contact</a>
+      <div id="mobile-menu" class="hidden border-t border-slate-200 bg-white/95 md:hidden">
+        <div class="space-y-2 px-5 py-5">
+          <a href="#about" class="block rounded-2xl px-4 py-3 font-semibold text-slate-700 transition hover:bg-sand hover:text-rose">
+            About
+          </a>
+          <a href="#programs" class="block rounded-2xl px-4 py-3 font-semibold text-slate-700 transition hover:bg-sand hover:text-rose">
+            Programs
+          </a>
+          <a href="#gallery" class="block rounded-2xl px-4 py-3 font-semibold text-slate-700 transition hover:bg-sand hover:text-rose">
+            Why Choose Us
+          </a>
           <a
-            href="https://wa.me/998996732961?text=Hello%20Dilrabo%20Academy%2C%20I%20would%20like%20to%20book%20a%20session."
-            target="_blank"
-            rel="noreferrer"
-            class="block rounded-2xl bg-[#F43F5E] px-4 py-3 text-center font-semibold text-white transition duration-300 hover:bg-[#E11D48]"
+            href="tel:+998772040896"
+            class="block rounded-2xl bg-ink px-4 py-3 text-center font-semibold text-white transition hover:bg-rose"
           >
-            Book a Session
+            Call the Academy
           </a>
         </div>
       </div>
     </header>
 
-    <main id="home">
+    <main id="home" class="pb-28">
       <section class="relative overflow-hidden">
-        <div class="mx-auto grid max-w-7xl gap-14 px-6 py-20 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 lg:py-28">
-          <div class="reveal">
-            <div
-              class="inline-flex items-center gap-3 rounded-full border border-[#F43F5E]/20 bg-white/90 px-4 py-2 text-sm font-semibold text-[#F43F5E] shadow-sm"
-            >
-              <span class="h-2.5 w-2.5 rounded-full bg-[#3B82F6]"></span>
-              Elite support for academics, coding, and research
+        <div class="mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-24">
+          <div class="reveal flex flex-col justify-center">
+            <div class="inline-flex w-fit items-center gap-3 rounded-full border border-gold/40 bg-white/80 px-4 py-2 text-sm font-semibold text-rose shadow-sm">
+              <span class="h-2.5 w-2.5 rounded-full bg-gold"></span>
+              Academic coaching for modern learners
             </div>
 
-            <h1 class="mt-8 max-w-3xl font-display text-5xl font-semibold leading-tight text-[#9F1239] sm:text-6xl lg:text-7xl">
-              Build academic distinction with
-              <span class="text-[#3B82F6]">strategy, depth, and mentorship</span>.
+            <h1 class="mt-7 max-w-3xl font-display text-5xl font-semibold leading-tight text-ink sm:text-6xl lg:text-7xl">
+              A calm, ambitious place to
+              <span class="text-rose">grow confidence and academic strength</span>.
             </h1>
 
             <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-600 sm:text-xl">
-              Dilrabo Academy helps ambitious learners excel in test preparation, full-stack programming, and high-impact academic research through structured, personalized guidance.
+              Dilrabo Academy helps students build language fluency, exam readiness, and disciplined learning habits through thoughtful mentorship and beautifully structured lessons.
             </p>
 
             <div class="mt-10 flex flex-col gap-4 sm:flex-row">
               <a
-                href="#services"
-                class="inline-flex items-center justify-center rounded-full bg-[#F43F5E] px-7 py-4 text-base font-semibold text-white shadow-soft transition duration-300 hover:scale-[1.03] hover:bg-[#E11D48]"
+                href="#about"
+                class="inline-flex items-center justify-center rounded-full bg-rose px-7 py-4 text-base font-semibold text-white transition hover:scale-[1.02] hover:bg-[#8E3540]"
               >
-                Explore Pillars
+                Discover the Academy
               </a>
               <a
-                href="https://wa.me/998996732961?text=Hello%20Dilrabo%20Academy%2C%20I%20would%20like%20a%20free%20consultation."
-                target="_blank"
-                rel="noreferrer"
-                class="inline-flex items-center justify-center rounded-full border border-[#3B82F6]/30 bg-white px-7 py-4 text-base font-semibold text-[#3B82F6] shadow-sm transition duration-300 hover:scale-[1.03] hover:border-[#3B82F6] hover:text-[#F43F5E]"
+                href="#gallery"
+                class="inline-flex items-center justify-center rounded-full border border-ink/15 bg-white/80 px-7 py-4 text-base font-semibold text-ink transition hover:border-rose hover:text-rose"
               >
-                Free Consultation
+                View Why Students Choose Us
               </a>
             </div>
 
             <div class="mt-12 grid gap-4 sm:grid-cols-3">
-              <div class="rounded-3xl border border-white/80 bg-white/90 p-5 shadow-sm backdrop-blur">
-                <p class="text-3xl font-extrabold text-[#F43F5E]">1:1</p>
-                <p class="mt-2 text-sm font-medium text-slate-500">Tailored mentoring designed around individual goals.</p>
+              <div class="rounded-[1.75rem] border border-white/80 bg-white/80 p-5 shadow-sm backdrop-blur">
+                <p class="text-3xl font-extrabold text-ink">1:1</p>
+                <p class="mt-2 text-sm leading-6 text-slate-500">Focused mentoring that adapts to each learner's pace and goals.</p>
               </div>
-              <div class="rounded-3xl border border-white/80 bg-white/90 p-5 shadow-sm backdrop-blur">
-                <p class="text-3xl font-extrabold text-[#F43F5E]">3</p>
-                <p class="mt-2 text-sm font-medium text-slate-500">Core pillars covering study, skills, and research.</p>
+              <div class="rounded-[1.75rem] border border-white/80 bg-white/80 p-5 shadow-sm backdrop-blur">
+                <p class="text-3xl font-extrabold text-ink">Small Groups</p>
+                <p class="mt-2 text-sm leading-6 text-slate-500">Collaborative classes with close feedback and clear accountability.</p>
               </div>
-              <div class="rounded-3xl border border-white/80 bg-white/90 p-5 shadow-sm backdrop-blur">
-                <p class="text-3xl font-extrabold text-[#F43F5E]">High Trust</p>
-                <p class="mt-2 text-sm font-medium text-slate-500">Clear systems, premium guidance, measurable momentum.</p>
+              <div class="rounded-[1.75rem] border border-white/80 bg-white/80 p-5 shadow-sm backdrop-blur">
+                <p class="text-3xl font-extrabold text-ink">Elegant Systems</p>
+                <p class="mt-2 text-sm leading-6 text-slate-500">Clear plans, polished materials, and consistent progress reviews.</p>
               </div>
             </div>
           </div>
 
           <div class="reveal relative">
-            <div class="absolute -left-10 top-10 h-32 w-32 rounded-full bg-[#F43F5E]/20 blur-3xl"></div>
-            <div class="absolute -right-10 bottom-0 h-40 w-40 rounded-full bg-[#3B82F6]/12 blur-3xl"></div>
+            <div class="absolute -left-8 top-10 h-28 w-28 rounded-full bg-gold/30 blur-3xl"></div>
+            <div class="absolute -right-10 bottom-10 h-40 w-40 rounded-full bg-rose/20 blur-3xl"></div>
 
-            <div class="relative overflow-hidden rounded-[2rem] border border-white/80 bg-white p-5 shadow-soft sm:p-6">
-              <div class="grid gap-5">
-                <div class="relative overflow-hidden rounded-[1.75rem] bg-white">
-                    <img
-                      src="./src/assets/photo.jpg"
-                      alt="Founder of Dilrabo Academy"
-                      class="aspect-[4/3] w-full object-contain object-left-top bg-white"
-                      onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');"
-                    />
-                    <div class="hidden aspect-[4/3] w-full items-center justify-center bg-gradient-to-br from-rose-100 via-white to-blue-100 p-10 text-center">
-                      <div>
-                        <div class="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-[#F43F5E] text-2xl font-bold text-white shadow-soft">
-                          DA
-                        </div>
-                        <p class="mt-6 font-display text-3xl font-semibold text-[#9F1239]">Founder Portrait</p>
-                        <p class="mt-3 text-sm leading-6 text-slate-500">
-                          Personal photo loaded from <span class="font-semibold">`src/assets/photo.jpg`</span>
-                        </p>
-                      </div>
-                    </div>
-
-                  <div class="absolute bottom-0 left-2 right-8 rounded-[1.25rem] border border-white/70 bg-white/86 px-3 py-1.5 shadow-soft backdrop-blur sm:bottom-1 sm:left-3 sm:right-12 sm:px-4 sm:py-2">
-                    <div class="flex flex-wrap items-center justify-between gap-3">
-                      <div>
-                        <p class="text-[0.65rem] font-bold uppercase tracking-[0.24em] text-[#3B82F6]">Founder-Led Mentorship</p>
-                        <p class="mt-0.5 text-sm font-bold text-[#9F1239] sm:text-base">Direct support from Dilrabo Academy</p>
-                      </div>
-                      <a
-                        href="tel:+998772040896"
-                        class="inline-flex items-center gap-2 rounded-full bg-[#F43F5E] px-3 py-2 text-xs font-semibold text-white transition duration-300 hover:scale-[1.03] hover:bg-[#E11D48] sm:px-4 sm:text-sm"
-                      >
-                        <i class="fa-solid fa-phone"></i>
-                        +998 77 204 08 96
-                      </a>
-                    </div>
+            <div class="relative overflow-hidden rounded-[2rem] border border-white/80 bg-white/90 p-4 shadow-panel sm:p-6">
+              <div class="grid gap-4">
+                <div class="relative overflow-hidden rounded-[1.75rem]">
+                  <img
+                    src="./src/assets/photo.jpg"
+                    alt="Founder of Dilrabo Academy"
+                    class="aspect-[6/5] w-full object-cover object-center"
+                  />
+                  <div class="absolute inset-x-5 bottom-5 rounded-[1.4rem] border border-white/70 bg-white/[0.88] p-4 shadow-soft backdrop-blur">
+                    <p class="text-xs font-bold uppercase tracking-[0.3em] text-rose">Founder-Led Learning</p>
+                    <p class="mt-2 text-lg font-semibold text-ink">Warm guidance, disciplined planning, and a high-trust academic environment.</p>
                   </div>
                 </div>
 
-                <div class="grid gap-4 sm:grid-cols-[1.15fr_0.85fr]">
-                  <div class="rounded-[1.6rem] bg-gradient-to-br from-[#F43F5E] to-[#E11D48] p-6 text-white">
-                    <p class="text-sm font-semibold uppercase tracking-[0.28em] text-[#DBEAFE]">Focused Growth</p>
+                <div class="grid gap-4 sm:grid-cols-[1.1fr_0.9fr]">
+                  <div class="rounded-[1.75rem] bg-ink p-6 text-white">
+                    <p class="text-sm font-semibold uppercase tracking-[0.28em] text-gold">Signature Approach</p>
                     <h2 class="mt-3 font-display text-3xl font-semibold leading-tight">
-                      Personalized teaching with premium presentation and real academic depth
+                      Elegant teaching with measurable outcomes
                     </h2>
-                    <div class="mt-6 grid gap-3 text-sm text-rose-50">
+                    <div class="mt-6 space-y-3 text-sm text-slate-200">
                       <div class="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                        <span class="flex h-9 w-9 items-center justify-center rounded-full bg-[#3B82F6]/20 text-[#DBEAFE]">
-                          <i class="fa-solid fa-graduation-cap"></i>
+                        <span class="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-gold">
+                          <i class="fa-solid fa-book-open-reader"></i>
                         </span>
-                        Academic excellence and test performance
+                        Reading, writing, and test preparation
                       </div>
                       <div class="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                        <span class="flex h-9 w-9 items-center justify-center rounded-full bg-[#3B82F6]/20 text-[#DBEAFE]">
-                          <i class="fa-solid fa-code"></i>
+                        <span class="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-gold">
+                          <i class="fa-solid fa-brain"></i>
                         </span>
-                        Coding, MERN stack, and strategic thinking
-                      </div>
-                      <div class="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                        <span class="flex h-9 w-9 items-center justify-center rounded-full bg-[#3B82F6]/20 text-[#DBEAFE]">
-                          <i class="fa-solid fa-microscope"></i>
-                        </span>
-                        Research consulting and analytical execution
+                        Strategic study routines and confidence building
                       </div>
                     </div>
                   </div>
 
-                  <div class="rounded-[1.6rem] border border-slate-200 bg-white p-6">
-                    <p class="text-sm font-bold uppercase tracking-[0.26em] text-[#F43F5E]">Quick Contact</p>
-                    <div class="mt-5 space-y-3">
-                      <a
-                        href="tel:+998772040896"
-                        class="flex items-center gap-3 rounded-2xl bg-rose-50 px-4 py-3 text-sm font-semibold text-[#9F1239] transition duration-300 hover:bg-rose-100"
-                      >
-                        <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#F43F5E]">
-                          <i class="fa-solid fa-phone"></i>
-                        </span>
-                        +998 77 204 08 96
-                      </a>
-                      <a
-                        href="https://wa.me/998996732961?text=Hello%20Dilrabo%20Academy%2C%20I%20would%20like%20to%20book%20a%20session."
-                        target="_blank"
-                        rel="noreferrer"
-                        class="flex items-center gap-3 rounded-2xl bg-blue-50 px-4 py-3 text-sm font-semibold text-[#1D4ED8] transition duration-300 hover:bg-blue-100"
-                      >
-                        <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#3B82F6]">
-                          <i class="fa-brands fa-whatsapp"></i>
-                        </span>
-                        Message on WhatsApp
-                      </a>
+                  <div class="rounded-[1.75rem] border border-slate-200 bg-mist p-6">
+                    <p class="text-sm font-bold uppercase tracking-[0.28em] text-rose">Quick Facts</p>
+                    <div class="mt-4 space-y-4">
+                      <div>
+                        <p class="text-3xl font-extrabold text-ink">Mobile-Ready</p>
+                        <p class="mt-1 text-sm leading-6 text-slate-600">Parents and students can reach the academy instantly from any device.</p>
+                      </div>
+                      <div>
+                        <p class="text-3xl font-extrabold text-ink">Human-Centered</p>
+                        <p class="mt-1 text-sm leading-6 text-slate-600">Lessons are carefully paced, encouraging, and built for real retention.</p>
+                      </div>
                     </div>
-                    <p class="mt-5 text-sm leading-6 text-slate-500">
-                      A polished, founder-led experience for students who want clarity, structure, and visible progress.
-                    </p>
                   </div>
                 </div>
               </div>
@@ -287,290 +249,269 @@
         </div>
       </section>
 
-      <section id="services" class="bg-white py-20">
-        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <section id="about" class="py-16 sm:py-20">
+        <div class="mx-auto grid max-w-7xl gap-10 px-5 sm:px-6 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
+          <div class="reveal rounded-[2rem] bg-gradient-to-br from-[#F9F1E7] via-white to-[#EEF5F8] p-8 shadow-panel sm:p-10">
+            <p class="text-sm font-bold uppercase tracking-[0.3em] text-rose">About Us</p>
+            <h2 class="mt-5 font-display text-4xl font-semibold leading-tight text-ink sm:text-5xl">
+              An educational academy designed with grace, focus, and academic seriousness
+            </h2>
+            <p class="mt-6 text-lg leading-8 text-slate-600">
+              Dilrabo Academy exists for students who need more than generic tutoring. We create a refined learning experience where clear instruction, emotional support, and steady standards work together.
+            </p>
+            <p class="mt-4 text-lg leading-8 text-slate-600">
+              Every lesson is planned to help learners feel prepared, capable, and proud of the progress they make over time.
+            </p>
+          </div>
+
+          <div class="reveal grid gap-5 sm:grid-cols-2">
+            <article class="rounded-[1.75rem] border border-slate-200 bg-white/85 p-6 shadow-sm">
+              <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-sand text-rose">
+                <i class="fa-solid fa-user-graduate"></i>
+              </span>
+              <h3 class="mt-5 text-xl font-bold text-ink">Personal attention</h3>
+              <p class="mt-3 leading-7 text-slate-600">
+                Each student is seen clearly, with instruction shaped around strengths, gaps, and goals.
+              </p>
+            </article>
+
+            <article class="rounded-[1.75rem] border border-slate-200 bg-white/85 p-6 shadow-sm">
+              <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-mist text-ink">
+                <i class="fa-solid fa-feather-pointed"></i>
+              </span>
+              <h3 class="mt-5 text-xl font-bold text-ink">Elegant delivery</h3>
+              <p class="mt-3 leading-7 text-slate-600">
+                Calm visuals, polished materials, and thoughtfully paced sessions reduce noise and build trust.
+              </p>
+            </article>
+
+            <article class="rounded-[1.75rem] border border-slate-200 bg-white/85 p-6 shadow-sm">
+              <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-sand text-rose">
+                <i class="fa-solid fa-chart-line"></i>
+              </span>
+              <h3 class="mt-5 text-xl font-bold text-ink">Visible progress</h3>
+              <p class="mt-3 leading-7 text-slate-600">
+                Students move through structured milestones that make improvement easy to recognize.
+              </p>
+            </article>
+
+            <article class="rounded-[1.75rem] border border-slate-200 bg-white/85 p-6 shadow-sm">
+              <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-mist text-ink">
+                <i class="fa-solid fa-people-group"></i>
+              </span>
+              <h3 class="mt-5 text-xl font-bold text-ink">Family confidence</h3>
+              <p class="mt-3 leading-7 text-slate-600">
+                Parents appreciate transparent communication and students feel safe asking questions.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="programs" class="py-16 sm:py-20">
+        <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           <div class="reveal max-w-3xl">
-            <p class="text-sm font-bold uppercase tracking-[0.32em] text-[#F43F5E]">Three Pillars</p>
-            <h2 class="mt-4 font-display text-4xl font-semibold text-[#9F1239] sm:text-5xl">
-              Structured services designed for serious learners
+            <p class="text-sm font-bold uppercase tracking-[0.3em] text-rose">Programs</p>
+            <h2 class="mt-4 font-display text-4xl font-semibold text-ink sm:text-5xl">
+              Learning pathways built for depth and momentum
+            </h2>
+          </div>
+
+          <div class="mt-12 grid gap-6 lg:grid-cols-3">
+            <article class="reveal rounded-[1.9rem] border border-white/70 bg-white/85 p-8 shadow-sm backdrop-blur">
+              <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-sand text-rose">
+                <i class="fa-solid fa-language text-xl"></i>
+              </span>
+              <h3 class="mt-6 text-2xl font-bold text-ink">Language Excellence</h3>
+              <p class="mt-4 leading-7 text-slate-600">
+                Build fluency, reading confidence, and stronger academic communication through guided English instruction.
+              </p>
+            </article>
+
+            <article class="reveal rounded-[1.9rem] border border-white/70 bg-white/85 p-8 shadow-sm backdrop-blur">
+              <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-mist text-ink">
+                <i class="fa-solid fa-pencil-ruler text-xl"></i>
+              </span>
+              <h3 class="mt-6 text-2xl font-bold text-ink">Exam Preparation</h3>
+              <p class="mt-4 leading-7 text-slate-600">
+                Structured preparation for major exams with strategy, practice, and feedback that keeps stress manageable.
+              </p>
+            </article>
+
+            <article class="reveal rounded-[1.9rem] border border-white/70 bg-white/85 p-8 shadow-sm backdrop-blur">
+              <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-sand text-rose">
+                <i class="fa-solid fa-seedling text-xl"></i>
+              </span>
+              <h3 class="mt-6 text-2xl font-bold text-ink">Study Habits</h3>
+              <p class="mt-4 leading-7 text-slate-600">
+                We help students form routines that support concentration, consistency, and independent growth.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="gallery" class="bg-white/70 py-16 sm:py-20">
+        <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div class="reveal max-w-3xl">
+            <p class="text-sm font-bold uppercase tracking-[0.3em] text-rose">Why Choose Us</p>
+            <h2 class="mt-4 font-display text-4xl font-semibold text-ink sm:text-5xl">
+              An image gallery that reflects the atmosphere we build
             </h2>
             <p class="mt-5 text-lg leading-8 text-slate-600">
-              Each pillar is built to deliver clarity, consistency, and progress without noise or clutter.
+              Students and families choose the academy for its warmth, clarity, and beautifully organized learning experience.
             </p>
           </div>
 
-          <div class="mt-14 grid gap-8 lg:grid-cols-3">
-            <article class="reveal group rounded-[2rem] border border-rose-100 bg-rose-50/70 p-8 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-soft">
-              <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F43F5E] text-white">
-                <i class="fa-solid fa-book-open text-xl"></i>
+          <div class="mt-12 grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
+            <article class="reveal group relative overflow-hidden rounded-[2rem] shadow-panel">
+              <img
+                src="./src/assets/photo.jpg"
+                alt="Supportive mentoring environment at Dilrabo Academy"
+                class="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent"></div>
+              <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
+                <p class="text-sm font-semibold uppercase tracking-[0.3em] text-gold">Mentorship</p>
+                <h3 class="mt-3 font-display text-3xl font-semibold text-white">A reassuring presence that keeps students engaged and motivated</h3>
               </div>
-              <h3 class="mt-8 text-2xl font-bold text-[#9F1239]">Academics &amp; Test Prep</h3>
-              <p class="mt-4 leading-7 text-slate-600">
-                Foundational subject mastery and exam-oriented preparation with targeted lesson planning.
-              </p>
-              <ul class="mt-6 space-y-3 text-sm font-medium text-slate-600">
-                <li class="flex items-center gap-3"><span class="text-[#F43F5E]"><i class="fa-solid fa-check"></i></span> General English with writing and comprehension focus</li>
-                <li class="flex items-center gap-3"><span class="text-[#F43F5E]"><i class="fa-solid fa-check"></i></span> Math reinforcement and problem-solving discipline</li>
-                <li class="flex items-center gap-3"><span class="text-[#F43F5E]"><i class="fa-solid fa-check"></i></span> IELTS and SAT strategy with structured practice</li>
-              </ul>
             </article>
 
-            <article class="reveal group rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-soft">
-              <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#DBEAFE] text-[#3B82F6]">
-                <i class="fa-solid fa-laptop-code text-xl"></i>
-              </div>
-              <h3 class="mt-8 text-2xl font-bold text-[#9F1239]">Skills &amp; Strategy</h3>
-              <p class="mt-4 leading-7 text-slate-600">
-                Modern skill-building for students who need practical leverage beyond the classroom.
-              </p>
-              <ul class="mt-6 space-y-3 text-sm font-medium text-slate-600">
-                <li class="flex items-center gap-3"><span class="text-[#3B82F6]"><i class="fa-solid fa-check"></i></span> Programming foundations with real project thinking</li>
-                <li class="flex items-center gap-3"><span class="text-[#3B82F6]"><i class="fa-solid fa-check"></i></span> MERN stack guidance from architecture to deployment</li>
-                <li class="flex items-center gap-3"><span class="text-[#3B82F6]"><i class="fa-solid fa-check"></i></span> Chess for strategic reasoning and cognitive sharpness</li>
-              </ul>
-            </article>
+            <div class="grid gap-5">
+              <article class="reveal group relative overflow-hidden rounded-[2rem] shadow-panel">
+                <img
+                  src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=80"
+                  alt="Students learning together in a bright classroom"
+                  class="h-72 w-full object-cover transition duration-700 group-hover:scale-105"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/20 to-transparent"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-6">
+                  <h3 class="text-2xl font-semibold text-white">Bright learning spaces</h3>
+                  <p class="mt-2 text-sm leading-6 text-slate-100">An atmosphere that feels open, polished, and focused.</p>
+                </div>
+              </article>
 
-            <article class="reveal group rounded-[2rem] border border-rose-100 bg-rose-50/70 p-8 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-soft">
-              <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F43F5E] text-white">
-                <i class="fa-solid fa-chart-line text-xl"></i>
-              </div>
-              <h3 class="mt-8 text-2xl font-bold text-[#9F1239]">Academic Research</h3>
-              <p class="mt-4 leading-7 text-slate-600">
-                Research-facing support for learners and teams working on analytical, technical, or publication-grade outcomes.
-              </p>
-              <ul class="mt-6 space-y-3 text-sm font-medium text-slate-600">
-                <li class="flex items-center gap-3"><span class="text-[#F43F5E]"><i class="fa-solid fa-check"></i></span> Research consulting and planning support</li>
-                <li class="flex items-center gap-3"><span class="text-[#F43F5E]"><i class="fa-solid fa-check"></i></span> Machine learning implementations with applied focus</li>
-                <li class="flex items-center gap-3"><span class="text-[#F43F5E]"><i class="fa-solid fa-check"></i></span> Data analysis workflows and interpretation guidance</li>
-              </ul>
-            </article>
-          </div>
-        </div>
-      </section>
+              <div class="grid gap-5 sm:grid-cols-2">
+                <article class="reveal group relative overflow-hidden rounded-[2rem] shadow-panel">
+                  <img
+                    src="https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=700&q=80"
+                    alt="Student reviewing study notes"
+                    class="h-64 w-full object-cover transition duration-700 group-hover:scale-105"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/15 to-transparent"></div>
+                  <div class="absolute bottom-0 left-0 right-0 p-5">
+                    <h3 class="text-xl font-semibold text-white">Confident preparation</h3>
+                  </div>
+                </article>
 
-      <section id="about" class="py-20">
-        <div class="mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
-          <div class="reveal rounded-[2rem] bg-gradient-to-br from-[#F43F5E] to-[#E11D48] p-8 text-white shadow-soft sm:p-10">
-            <p class="text-sm font-bold uppercase tracking-[0.32em] text-[#DBEAFE]">Why Dilrabo Academy</p>
-            <h2 class="mt-5 font-display text-4xl font-semibold leading-tight sm:text-5xl">
-              Premium mentorship built on substance, not slogans
-            </h2>
-            <p class="mt-6 max-w-xl text-lg leading-8 text-slate-100">
-              The academy combines personalized instruction with strategic planning so learners can move with confidence across exams, technical projects, and research work.
-            </p>
-
-            <div class="mt-10 grid gap-4 sm:grid-cols-2">
-              <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
-                <p class="text-base font-semibold">Personalized roadmaps</p>
-                <p class="mt-2 text-sm leading-6 text-slate-200">Sessions adapt to the student's pace, goals, and current skill gaps.</p>
-              </div>
-              <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
-                <p class="text-base font-semibold">Cross-disciplinary strength</p>
-                <p class="mt-2 text-sm leading-6 text-slate-200">Academic coaching, coding mentorship, and research guidance in one brand.</p>
-              </div>
-              <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
-                <p class="text-base font-semibold">Clarity and accountability</p>
-                <p class="mt-2 text-sm leading-6 text-slate-200">Clear deliverables, practical milestones, and consistent follow-through.</p>
-              </div>
-              <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
-                <p class="text-base font-semibold">High-trust positioning</p>
-                <p class="mt-2 text-sm leading-6 text-slate-200">Minimalist communication, quality experience, and disciplined execution.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="reveal flex flex-col justify-center">
-            <div class="grid gap-6 sm:grid-cols-2">
-              <div class="rounded-[2rem] border border-slate-200 bg-white p-7 shadow-sm">
-                <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-50 text-[#F43F5E]">
-                  <i class="fa-solid fa-user-graduate"></i>
-                </span>
-                <h3 class="mt-6 text-xl font-bold text-[#9F1239]">Personal Mentorship</h3>
-                <p class="mt-3 leading-7 text-slate-600">
-                  Students receive focused attention, structured feedback, and refined learning plans.
-                </p>
-              </div>
-
-              <div class="rounded-[2rem] border border-slate-200 bg-white p-7 shadow-sm">
-                <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-[#3B82F6]">
-                  <i class="fa-solid fa-lightbulb"></i>
-                </span>
-                <h3 class="mt-6 text-xl font-bold text-[#9F1239]">Strategic Teaching</h3>
-                <p class="mt-3 leading-7 text-slate-600">
-                  Lessons are sequenced for retention, performance, and applied understanding.
-                </p>
-              </div>
-
-              <div class="rounded-[2rem] border border-slate-200 bg-white p-7 shadow-sm">
-                <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-50 text-[#F43F5E]">
-                  <i class="fa-solid fa-brain"></i>
-                </span>
-                <h3 class="mt-6 text-xl font-bold text-[#9F1239]">Research Intelligence</h3>
-                <p class="mt-3 leading-7 text-slate-600">
-                  Analytical support is grounded in careful thinking, modern tools, and rigorous execution.
-                </p>
-              </div>
-
-              <div class="rounded-[2rem] border border-slate-200 bg-white p-7 shadow-sm">
-                <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-[#3B82F6]">
-                  <i class="fa-solid fa-trophy"></i>
-                </span>
-                <h3 class="mt-6 text-xl font-bold text-[#9F1239]">Result Orientation</h3>
-                <p class="mt-3 leading-7 text-slate-600">
-                  Every engagement is designed to turn effort into visible academic or technical progress.
-                </p>
+                <article class="reveal group relative overflow-hidden rounded-[2rem] bg-ink shadow-panel">
+                  <img
+                    src="./src/assets/hero.png"
+                    alt="Decorative layered academy visual"
+                    class="h-64 w-full object-cover object-center opacity-75 transition duration-700 group-hover:scale-105"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/75 to-transparent"></div>
+                  <div class="absolute bottom-0 left-0 right-0 p-5">
+                    <h3 class="text-xl font-semibold text-white">Structured growth</h3>
+                    <p class="mt-2 text-sm leading-6 text-slate-200">Programs layered carefully so progress feels steady, not chaotic.</p>
+                  </div>
+                </article>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="contact" class="bg-white py-20">
-        <div class="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
-          <div class="reveal">
-            <p class="text-sm font-bold uppercase tracking-[0.32em] text-[#F43F5E]">Contact & Booking</p>
-            <h2 class="mt-4 font-display text-4xl font-semibold text-[#9F1239] sm:text-5xl">
-              Start with a focused conversation
-            </h2>
-            <p class="mt-5 max-w-xl text-lg leading-8 text-slate-600">
-              Share your goals, preferred service, and current challenges. Dilrabo Academy will use that context to shape the best next step.
-            </p>
-
-            <div class="mt-10 space-y-4">
-              <a
-                href="tel:+998772040896"
-                class="flex items-center justify-between rounded-[1.75rem] border border-slate-200 bg-white px-6 py-5 transition duration-300 hover:border-[#3B82F6] hover:shadow-sm"
-              >
-                <span>
-                  <span class="block text-sm font-bold uppercase tracking-[0.24em] text-slate-500">Phone</span>
-                  <span class="mt-1 block text-lg font-semibold text-[#9F1239]">+998 77 204 08 96</span>
-                </span>
-                <span class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-[#3B82F6]">
-                  <i class="fa-solid fa-phone text-lg"></i>
-                </span>
-              </a>
-              <a
-                href="https://wa.me/998996732961?text=Hello%20Dilrabo%20Academy%2C%20I%20would%20like%20to%20book%20a%20session."
-                target="_blank"
-                rel="noreferrer"
-                class="flex items-center justify-between rounded-[1.75rem] border border-slate-200 bg-rose-50/60 px-6 py-5 transition duration-300 hover:border-[#F43F5E] hover:shadow-sm"
-              >
-                <span>
-                  <span class="block text-sm font-bold uppercase tracking-[0.24em] text-slate-500">WhatsApp</span>
-                  <span class="mt-1 block text-lg font-semibold text-[#9F1239]">Message +998 99 673 29 61</span>
-                </span>
-                <span class="flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366]/10 text-[#25D366]">
-                  <i class="fa-brands fa-whatsapp text-xl"></i>
-                </span>
-              </a>
-
-              <div class="rounded-[1.75rem] border border-slate-200 bg-slate-50 px-6 py-5">
-                <span class="block text-sm font-bold uppercase tracking-[0.24em] text-slate-500">Response Style</span>
-                <span class="mt-1 block text-lg font-semibold text-[#9F1239]">Clear recommendations, tailored session direction, and prompt follow-up</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="reveal rounded-[2rem] border border-rose-100 bg-rose-50/60 p-6 shadow-sm sm:p-8">
-            <form id="booking-form" class="space-y-6" novalidate>
-              <div class="grid gap-6 sm:grid-cols-2">
-                <div>
-                  <label for="name" class="mb-2 block text-sm font-semibold text-[#9F1239]">Full name</label>
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-slate-700 outline-none transition duration-300 focus:border-[#F43F5E] focus:ring-2 focus:ring-[#F43F5E]/20"
-                    placeholder="Your name"
-                    required
-                  />
-                </div>
-                <div>
-                  <label for="email" class="mb-2 block text-sm font-semibold text-[#9F1239]">Email address</label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-slate-700 outline-none transition duration-300 focus:border-[#F43F5E] focus:ring-2 focus:ring-[#F43F5E]/20"
-                    placeholder="you@example.com"
-                    required
-                  />
-                </div>
-              </div>
-
+      <section id="contact" class="py-16 sm:py-20">
+        <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div class="reveal rounded-[2rem] bg-ink px-6 py-10 text-white shadow-panel sm:px-10">
+            <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
               <div>
-                <label for="service" class="mb-2 block text-sm font-semibold text-[#9F1239]">Service focus</label>
-                <select
-                  id="service"
-                  name="service"
-                  class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-slate-700 outline-none transition duration-300 focus:border-[#F43F5E] focus:ring-2 focus:ring-[#F43F5E]/20"
-                  required
-                >
-                  <option value="">Select a service</option>
-                  <option value="Academics & Test Prep">Academics &amp; Test Prep</option>
-                  <option value="Skills & Strategy">Skills &amp; Strategy</option>
-                  <option value="Academic Research">Academic Research</option>
-                  <option value="General Consultation">General Consultation</option>
-                </select>
-              </div>
-
-              <div>
-                <label for="message" class="mb-2 block text-sm font-semibold text-[#9F1239]">Your goals</label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows="5"
-                  class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-slate-700 outline-none transition duration-300 focus:border-[#F43F5E] focus:ring-2 focus:ring-[#F43F5E]/20"
-                  placeholder="Tell us what you want to achieve, where you need support, and any preferred timeline."
-                  required
-                ></textarea>
-              </div>
-
-              <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <button
-                  type="submit"
-                  class="inline-flex items-center justify-center rounded-full bg-[#F43F5E] px-7 py-4 text-base font-semibold text-white shadow-soft transition duration-300 hover:scale-[1.03] hover:bg-[#E11D48]"
-                >
-                  Request Consultation
-                </button>
-                <p class="text-sm leading-6 text-slate-500">
-                  This form validates in-page and opens an email draft with your details.
+                <p class="text-sm font-bold uppercase tracking-[0.3em] text-gold">Contact</p>
+                <h2 class="mt-4 font-display text-4xl font-semibold sm:text-5xl">
+                  Ready to begin with Dilrabo Academy?
+                </h2>
+                <p class="mt-5 max-w-2xl text-lg leading-8 text-slate-200">
+                  Call for guidance, visit the map for location details, or return home from the floating mobile navigation at any time.
                 </p>
               </div>
 
-              <div
-                id="form-feedback"
-                class="hidden rounded-2xl border px-4 py-3 text-sm font-medium"
-                role="status"
-                aria-live="polite"
-              ></div>
-            </form>
+              <div class="grid gap-4 sm:grid-cols-2">
+                <a
+                  href="tel:+998772040896"
+                  class="rounded-[1.5rem] border border-white/10 bg-white/5 px-5 py-5 transition hover:bg-white/10"
+                >
+                  <p class="text-sm font-bold uppercase tracking-[0.28em] text-gold">Call</p>
+                  <p class="mt-3 text-lg font-semibold text-white">+998 77 204 08 96</p>
+                </a>
+                <a
+                  href="https://maps.google.com/?q=Dilrabo+Academy"
+                  target="_blank"
+                  rel="noreferrer"
+                  class="rounded-[1.5rem] border border-white/10 bg-white/5 px-5 py-5 transition hover:bg-white/10"
+                >
+                  <p class="text-sm font-bold uppercase tracking-[0.28em] text-gold">Map</p>
+                  <p class="mt-3 text-lg font-semibold text-white">Open location</p>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
     </main>
 
-    <footer class="border-t border-rose-200 bg-gradient-to-r from-[#F43F5E] to-[#E11D48]">
-      <div class="mx-auto flex max-w-7xl flex-col gap-6 px-6 py-8 text-rose-50 sm:flex-row sm:items-center sm:justify-between lg:px-8">
-        <div>
-          <p class="font-display text-2xl font-semibold text-white">Dilrabo Academy</p>
-          <p class="mt-1 text-sm">Academic excellence, coding fluency, research depth, and direct founder guidance.</p>
-        </div>
-        <div class="flex flex-wrap items-center gap-5 text-sm font-semibold">
-          <a class="transition duration-300 hover:text-[#DBEAFE]" href="tel:+998772040896">+998 77 204 08 96</a>
-          <a class="transition duration-300 hover:text-[#DBEAFE]" href="#services">Services</a>
-          <a class="transition duration-300 hover:text-[#DBEAFE]" href="#about">Why Us</a>
-          <a class="transition duration-300 hover:text-[#DBEAFE]" href="#contact">Book</a>
+    <footer class="border-t border-white/60 bg-white/70">
+      <div class="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-6 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+        <p>&copy; 2026 Dilrabo Academy. Thoughtful education for ambitious students.</p>
+        <div class="flex items-center gap-5">
+          <a href="#about" class="transition hover:text-rose">About Us</a>
+          <a href="#gallery" class="transition hover:text-rose">Why Choose Us</a>
+          <a href="tel:+998772040896" class="transition hover:text-rose">Call</a>
         </div>
       </div>
     </footer>
+
+    <nav
+      class="fixed bottom-4 left-1/2 z-50 w-[calc(100%-1.5rem)] max-w-sm -translate-x-1/2 rounded-full border border-white/80 bg-white/[0.92] p-2 shadow-panel backdrop-blur-xl"
+      aria-label="Bottom navigation"
+    >
+      <div class="grid grid-cols-3 gap-2">
+        <a
+          href="#home"
+          class="flex flex-col items-center justify-center rounded-full px-3 py-3 text-xs font-semibold text-ink transition hover:bg-sand"
+        >
+          <span class="flex h-10 w-10 items-center justify-center rounded-full bg-sand text-rose">
+            <i class="fa-solid fa-house"></i>
+          </span>
+          <span class="mt-2">Home</span>
+        </a>
+        <a
+          href="tel:+998772040896"
+          class="flex flex-col items-center justify-center rounded-full px-3 py-3 text-xs font-semibold text-ink transition hover:bg-sand"
+        >
+          <span class="flex h-10 w-10 items-center justify-center rounded-full bg-sand text-rose">
+            <i class="fa-solid fa-phone"></i>
+          </span>
+          <span class="mt-2">Call</span>
+        </a>
+        <a
+          href="https://maps.google.com/?q=Dilrabo+Academy"
+          target="_blank"
+          rel="noreferrer"
+          class="flex flex-col items-center justify-center rounded-full px-3 py-3 text-xs font-semibold text-ink transition hover:bg-sand"
+        >
+          <span class="flex h-10 w-10 items-center justify-center rounded-full bg-sand text-rose">
+            <i class="fa-solid fa-map-location-dot"></i>
+          </span>
+          <span class="mt-2">Map</span>
+        </a>
+      </div>
+    </nav>
 
     <script>
       const menuToggle = document.getElementById("menu-toggle");
       const mobileMenu = document.getElementById("mobile-menu");
       const mobileLinks = mobileMenu.querySelectorAll("a");
-      const bookingForm = document.getElementById("booking-form");
-      const feedback = document.getElementById("form-feedback");
 
       menuToggle.addEventListener("click", () => {
         const isOpen = !mobileMenu.classList.contains("hidden");
@@ -587,39 +528,6 @@
           menuToggle.setAttribute("aria-expanded", "false");
           menuToggle.innerHTML = '<i class="fa-solid fa-bars text-lg"></i>';
         });
-      });
-
-      bookingForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-
-        const formData = new FormData(bookingForm);
-        const name = formData.get("name").toString().trim();
-        const email = formData.get("email").toString().trim();
-        const service = formData.get("service").toString().trim();
-        const message = formData.get("message").toString().trim();
-        const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-        if (!name || !email || !service || !message || !isValidEmail) {
-          feedback.className =
-            "rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700";
-          feedback.textContent =
-            "Please complete all fields with a valid email address before submitting.";
-          feedback.classList.remove("hidden");
-          return;
-        }
-
-        const subject = encodeURIComponent("Consultation Request | Dilrabo Academy");
-        const body = encodeURIComponent(
-          `Name: ${name}\nEmail: ${email}\nService: ${service}\n\nGoals:\n${message}`
-        );
-
-        feedback.className =
-          "rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700";
-        feedback.textContent =
-          "Details look good. Your email client will open so you can send the inquiry.";
-        feedback.classList.remove("hidden");
-
-        window.location.href = `mailto:?subject=${subject}&body=${body}`;
       });
 
       const observer = new IntersectionObserver(
