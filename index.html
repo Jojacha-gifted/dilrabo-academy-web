@@ -17,6 +17,10 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css"
+    />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -67,6 +71,41 @@
       .reveal.is-visible {
         opacity: 1;
         transform: translateY(0);
+      }
+
+      .gallery-swiper {
+        height: 100%;
+      }
+
+      .gallery-swiper .swiper-slide {
+        height: auto;
+      }
+
+      .gallery-pagination {
+        position: absolute;
+        right: 1.25rem;
+        top: 1.25rem;
+        left: auto !important;
+        width: auto !important;
+        z-index: 20;
+        display: inline-flex;
+        gap: 0.4rem;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.82);
+        padding: 0.35rem 0.55rem;
+        backdrop-filter: blur(10px);
+      }
+
+      .gallery-pagination .swiper-pagination-bullet {
+        margin: 0 !important;
+        height: 0.45rem;
+        width: 0.45rem;
+        background: rgba(30, 42, 68, 0.28);
+        opacity: 1;
+      }
+
+      .gallery-pagination .swiper-pagination-bullet-active {
+        background: #a23e48;
       }
     </style>
   </head>
@@ -378,42 +417,130 @@
             </article>
 
             <div class="grid gap-5">
-              <article class="reveal group relative overflow-hidden rounded-[2rem] shadow-panel">
-                <img
-                  src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=80"
-                  alt="Students learning together in a bright classroom"
-                  class="h-72 w-full object-cover transition duration-700 group-hover:scale-105"
-                />
-                <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/20 to-transparent"></div>
-                <div class="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 class="text-2xl font-semibold text-white">Bright learning spaces</h3>
-                  <p class="mt-2 text-sm leading-6 text-slate-100">An atmosphere that feels open, polished, and focused.</p>
+              <article class="reveal relative overflow-hidden rounded-[2rem] shadow-panel">
+                <div class="swiper gallery-swiper academy-gallery-swiper h-72 sm:h-80" data-delay="2800">
+                  <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                      <div class="relative h-full overflow-hidden">
+                        <img
+                          src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80"
+                          alt="Bright classroom with polished desks and natural light"
+                          class="h-full w-full object-cover"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/20 to-transparent"></div>
+                      </div>
+                    </div>
+                    <div class="swiper-slide">
+                      <div class="relative h-full overflow-hidden">
+                        <img
+                          src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1200&q=80"
+                          alt="Elegant learning interior with bookshelves and bright study light"
+                          class="h-full w-full object-cover"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/20 to-transparent"></div>
+                      </div>
+                    </div>
+                    <div class="swiper-slide">
+                      <div class="relative h-full overflow-hidden">
+                        <img
+                          src="https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=80"
+                          alt="Refined study room with books and a calm academic atmosphere"
+                          class="h-full w-full object-cover"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/20 to-transparent"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="gallery-pagination swiper-pagination"></div>
+                  <div class="pointer-events-none absolute bottom-0 left-0 right-0 z-10 p-6">
+                    <h3 class="text-2xl font-semibold text-white">Bright learning spaces</h3>
+                    <p class="mt-2 text-sm leading-6 text-slate-100">Modern, bright interiors that feel polished, calm, and academically serious.</p>
+                  </div>
                 </div>
               </article>
 
               <div class="grid gap-5 sm:grid-cols-2">
-                <article class="reveal group relative overflow-hidden rounded-[2rem] shadow-panel">
-                  <img
-                    src="https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=700&q=80"
-                    alt="Student reviewing study notes"
-                    class="h-64 w-full object-cover transition duration-700 group-hover:scale-105"
-                  />
-                  <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/15 to-transparent"></div>
-                  <div class="absolute bottom-0 left-0 right-0 p-5">
-                    <h3 class="text-xl font-semibold text-white">Confident preparation</h3>
+                <article class="reveal relative overflow-hidden rounded-[2rem] shadow-panel">
+                  <div class="swiper gallery-swiper academy-gallery-swiper h-64" data-delay="3200">
+                    <div class="swiper-wrapper">
+                      <div class="swiper-slide">
+                        <div class="relative h-full overflow-hidden">
+                          <img
+                            src="https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=900&q=80"
+                            alt="Student studying carefully with notes and digital resources"
+                            class="h-full w-full object-cover"
+                          />
+                          <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/15 to-transparent"></div>
+                        </div>
+                      </div>
+                      <div class="swiper-slide">
+                        <div class="relative h-full overflow-hidden">
+                          <img
+                            src="https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?auto=format&fit=crop&w=900&q=80"
+                            alt="Students collaborating around a laptop with focused attention"
+                            class="h-full w-full object-cover"
+                          />
+                          <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/15 to-transparent"></div>
+                        </div>
+                      </div>
+                      <div class="swiper-slide">
+                        <div class="relative h-full overflow-hidden">
+                          <img
+                            src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80"
+                            alt="Focused study session using a laptop in an academic workspace"
+                            class="h-full w-full object-cover"
+                          />
+                          <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/15 to-transparent"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="gallery-pagination swiper-pagination"></div>
+                    <div class="pointer-events-none absolute bottom-0 left-0 right-0 z-10 p-5">
+                      <h3 class="text-xl font-semibold text-white">Confident preparation</h3>
+                      <p class="mt-2 text-sm leading-6 text-slate-100">Focused students, strong habits, and technology used with intention.</p>
+                    </div>
                   </div>
                 </article>
 
-                <article class="reveal group relative overflow-hidden rounded-[2rem] bg-ink shadow-panel">
-                  <img
-                    src="./src/assets/hero.png"
-                    alt="Decorative layered academy visual"
-                    class="h-64 w-full object-cover object-center opacity-75 transition duration-700 group-hover:scale-105"
-                  />
-                  <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/75 to-transparent"></div>
-                  <div class="absolute bottom-0 left-0 right-0 p-5">
-                    <h3 class="text-xl font-semibold text-white">Structured growth</h3>
-                    <p class="mt-2 text-sm leading-6 text-slate-200">Programs layered carefully so progress feels steady, not chaotic.</p>
+                <article class="reveal relative overflow-hidden rounded-[2rem] bg-ink shadow-panel">
+                  <div class="swiper gallery-swiper academy-gallery-swiper h-64" data-delay="3600">
+                    <div class="swiper-wrapper">
+                      <div class="swiper-slide">
+                        <div class="relative h-full overflow-hidden">
+                          <img
+                            src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80"
+                            alt="Organized educational workspace with strong structure and symmetry"
+                            class="h-full w-full object-cover"
+                          />
+                          <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/75 to-transparent"></div>
+                        </div>
+                      </div>
+                      <div class="swiper-slide">
+                        <div class="relative h-full overflow-hidden">
+                          <img
+                            src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=900&q=80"
+                            alt="Clean geometric study environment that suggests layered growth"
+                            class="h-full w-full object-cover"
+                          />
+                          <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/75 to-transparent"></div>
+                        </div>
+                      </div>
+                      <div class="swiper-slide">
+                        <div class="relative h-full overflow-hidden">
+                          <img
+                            src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=900&q=80"
+                            alt="Orderly desk and books arranged for disciplined academic progress"
+                            class="h-full w-full object-cover"
+                          />
+                          <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/75 to-transparent"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="gallery-pagination swiper-pagination"></div>
+                    <div class="pointer-events-none absolute bottom-0 left-0 right-0 z-10 p-5">
+                      <h3 class="text-xl font-semibold text-white">Structured growth</h3>
+                      <p class="mt-2 text-sm leading-6 text-slate-200">Organized environments and visual order that reinforce steady academic progress.</p>
+                    </div>
                   </div>
                 </article>
               </div>
@@ -508,6 +635,7 @@
       </div>
     </nav>
 
+    <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
     <script>
       const menuToggle = document.getElementById("menu-toggle");
       const mobileMenu = document.getElementById("mobile-menu");
@@ -543,6 +671,27 @@
       );
 
       document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
+
+      document.querySelectorAll(".academy-gallery-swiper").forEach((element) => {
+        new Swiper(element, {
+          loop: true,
+          effect: "fade",
+          speed: 1100,
+          grabCursor: true,
+          autoplay: {
+            delay: Number(element.dataset.delay || 3000),
+            disableOnInteraction: false,
+            pauseOnMouseEnter: false,
+          },
+          fadeEffect: {
+            crossFade: true,
+          },
+          pagination: {
+            el: element.querySelector(".swiper-pagination"),
+            clickable: true,
+          },
+        });
+      });
     </script>
   </body>
 </html>
