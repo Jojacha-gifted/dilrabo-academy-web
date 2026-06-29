@@ -5,16 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
+      data-i18n-content="meta.description"
       content="Dilrabo Academy is a mobile-responsive educational academy landing page for ambitious learners seeking mentorship, confidence, and academic growth."
     />
-    <title>Dilrabo Academy | Educational Academy</title>
+    <title data-i18n="meta.title">Dilrabo Academy | Educational Academy</title>
     <link rel="icon" type="image/jpeg" href="./favicon.jpg?v=3" />
     <link rel="shortcut icon" type="image/jpeg" href="./favicon.jpg?v=3" />
     <link rel="apple-touch-icon" href="./favicon.jpg?v=3" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+Bengali:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
     <link
@@ -107,40 +108,89 @@
       .gallery-pagination .swiper-pagination-bullet-active {
         background: #a23e48;
       }
+
+      html[lang="bn"] body {
+        font-family: "Hind Siliguri", sans-serif;
+      }
+
+      html[lang="bn"] .font-display {
+        font-family: "Noto Serif Bengali", serif;
+      }
+
+      html[lang="bn"] [class*="tracking-"] {
+        letter-spacing: 0.02em;
+      }
     </style>
   </head>
   <body class="font-sans text-slate-700 antialiased">
     <header class="sticky top-0 z-40 border-b border-white/70 bg-white/85 backdrop-blur-xl">
-      <nav class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-6 lg:px-8">
-        <a href="#home" class="flex items-center gap-3">
-          <span class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full shadow-soft">
-            <img
-              src="./favicon.jpg"
-              alt="Dilrabo Academy logo"
-              class="h-full w-full object-cover"
-            />
-          </span>
-          <span>
-            <span class="block font-display text-2xl font-semibold text-ink">Dilrabo Academy</span>
-            <span class="block text-[0.65rem] font-semibold uppercase tracking-[0.35em] text-rose">
-              Learn with intention
+      <nav class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 sm:px-6 lg:px-8">
+        <div class="flex min-w-0 items-center gap-2 sm:gap-4">
+          <a href="#home" class="flex min-w-0 items-center gap-3">
+            <span class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full shadow-soft">
+              <img
+                src="./favicon.jpg"
+                alt="Dilrabo Academy logo"
+                data-i18n-alt="brand.logoAlt"
+                class="h-full w-full object-cover"
+              />
             </span>
-          </span>
-        </a>
+            <span class="min-w-0">
+              <span class="block font-display text-xl font-semibold text-ink sm:text-2xl">Dilrabo Academy</span>
+              <span class="hidden text-[0.65rem] font-semibold uppercase tracking-[0.35em] text-rose sm:block" data-i18n="brand.tagline">
+                Learn with intention
+              </span>
+            </span>
+          </a>
+
+          <div
+            class="language-switcher inline-flex shrink-0 items-center rounded-full border border-slate-200/90 bg-white/80 p-1 text-[0.62rem] font-bold uppercase tracking-[0.22em] text-slate-500 shadow-sm backdrop-blur sm:text-[0.68rem]"
+            aria-label="Language switcher"
+            data-i18n-aria-label="nav.languageLabel"
+          >
+            <button
+              type="button"
+              data-lang="en"
+              aria-pressed="true"
+              class="rounded-full bg-sand px-2.5 py-1.5 text-ink transition hover:text-ink sm:px-3"
+            >
+              EN
+            </button>
+            <span class="px-1 text-slate-300">|</span>
+            <button
+              type="button"
+              data-lang="uz"
+              aria-pressed="false"
+              class="rounded-full px-2.5 py-1.5 transition hover:text-ink sm:px-3"
+            >
+              UZ
+            </button>
+            <span class="px-1 text-slate-300">|</span>
+            <button
+              type="button"
+              data-lang="bn"
+              aria-pressed="false"
+              class="rounded-full px-2.5 py-1.5 transition hover:text-ink sm:px-3"
+            >
+              BN
+            </button>
+          </div>
+        </div>
 
         <div class="hidden items-center gap-8 md:flex">
-          <a href="#about" class="text-sm font-semibold text-slate-600 transition hover:text-rose">
+          <a href="#about" class="text-sm font-semibold text-slate-600 transition hover:text-rose" data-i18n="nav.about">
             About
           </a>
-          <a href="#programs" class="text-sm font-semibold text-slate-600 transition hover:text-rose">
+          <a href="#programs" class="text-sm font-semibold text-slate-600 transition hover:text-rose" data-i18n="nav.programs">
             Programs
           </a>
-          <a href="#gallery" class="text-sm font-semibold text-slate-600 transition hover:text-rose">
+          <a href="#gallery" class="text-sm font-semibold text-slate-600 transition hover:text-rose" data-i18n="nav.whyChoose">
             Why Choose Us
           </a>
           <a
             href="#contact"
             class="rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white transition hover:bg-rose"
+            data-i18n="nav.callCta"
           >
             Call the Academy
           </a>
@@ -151,6 +201,7 @@
           type="button"
           class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 text-ink transition hover:border-rose hover:text-rose md:hidden"
           aria-label="Toggle menu"
+          data-i18n-aria-label="nav.toggleMenu"
           aria-expanded="false"
           aria-controls="mobile-menu"
         >
@@ -160,18 +211,19 @@
 
       <div id="mobile-menu" class="hidden border-t border-slate-200 bg-white/95 md:hidden">
         <div class="space-y-2 px-5 py-5">
-          <a href="#about" class="block rounded-2xl px-4 py-3 font-semibold text-slate-700 transition hover:bg-sand hover:text-rose">
+          <a href="#about" class="block rounded-2xl px-4 py-3 font-semibold text-slate-700 transition hover:bg-sand hover:text-rose" data-i18n="nav.about">
             About
           </a>
-          <a href="#programs" class="block rounded-2xl px-4 py-3 font-semibold text-slate-700 transition hover:bg-sand hover:text-rose">
+          <a href="#programs" class="block rounded-2xl px-4 py-3 font-semibold text-slate-700 transition hover:bg-sand hover:text-rose" data-i18n="nav.programs">
             Programs
           </a>
-          <a href="#gallery" class="block rounded-2xl px-4 py-3 font-semibold text-slate-700 transition hover:bg-sand hover:text-rose">
+          <a href="#gallery" class="block rounded-2xl px-4 py-3 font-semibold text-slate-700 transition hover:bg-sand hover:text-rose" data-i18n="nav.whyChoose">
             Why Choose Us
           </a>
           <a
             href="#contact"
             class="block rounded-2xl bg-ink px-4 py-3 text-center font-semibold text-white transition hover:bg-rose"
+            data-i18n="nav.callCta"
           >
             Call the Academy
           </a>
@@ -185,15 +237,15 @@
           <div class="reveal flex flex-col justify-center">
             <div class="inline-flex w-fit items-center gap-3 rounded-full border border-gold/40 bg-white/80 px-4 py-2 text-sm font-semibold text-rose shadow-sm">
               <span class="h-2.5 w-2.5 rounded-full bg-gold"></span>
-              Academic coaching for modern learners
+              <span data-i18n="hero.badge">Academic coaching for modern learners</span>
             </div>
 
             <h1 class="mt-7 max-w-3xl font-display text-5xl font-semibold leading-tight text-ink sm:text-6xl lg:text-7xl">
-              A calm, ambitious place to
-              <span class="text-rose">grow confidence and academic strength</span>.
+              <span data-i18n="hero.titleLead">A calm, ambitious place to</span>
+              <span class="text-rose" data-i18n="hero.titleAccent">grow confidence and academic strength.</span>
             </h1>
 
-            <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-600 sm:text-xl">
+            <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-600 sm:text-xl" data-i18n="hero.body">
               Dilrabo Academy helps students build language fluency, exam readiness, and disciplined learning habits through thoughtful mentorship and beautifully structured lessons.
             </p>
 
@@ -201,12 +253,14 @@
               <a
                 href="#about"
                 class="inline-flex items-center justify-center rounded-full bg-rose px-7 py-4 text-base font-semibold text-white transition hover:scale-[1.02] hover:bg-[#8E3540]"
+                data-i18n="hero.ctaPrimary"
               >
                 Discover the Academy
               </a>
               <a
                 href="#gallery"
                 class="inline-flex items-center justify-center rounded-full border border-ink/15 bg-white/80 px-7 py-4 text-base font-semibold text-ink transition hover:border-rose hover:text-rose"
+                data-i18n="hero.ctaSecondary"
               >
                 View Why Students Choose Us
               </a>
@@ -215,15 +269,15 @@
             <div class="mt-12 grid gap-4 sm:grid-cols-3">
               <div class="rounded-[1.75rem] border border-white/80 bg-white/80 p-5 shadow-sm backdrop-blur">
                 <p class="text-3xl font-extrabold text-ink">1:1</p>
-                <p class="mt-2 text-sm leading-6 text-slate-500">Focused mentoring that adapts to each learner's pace and goals.</p>
+                <p class="mt-2 text-sm leading-6 text-slate-500" data-i18n="hero.stat1Body">Focused mentoring that adapts to each learner's pace and goals.</p>
               </div>
               <div class="rounded-[1.75rem] border border-white/80 bg-white/80 p-5 shadow-sm backdrop-blur">
-                <p class="text-3xl font-extrabold text-ink">Small Groups</p>
-                <p class="mt-2 text-sm leading-6 text-slate-500">Collaborative classes with close feedback and clear accountability.</p>
+                <p class="text-3xl font-extrabold text-ink" data-i18n="hero.stat2Title">Small Groups</p>
+                <p class="mt-2 text-sm leading-6 text-slate-500" data-i18n="hero.stat2Body">Collaborative classes with close feedback and clear accountability.</p>
               </div>
               <div class="rounded-[1.75rem] border border-white/80 bg-white/80 p-5 shadow-sm backdrop-blur">
-                <p class="text-3xl font-extrabold text-ink">Elegant Systems</p>
-                <p class="mt-2 text-sm leading-6 text-slate-500">Clear plans, polished materials, and consistent progress reviews.</p>
+                <p class="text-3xl font-extrabold text-ink" data-i18n="hero.stat3Title">Elegant Systems</p>
+                <p class="mt-2 text-sm leading-6 text-slate-500" data-i18n="hero.stat3Body">Clear plans, polished materials, and consistent progress reviews.</p>
               </div>
             </div>
           </div>
@@ -238,18 +292,19 @@
                   <img
                     src="./src/assets/photo.jpg"
                     alt="Founder of Dilrabo Academy"
+                    data-i18n-alt="hero.founderAlt"
                     class="aspect-[6/5] w-full object-cover object-center"
                   />
                   <div class="absolute bottom-2 left-3 max-w-[72%] rounded-[1.1rem] border border-white/70 bg-white/[0.84] p-3 shadow-soft backdrop-blur sm:inset-x-5 sm:bottom-3 sm:max-w-none sm:rounded-[1.4rem] sm:p-4">
-                    <p class="text-[0.62rem] font-bold uppercase tracking-[0.22em] text-rose sm:text-xs sm:tracking-[0.3em]">Founder-Led Learning</p>
-                    <p class="mt-1.5 text-sm font-semibold leading-5 text-ink sm:mt-2 sm:text-lg sm:leading-7">Warm guidance, disciplined planning, and a high-trust academic environment.</p>
+                    <p class="text-[0.62rem] font-bold uppercase tracking-[0.22em] text-rose sm:text-xs sm:tracking-[0.3em]" data-i18n="hero.founderLabel">Founder-Led Learning</p>
+                    <p class="mt-1.5 text-sm font-semibold leading-5 text-ink sm:mt-2 sm:text-lg sm:leading-7" data-i18n="hero.founderBody">Warm guidance, disciplined planning, and a high-trust academic environment.</p>
                   </div>
                 </div>
 
                 <div class="grid gap-4 sm:grid-cols-[1.1fr_0.9fr]">
                   <div class="rounded-[1.75rem] bg-ink p-6 text-white">
-                    <p class="text-sm font-semibold uppercase tracking-[0.28em] text-gold">Signature Approach</p>
-                    <h2 class="mt-3 font-display text-3xl font-semibold leading-tight">
+                    <p class="text-sm font-semibold uppercase tracking-[0.28em] text-gold" data-i18n="hero.signatureLabel">Signature Approach</p>
+                    <h2 class="mt-3 font-display text-3xl font-semibold leading-tight" data-i18n="hero.signatureTitle">
                       Elegant teaching with measurable outcomes
                     </h2>
                     <div class="mt-6 space-y-3 text-sm text-slate-200">
@@ -257,27 +312,27 @@
                         <span class="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-gold">
                           <i class="fa-solid fa-book-open-reader"></i>
                         </span>
-                        Reading, writing, and test preparation
+                        <span data-i18n="hero.signatureItem1">Reading, writing, and test preparation</span>
                       </div>
                       <div class="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
                         <span class="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-gold">
                           <i class="fa-solid fa-brain"></i>
                         </span>
-                        Strategic study routines and confidence building
+                        <span data-i18n="hero.signatureItem2">Strategic study routines and confidence building</span>
                       </div>
                     </div>
                   </div>
 
                   <div class="rounded-[1.75rem] border border-slate-200 bg-mist p-6">
-                    <p class="text-sm font-bold uppercase tracking-[0.28em] text-rose">Quick Facts</p>
+                    <p class="text-sm font-bold uppercase tracking-[0.28em] text-rose" data-i18n="hero.quickFactsLabel">Quick Facts</p>
                     <div class="mt-4 space-y-4">
                       <div>
-                        <p class="text-3xl font-extrabold text-ink">Mobile-Ready</p>
-                        <p class="mt-1 text-sm leading-6 text-slate-600">Parents and students can reach the academy instantly from any device.</p>
+                        <p class="text-3xl font-extrabold text-ink" data-i18n="hero.quickFact1Title">Mobile-Ready</p>
+                        <p class="mt-1 text-sm leading-6 text-slate-600" data-i18n="hero.quickFact1Body">Parents and students can reach the academy instantly from any device.</p>
                       </div>
                       <div>
-                        <p class="text-3xl font-extrabold text-ink">Human-Centered</p>
-                        <p class="mt-1 text-sm leading-6 text-slate-600">Lessons are carefully paced, encouraging, and built for real retention.</p>
+                        <p class="text-3xl font-extrabold text-ink" data-i18n="hero.quickFact2Title">Human-Centered</p>
+                        <p class="mt-1 text-sm leading-6 text-slate-600" data-i18n="hero.quickFact2Body">Lessons are carefully paced, encouraging, and built for real retention.</p>
                       </div>
                     </div>
                   </div>
@@ -291,14 +346,14 @@
       <section id="about" class="py-16 sm:py-20">
         <div class="mx-auto grid max-w-7xl gap-10 px-5 sm:px-6 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
           <div class="reveal rounded-[2rem] bg-gradient-to-br from-[#F9F1E7] via-white to-[#EEF5F8] p-8 shadow-panel sm:p-10">
-            <p class="text-sm font-bold uppercase tracking-[0.3em] text-rose">About Us</p>
-            <h2 class="mt-5 font-display text-4xl font-semibold leading-tight text-ink sm:text-5xl">
+            <p class="text-sm font-bold uppercase tracking-[0.3em] text-rose" data-i18n="about.label">About Us</p>
+            <h2 class="mt-5 font-display text-4xl font-semibold leading-tight text-ink sm:text-5xl" data-i18n="about.title">
               An educational academy designed with grace, focus, and academic seriousness
             </h2>
-            <p class="mt-6 text-lg leading-8 text-slate-600">
+            <p class="mt-6 text-lg leading-8 text-slate-600" data-i18n="about.body1">
               Dilrabo Academy exists for students who need more than generic tutoring. We create a refined learning experience where clear instruction, emotional support, and steady standards work together.
             </p>
-            <p class="mt-4 text-lg leading-8 text-slate-600">
+            <p class="mt-4 text-lg leading-8 text-slate-600" data-i18n="about.body2">
               Every lesson is planned to help learners feel prepared, capable, and proud of the progress they make over time.
             </p>
           </div>
@@ -308,8 +363,8 @@
               <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-sand text-rose">
                 <i class="fa-solid fa-user-graduate"></i>
               </span>
-              <h3 class="mt-5 text-xl font-bold text-ink">Personal attention</h3>
-              <p class="mt-3 leading-7 text-slate-600">
+              <h3 class="mt-5 text-xl font-bold text-ink" data-i18n="about.card1Title">Personal attention</h3>
+              <p class="mt-3 leading-7 text-slate-600" data-i18n="about.card1Body">
                 Each student is seen clearly, with instruction shaped around strengths, gaps, and goals.
               </p>
             </article>
@@ -318,8 +373,8 @@
               <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-mist text-ink">
                 <i class="fa-solid fa-feather-pointed"></i>
               </span>
-              <h3 class="mt-5 text-xl font-bold text-ink">Elegant delivery</h3>
-              <p class="mt-3 leading-7 text-slate-600">
+              <h3 class="mt-5 text-xl font-bold text-ink" data-i18n="about.card2Title">Elegant delivery</h3>
+              <p class="mt-3 leading-7 text-slate-600" data-i18n="about.card2Body">
                 Calm visuals, polished materials, and thoughtfully paced sessions reduce noise and build trust.
               </p>
             </article>
@@ -328,8 +383,8 @@
               <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-sand text-rose">
                 <i class="fa-solid fa-chart-line"></i>
               </span>
-              <h3 class="mt-5 text-xl font-bold text-ink">Visible progress</h3>
-              <p class="mt-3 leading-7 text-slate-600">
+              <h3 class="mt-5 text-xl font-bold text-ink" data-i18n="about.card3Title">Visible progress</h3>
+              <p class="mt-3 leading-7 text-slate-600" data-i18n="about.card3Body">
                 Students move through structured milestones that make improvement easy to recognize.
               </p>
             </article>
@@ -338,8 +393,8 @@
               <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-mist text-ink">
                 <i class="fa-solid fa-people-group"></i>
               </span>
-              <h3 class="mt-5 text-xl font-bold text-ink">Family confidence</h3>
-              <p class="mt-3 leading-7 text-slate-600">
+              <h3 class="mt-5 text-xl font-bold text-ink" data-i18n="about.card4Title">Family confidence</h3>
+              <p class="mt-3 leading-7 text-slate-600" data-i18n="about.card4Body">
                 Parents appreciate transparent communication and students feel safe asking questions.
               </p>
             </article>
@@ -351,11 +406,11 @@
         <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
             <div class="reveal max-w-2xl">
-              <p class="text-sm font-bold uppercase tracking-[0.3em] text-rose">Our Academic Programs</p>
-              <h2 class="mt-4 font-display text-4xl font-semibold text-ink sm:text-5xl">
+              <p class="text-sm font-bold uppercase tracking-[0.3em] text-rose" data-i18n="programs.label">Our Academic Programs</p>
+              <h2 class="mt-4 font-display text-4xl font-semibold text-ink sm:text-5xl" data-i18n="programs.title">
                 Five refined pathways for ambitious students and academic clients
               </h2>
-              <p class="mt-5 text-lg leading-8 text-slate-600">
+              <p class="mt-5 text-lg leading-8 text-slate-600" data-i18n="programs.body">
                 Our programs combine strong fundamentals, strategic mentorship, and polished academic execution so every learner can grow with clarity, confidence, and direction.
               </p>
             </div>
@@ -363,16 +418,16 @@
             <div class="reveal rounded-[2rem] border border-white/80 bg-white/85 p-6 shadow-panel backdrop-blur sm:p-8">
               <div class="grid gap-4 sm:grid-cols-3">
                 <div class="rounded-[1.5rem] bg-sand p-4">
-                  <p class="text-sm font-bold uppercase tracking-[0.24em] text-rose">Focused</p>
-                  <p class="mt-2 text-sm leading-6 text-slate-600">Each pathway is structured around practical outcomes and visible progress.</p>
+                  <p class="text-sm font-bold uppercase tracking-[0.24em] text-rose" data-i18n="programs.highlight1Title">Focused</p>
+                  <p class="mt-2 text-sm leading-6 text-slate-600" data-i18n="programs.highlight1Body">Each pathway is structured around practical outcomes and visible progress.</p>
                 </div>
                 <div class="rounded-[1.5rem] bg-mist p-4">
-                  <p class="text-sm font-bold uppercase tracking-[0.24em] text-ink">Selective</p>
-                  <p class="mt-2 text-sm leading-6 text-slate-600">High standards, clear guidance, and thoughtful pacing shape every program.</p>
+                  <p class="text-sm font-bold uppercase tracking-[0.24em] text-ink" data-i18n="programs.highlight2Title">Selective</p>
+                  <p class="mt-2 text-sm leading-6 text-slate-600" data-i18n="programs.highlight2Body">High standards, clear guidance, and thoughtful pacing shape every program.</p>
                 </div>
                 <div class="rounded-[1.5rem] bg-ink p-4 text-white">
-                  <p class="text-sm font-bold uppercase tracking-[0.24em] text-gold">Welcoming</p>
-                  <p class="mt-2 text-sm leading-6 text-slate-200">Students and families receive calm support in a disciplined environment.</p>
+                  <p class="text-sm font-bold uppercase tracking-[0.24em] text-gold" data-i18n="programs.highlight3Title">Welcoming</p>
+                  <p class="mt-2 text-sm leading-6 text-slate-200" data-i18n="programs.highlight3Body">Students and families receive calm support in a disciplined environment.</p>
                 </div>
               </div>
             </div>
@@ -383,9 +438,9 @@
               <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-sand text-rose">
                 <i class="fa-solid fa-book-open text-xl"></i>
               </span>
-              <p class="mt-6 text-sm font-bold uppercase tracking-[0.28em] text-rose">Core Academic Foundation</p>
-              <h3 class="mt-3 text-2xl font-bold text-ink">General English and Mathematics</h3>
-              <p class="mt-4 leading-7 text-slate-600">
+              <p class="mt-6 text-sm font-bold uppercase tracking-[0.28em] text-rose" data-i18n="programs.card1Label">Core Academic Foundation</p>
+              <h3 class="mt-3 text-2xl font-bold text-ink" data-i18n="programs.card1Title">General English and Mathematics</h3>
+              <p class="mt-4 leading-7 text-slate-600" data-i18n="programs.card1Body">
                 We strengthen essential language and quantitative skills through steady instruction, clear milestones, and carefully paced support.
               </p>
             </article>
@@ -394,9 +449,9 @@
               <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-mist text-ink">
                 <i class="fa-solid fa-file-pen text-xl"></i>
               </span>
-              <p class="mt-6 text-sm font-bold uppercase tracking-[0.28em] text-rose">International Exam Preparation</p>
-              <h3 class="mt-3 text-2xl font-bold text-ink">IELTS, SAT, and CEFR</h3>
-              <p class="mt-4 leading-7 text-slate-600">
+              <p class="mt-6 text-sm font-bold uppercase tracking-[0.28em] text-rose" data-i18n="programs.card2Label">International Exam Preparation</p>
+              <h3 class="mt-3 text-2xl font-bold text-ink" data-i18n="programs.card2Title">IELTS, SAT, and CEFR</h3>
+              <p class="mt-4 leading-7 text-slate-600" data-i18n="programs.card2Body">
                 Students prepare with smart strategy, rigorous practice, and detailed feedback that builds calm, consistent performance.
               </p>
             </article>
@@ -405,9 +460,9 @@
               <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-sand text-rose">
                 <i class="fa-solid fa-building-columns text-xl"></i>
               </span>
-              <p class="mt-6 text-sm font-bold uppercase tracking-[0.28em] text-rose">Strategic Growth</p>
-              <h3 class="mt-3 text-2xl font-bold text-ink">Top-Tier University Admissions Support</h3>
-              <p class="mt-4 leading-7 text-slate-600">
+              <p class="mt-6 text-sm font-bold uppercase tracking-[0.28em] text-rose" data-i18n="programs.card3Label">Strategic Growth</p>
+              <h3 class="mt-3 text-2xl font-bold text-ink" data-i18n="programs.card3Title">Top-Tier University Admissions Support</h3>
+              <p class="mt-4 leading-7 text-slate-600" data-i18n="programs.card3Body">
                 We help ambitious applicants build strong academic profiles and navigate competitive admissions with polish and intention.
               </p>
             </article>
@@ -416,9 +471,9 @@
               <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-mist text-ink">
                 <i class="fa-solid fa-chess-knight text-xl"></i>
               </span>
-              <p class="mt-6 text-sm font-bold uppercase tracking-[0.28em] text-rose">Cognitive Development</p>
-              <h3 class="mt-3 text-2xl font-bold text-ink">Competitive Chess Coaching</h3>
-              <p class="mt-4 leading-7 text-slate-600">
+              <p class="mt-6 text-sm font-bold uppercase tracking-[0.28em] text-rose" data-i18n="programs.card4Label">Cognitive Development</p>
+              <h3 class="mt-3 text-2xl font-bold text-ink" data-i18n="programs.card4Title">Competitive Chess Coaching</h3>
+              <p class="mt-4 leading-7 text-slate-600" data-i18n="programs.card4Body">
                 Chess training sharpens concentration, strategic thinking, and disciplined decision-making that supports wider academic growth.
               </p>
             </article>
@@ -427,9 +482,9 @@
               <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-ink text-gold">
                 <i class="fa-solid fa-microscope text-xl"></i>
               </span>
-              <p class="mt-6 text-sm font-bold uppercase tracking-[0.28em] text-rose">Research Services</p>
-              <h3 class="mt-3 text-2xl font-bold text-ink">Independent Research Support and Academic Project Execution</h3>
-              <p class="mt-4 leading-7 text-slate-600">
+              <p class="mt-6 text-sm font-bold uppercase tracking-[0.28em] text-rose" data-i18n="programs.card5Label">Research Services</p>
+              <h3 class="mt-3 text-2xl font-bold text-ink" data-i18n="programs.card5Title">Independent Research Support and Academic Project Execution</h3>
+              <p class="mt-4 leading-7 text-slate-600" data-i18n="programs.card5Body">
                 We provide discreet, professional research assistance and carefully managed academic project execution for clients who need polished support.
               </p>
             </article>
@@ -440,11 +495,11 @@
       <section id="gallery" class="bg-white/70 py-16 sm:py-20">
         <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           <div class="reveal max-w-3xl">
-            <p class="text-sm font-bold uppercase tracking-[0.3em] text-rose">Why Choose Us</p>
-            <h2 class="mt-4 font-display text-4xl font-semibold text-ink sm:text-5xl">
+            <p class="text-sm font-bold uppercase tracking-[0.3em] text-rose" data-i18n="gallery.label">Why Choose Us</p>
+            <h2 class="mt-4 font-display text-4xl font-semibold text-ink sm:text-5xl" data-i18n="gallery.title">
               An image gallery that reflects the atmosphere we build
             </h2>
-            <p class="mt-5 text-lg leading-8 text-slate-600">
+            <p class="mt-5 text-lg leading-8 text-slate-600" data-i18n="gallery.body">
               Students and families choose the academy for its warmth, clarity, and beautifully organized learning experience.
             </p>
           </div>
@@ -454,12 +509,13 @@
               <img
                 src="./src/assets/photo.jpg"
                 alt="Supportive mentoring environment at Dilrabo Academy"
+                data-i18n-alt="gallery.mainAlt"
                 class="h-full w-full object-cover transition duration-700 group-hover:scale-105"
               />
               <div class="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent"></div>
               <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
-                <p class="text-sm font-semibold uppercase tracking-[0.3em] text-gold">Mentorship</p>
-                <h3 class="mt-3 font-display text-3xl font-semibold text-white">A reassuring presence that keeps students engaged and motivated</h3>
+                <p class="text-sm font-semibold uppercase tracking-[0.3em] text-gold" data-i18n="gallery.mainLabel">Mentorship</p>
+                <h3 class="mt-3 font-display text-3xl font-semibold text-white" data-i18n="gallery.mainTitle">A reassuring presence that keeps students engaged and motivated</h3>
               </div>
             </article>
 
@@ -472,6 +528,7 @@
                         <img
                           src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80"
                           alt="Bright classroom with polished desks and natural light"
+                          data-i18n-alt="gallery.spaceAlt1"
                           class="h-full w-full object-cover"
                         />
                         <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/20 to-transparent"></div>
@@ -482,6 +539,7 @@
                         <img
                           src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1200&q=80"
                           alt="Elegant learning interior with bookshelves and bright study light"
+                          data-i18n-alt="gallery.spaceAlt2"
                           class="h-full w-full object-cover"
                         />
                         <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/20 to-transparent"></div>
@@ -492,6 +550,7 @@
                         <img
                           src="https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=80"
                           alt="Refined study room with books and a calm academic atmosphere"
+                          data-i18n-alt="gallery.spaceAlt3"
                           class="h-full w-full object-cover"
                         />
                         <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/20 to-transparent"></div>
@@ -500,8 +559,8 @@
                   </div>
                   <div class="gallery-pagination swiper-pagination"></div>
                   <div class="pointer-events-none absolute bottom-0 left-0 right-0 z-10 p-6">
-                    <h3 class="text-2xl font-semibold text-white">Bright learning spaces</h3>
-                    <p class="mt-2 text-sm leading-6 text-slate-100">Modern, bright interiors that feel polished, calm, and academically serious.</p>
+                    <h3 class="text-2xl font-semibold text-white" data-i18n="gallery.spaceTitle">Bright learning spaces</h3>
+                    <p class="mt-2 text-sm leading-6 text-slate-100" data-i18n="gallery.spaceBody">Modern, bright interiors that feel polished, calm, and academically serious.</p>
                   </div>
                 </div>
               </article>
@@ -515,6 +574,7 @@
                           <img
                             src="src/assets/student.jpeg"
                             alt="Premium student focused on laptop work with balanced warm professional lighting"
+                            data-i18n-alt="gallery.prepAlt1"
                             class="h-full w-full object-cover"
                           />
                           <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/15 to-transparent"></div>
@@ -525,6 +585,7 @@
                           <img
                             src="src/assets/equipment.jpeg"
                             alt="Friendly young students studying together at a table in a warm premium academy setting"
+                            data-i18n-alt="gallery.prepAlt2"
                             class="h-full w-full object-cover"
                           />
                           <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/15 to-transparent"></div>
@@ -535,6 +596,7 @@
                           <img
                             src="src/assets/center.jpeg"
                             alt="Bright modern learning space with clean white desks and students studying in natural light"
+                            data-i18n-alt="gallery.prepAlt3"
                             class="h-full w-full object-cover"
                           />
                           <div class="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/15 to-transparent"></div>
@@ -543,8 +605,8 @@
                     </div>
                     <div class="gallery-pagination swiper-pagination"></div>
                     <div class="pointer-events-none absolute bottom-0 left-0 right-0 z-10 p-5">
-                      <h3 class="text-xl font-semibold text-white">Confident preparation</h3>
-                      <p class="mt-2 text-sm leading-6 text-slate-100">Focused students, strong habits, and technology used with intention.</p>
+                      <h3 class="text-xl font-semibold text-white" data-i18n="gallery.prepTitle">Confident preparation</h3>
+                      <p class="mt-2 text-sm leading-6 text-slate-100" data-i18n="gallery.prepBody">Focused students, strong habits, and technology used with intention.</p>
                     </div>
                   </div>
                 </article>
@@ -557,6 +619,7 @@
                           <img
                             src="./src/assets/image0.jpeg"
                             alt="Bright modern library shelves with warm wood tones and visual order"
+                            data-i18n-alt="gallery.growthAlt1"
                             class="h-full w-full object-cover"
                           />
                           <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/75 to-transparent"></div>
@@ -567,6 +630,7 @@
                           <img
                             src="./src/assets/image1.jpeg"
                             alt="Sunlit academic interior with organized books and welcoming study seating"
+                            data-i18n-alt="gallery.growthAlt2"
                             class="h-full w-full object-cover"
                           />
                           <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/75 to-transparent"></div>
@@ -577,6 +641,7 @@
                           <img
                             src="./src/assets/image3.jpeg"
                             alt="Modern educational library with elegant wooden bookshelves and clear organized study space"
+                            data-i18n-alt="gallery.growthAlt3"
                             class="h-full w-full object-cover"
                           />
                           <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/75 to-transparent"></div>
@@ -585,8 +650,8 @@
                     </div>
                     <div class="gallery-pagination swiper-pagination"></div>
                     <div class="pointer-events-none absolute bottom-0 left-0 right-0 z-10 p-5">
-                      <h3 class="text-xl font-semibold text-white">Structured growth</h3>
-                      <p class="mt-2 text-sm leading-6 text-slate-200">Organized environments and visual order that reinforce steady academic progress.</p>
+                      <h3 class="text-xl font-semibold text-white" data-i18n="gallery.growthTitle">Structured growth</h3>
+                      <p class="mt-2 text-sm leading-6 text-slate-200" data-i18n="gallery.growthBody">Organized environments and visual order that reinforce steady academic progress.</p>
                     </div>
                   </div>
                 </article>
@@ -601,11 +666,11 @@
           <div class="reveal rounded-[2rem] bg-ink px-6 py-10 text-white shadow-panel sm:px-10">
             <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
               <div>
-                <p class="text-sm font-bold uppercase tracking-[0.3em] text-gold">Contact</p>
-                <h2 class="mt-4 font-display text-4xl font-semibold sm:text-5xl">
+                <p class="text-sm font-bold uppercase tracking-[0.3em] text-gold" data-i18n="contact.label">Contact</p>
+                <h2 class="mt-4 font-display text-4xl font-semibold sm:text-5xl" data-i18n="contact.title">
                   Ready to begin with Dilrabo Academy?
                 </h2>
-                <p class="mt-5 max-w-2xl text-lg leading-8 text-slate-200">
+                <p class="mt-5 max-w-2xl text-lg leading-8 text-slate-200" data-i18n="contact.body">
                   Choose the fastest way to reach us. Call the academy directly or open WhatsApp for a quick message from any mobile device.
                 </p>
               </div>
@@ -615,7 +680,7 @@
                   href="tel:+998772040896"
                   class="rounded-[1.5rem] border border-white/10 bg-white/5 px-5 py-5 transition hover:bg-white/10 sm:px-6"
                 >
-                  <p class="text-sm font-bold uppercase tracking-[0.28em] text-gold">Call Us</p>
+                  <p class="text-sm font-bold uppercase tracking-[0.28em] text-gold" data-i18n="contact.callLabel">Call Us</p>
                   <p class="mt-3 text-lg font-semibold text-white sm:text-xl">+998 77 204 08 96</p>
                 </a>
                 <a
@@ -624,7 +689,7 @@
                   rel="noopener noreferrer"
                   class="rounded-[1.5rem] border border-white/10 bg-white/5 px-5 py-5 transition hover:bg-white/10 sm:px-6"
                 >
-                  <p class="text-sm font-bold uppercase tracking-[0.28em] text-gold">Message us on WhatsApp</p>
+                  <p class="text-sm font-bold uppercase tracking-[0.28em] text-gold" data-i18n="contact.whatsappLabel">Message us on WhatsApp</p>
                   <p class="mt-3 text-lg font-semibold text-white sm:text-xl">+998 99 673 29 61</p>
                 </a>
               </div>
@@ -636,11 +701,11 @@
 
     <footer class="border-t border-white/60 bg-white/70">
       <div class="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-6 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-        <p>&copy; 2026 Dilrabo Academy. Thoughtful education for ambitious students.</p>
+        <p data-i18n="footer.copy">&copy; 2026 Dilrabo Academy. Thoughtful education for ambitious students.</p>
         <div class="flex items-center gap-5">
-          <a href="#about" class="transition hover:text-rose">About Us</a>
-          <a href="#gallery" class="transition hover:text-rose">Why Choose Us</a>
-          <a href="#contact" class="transition hover:text-rose">Call</a>
+          <a href="#about" class="transition hover:text-rose" data-i18n="footer.about">About Us</a>
+          <a href="#gallery" class="transition hover:text-rose" data-i18n="footer.whyChoose">Why Choose Us</a>
+          <a href="#contact" class="transition hover:text-rose" data-i18n="footer.call">Call</a>
         </div>
       </div>
     </footer>
@@ -648,6 +713,7 @@
     <nav
       class="fixed bottom-4 left-1/2 z-50 w-[calc(100%-1.5rem)] max-w-sm -translate-x-1/2 rounded-full border border-white/80 bg-white/[0.92] p-2 shadow-panel backdrop-blur-xl"
       aria-label="Bottom navigation"
+      data-i18n-aria-label="bottom.ariaLabel"
     >
       <div class="grid grid-cols-3 gap-2">
         <a
@@ -657,7 +723,7 @@
           <span class="flex h-10 w-10 items-center justify-center rounded-full bg-sand text-rose">
             <i class="fa-solid fa-house"></i>
           </span>
-          <span class="mt-2">Home</span>
+          <span class="mt-2" data-i18n="bottom.home">Home</span>
         </a>
         <a
           href="#contact"
@@ -666,7 +732,7 @@
           <span class="flex h-10 w-10 items-center justify-center rounded-full bg-sand text-rose">
             <i class="fa-solid fa-phone"></i>
           </span>
-          <span class="mt-2">Call</span>
+          <span class="mt-2" data-i18n="bottom.call">Call</span>
         </a>
         <a
           href="https://maps.google.com/maps?q=38.340002,66.577101&ll=38.340002,66.577101&z=16"
@@ -677,16 +743,564 @@
           <span class="flex h-10 w-10 items-center justify-center rounded-full bg-sand text-rose">
             <i class="fa-solid fa-map-location-dot"></i>
           </span>
-          <span class="mt-2">Map</span>
+          <span class="mt-2" data-i18n="bottom.map">Map</span>
         </a>
       </div>
     </nav>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
     <script>
+      const supportedLanguages = ["en", "uz", "bn"];
+      const languageStorageKey = "dilrabo-language";
+
+      // Centralized copy for easier review and editing.
+      const translations = {
+        en: {
+          meta: {
+            title: "Dilrabo Academy | Educational Academy",
+            description:
+              "Dilrabo Academy is a mobile-responsive educational academy landing page for ambitious learners seeking mentorship, confidence, and academic growth.",
+          },
+          brand: {
+            logoAlt: "Dilrabo Academy logo",
+            tagline: "Learn with intention",
+          },
+          nav: {
+            languageLabel: "Language switcher",
+            about: "About",
+            programs: "Programs",
+            whyChoose: "Why Choose Us",
+            callCta: "Call the Academy",
+            toggleMenu: "Toggle menu",
+          },
+          hero: {
+            badge: "Academic coaching for modern learners",
+            titleLead: "A calm, ambitious place to",
+            titleAccent: "grow confidence and academic strength.",
+            body:
+              "Dilrabo Academy helps students build language fluency, exam readiness, and disciplined learning habits through thoughtful mentorship and beautifully structured lessons.",
+            ctaPrimary: "Discover the Academy",
+            ctaSecondary: "View Why Students Choose Us",
+            stat1Body: "Focused mentoring that adapts to each learner's pace and goals.",
+            stat2Title: "Small Groups",
+            stat2Body: "Collaborative classes with close feedback and clear accountability.",
+            stat3Title: "Elegant Systems",
+            stat3Body: "Clear plans, polished materials, and consistent progress reviews.",
+            founderAlt: "Founder of Dilrabo Academy",
+            founderLabel: "Founder-Led Learning",
+            founderBody:
+              "Warm guidance, disciplined planning, and a high-trust academic environment.",
+            signatureLabel: "Signature Approach",
+            signatureTitle: "Elegant teaching with measurable outcomes",
+            signatureItem1: "Reading, writing, and test preparation",
+            signatureItem2: "Strategic study routines and confidence building",
+            quickFactsLabel: "Quick Facts",
+            quickFact1Title: "Mobile-Ready",
+            quickFact1Body:
+              "Parents and students can reach the academy instantly from any device.",
+            quickFact2Title: "Human-Centered",
+            quickFact2Body:
+              "Lessons are carefully paced, encouraging, and built for real retention.",
+          },
+          about: {
+            label: "About Us",
+            title:
+              "An educational academy designed with grace, focus, and academic seriousness",
+            body1:
+              "Dilrabo Academy exists for students who need more than generic tutoring. We create a refined learning experience where clear instruction, emotional support, and steady standards work together.",
+            body2:
+              "Every lesson is planned to help learners feel prepared, capable, and proud of the progress they make over time.",
+            card1Title: "Personal attention",
+            card1Body:
+              "Each student is seen clearly, with instruction shaped around strengths, gaps, and goals.",
+            card2Title: "Elegant delivery",
+            card2Body:
+              "Calm visuals, polished materials, and thoughtfully paced sessions reduce noise and build trust.",
+            card3Title: "Visible progress",
+            card3Body:
+              "Students move through structured milestones that make improvement easy to recognize.",
+            card4Title: "Family confidence",
+            card4Body:
+              "Parents appreciate transparent communication and students feel safe asking questions.",
+          },
+          programs: {
+            label: "Our Academic Programs",
+            title: "Five refined pathways for ambitious students and academic clients",
+            body:
+              "Our programs combine strong fundamentals, strategic mentorship, and polished academic execution so every learner can grow with clarity, confidence, and direction.",
+            highlight1Title: "Focused",
+            highlight1Body:
+              "Each pathway is structured around practical outcomes and visible progress.",
+            highlight2Title: "Selective",
+            highlight2Body:
+              "High standards, clear guidance, and thoughtful pacing shape every program.",
+            highlight3Title: "Welcoming",
+            highlight3Body:
+              "Students and families receive calm support in a disciplined environment.",
+            card1Label: "Core Academic Foundation",
+            card1Title: "General English and Mathematics",
+            card1Body:
+              "We strengthen essential language and quantitative skills through steady instruction, clear milestones, and carefully paced support.",
+            card2Label: "International Exam Preparation",
+            card2Title: "IELTS, SAT, and CEFR",
+            card2Body:
+              "Students prepare with smart strategy, rigorous practice, and detailed feedback that builds calm, consistent performance.",
+            card3Label: "Strategic Growth",
+            card3Title: "Top-Tier University Admissions Support",
+            card3Body:
+              "We help ambitious applicants build strong academic profiles and navigate competitive admissions with polish and intention.",
+            card4Label: "Cognitive Development",
+            card4Title: "Competitive Chess Coaching",
+            card4Body:
+              "Chess training sharpens concentration, strategic thinking, and disciplined decision-making that supports wider academic growth.",
+            card5Label: "Research Services",
+            card5Title: "Independent Research Support and Academic Project Execution",
+            card5Body:
+              "We provide discreet, professional research assistance and carefully managed academic project execution for clients who need polished support.",
+          },
+          gallery: {
+            label: "Why Choose Us",
+            title: "An image gallery that reflects the atmosphere we build",
+            body:
+              "Students and families choose the academy for its warmth, clarity, and beautifully organized learning experience.",
+            mainAlt: "Supportive mentoring environment at Dilrabo Academy",
+            mainLabel: "Mentorship",
+            mainTitle:
+              "A reassuring presence that keeps students engaged and motivated",
+            spaceAlt1: "Bright classroom with polished desks and natural light",
+            spaceAlt2:
+              "Elegant learning interior with bookshelves and bright study light",
+            spaceAlt3: "Refined study room with books and a calm academic atmosphere",
+            spaceTitle: "Bright learning spaces",
+            spaceBody:
+              "Modern, bright interiors that feel polished, calm, and academically serious.",
+            prepAlt1:
+              "Premium student focused on laptop work with balanced warm professional lighting",
+            prepAlt2:
+              "Friendly young students studying together at a table in a warm premium academy setting",
+            prepAlt3:
+              "Bright modern learning space with clean white desks and students studying in natural light",
+            prepTitle: "Confident preparation",
+            prepBody:
+              "Focused students, strong habits, and technology used with intention.",
+            growthAlt1:
+              "Bright modern library shelves with warm wood tones and visual order",
+            growthAlt2:
+              "Sunlit academic interior with organized books and welcoming study seating",
+            growthAlt3:
+              "Modern educational library with elegant wooden bookshelves and clear organized study space",
+            growthTitle: "Structured growth",
+            growthBody:
+              "Organized environments and visual order that reinforce steady academic progress.",
+          },
+          contact: {
+            label: "Contact",
+            title: "Ready to begin with Dilrabo Academy?",
+            body:
+              "Choose the fastest way to reach us. Call the academy directly or open WhatsApp for a quick message from any mobile device.",
+            callLabel: "Call Us",
+            whatsappLabel: "Message us on WhatsApp",
+          },
+          footer: {
+            copy: "\u00A9 2026 Dilrabo Academy. Thoughtful education for ambitious students.",
+            about: "About Us",
+            whyChoose: "Why Choose Us",
+            call: "Call",
+          },
+          bottom: {
+            ariaLabel: "Bottom navigation",
+            home: "Home",
+            call: "Call",
+            map: "Map",
+          },
+        },
+        uz: {
+          meta: {
+            title: "Dilrabo Academy | Ta'lim Akademiyasi",
+            description:
+              "Dilrabo Academy - bu ustozlik, ishonch va akademik o'sishni izlayotgan intiluvchan o'quvchilar uchun mobil moslashuvchan ta'lim akademiyasi.",
+          },
+          brand: {
+            logoAlt: "Dilrabo Academy logotipi",
+            tagline: "Maqsad bilan o'rganing",
+          },
+          nav: {
+            languageLabel: "Tilni tanlash",
+            about: "Biz haqimizda",
+            programs: "Dasturlar",
+            whyChoose: "Nega aynan biz",
+            callCta: "Akademiyaga qo'ng'iroq qiling",
+            toggleMenu: "Menyuni ochish",
+          },
+          hero: {
+            badge: "Zamonaviy o'quvchilar uchun akademik murabbiylik",
+            titleLead: "Tinch va maqsadli maskan,",
+            titleAccent: "ishonch hamda akademik salohiyatni rivojlantirish uchun.",
+            body:
+              "Dilrabo Academy o'quvchilarga chuqur o'ylangan murabbiylik va puxta tuzilgan darslar orqali til ravonligi, imtihonlarga tayyorgarlik va intizomli o'qish odatlarini rivojlantirishga yordam beradi.",
+            ctaPrimary: "Akademiyani kashf eting",
+            ctaSecondary: "Nega talabalar bizni tanlashini ko'ring",
+            stat1Body:
+              "Har bir o'quvchining sur'ati va maqsadiga moslashadigan yo'naltirilgan murabbiylik.",
+            stat2Title: "Kichik guruhlar",
+            stat2Body:
+              "Yaqin fikr-mulohaza va aniq mas'uliyatga ega hamkorlikdagi darslar.",
+            stat3Title: "Mukammal tizimlar",
+            stat3Body:
+              "Aniq rejalar, puxta materiallar va muntazam rivojlanish tahlillari.",
+            founderAlt: "Dilrabo Academy asoschisi",
+            founderLabel: "Asoschi boshchiligidagi ta'lim",
+            founderBody:
+              "Iliq yo'l-yo'riq, intizomli rejalashtirish va yuqori ishonchga asoslangan akademik muhit.",
+            signatureLabel: "Yondashuvimiz",
+            signatureTitle: "Natijasi o'lchanadigan nafis ta'lim",
+            signatureItem1: "O'qish, yozish va testga tayyorgarlik",
+            signatureItem2: "Strategik o'qish tartiblari va ishonchni shakllantirish",
+            quickFactsLabel: "Qisqa faktlar",
+            quickFact1Title: "Mobilga mos",
+            quickFact1Body:
+              "Ota-onalar va o'quvchilar istalgan qurilmadan akademiya bilan darhol bog'lana oladi.",
+            quickFact2Title: "Insonga yo'naltirilgan",
+            quickFact2Body:
+              "Darslar ehtiyotkorlik bilan tuziladi, ruhlantiradi va haqiqiy natijani mustahkamlaydi.",
+          },
+          about: {
+            label: "Biz haqimizda",
+            title:
+              "Nafosat, diqqat va akademik jiddiyat bilan yaratilgan ta'lim akademiyasi",
+            body1:
+              "Dilrabo Academy oddiy repetitorlikdan ko'proq narsaga muhtoj o'quvchilar uchun yaratilgan. Biz aniq tushuntirish, hissiy qo'llab-quvvatlash va barqaror standartlar uyg'unlashgan nafis ta'lim tajribasini yaratamiz.",
+            body2:
+              "Har bir dars o'quvchiga tayyor, qobiliyatli va vaqt o'tishi bilan erishgan yutuqlaridan faxrlanadigan holatni berish uchun puxta rejalashtiriladi.",
+            card1Title: "Shaxsiy e'tibor",
+            card1Body:
+              "Har bir o'quvchining kuchli va zaif tomonlari hamda maqsadlari asosida darslar shakllantiriladi.",
+            card2Title: "Nafis taqdimot",
+            card2Body:
+              "Sokin vizuallar, puxta materiallar va o'ylangan tempdagi mashg'ulotlar shovqinni kamaytirib, ishonchni oshiradi.",
+            card3Title: "Ko'rinarli rivojlanish",
+            card3Body:
+              "O'quvchilar tuzilgan bosqichlar orqali harakatlanadi, shu bois o'sishni sezish oson bo'ladi.",
+            card4Title: "Oilaviy ishonch",
+            card4Body:
+              "Ota-onalar ochiq muloqotni qadrlaydi, o'quvchilar esa savol berishda o'zini erkin his qiladi.",
+          },
+          programs: {
+            label: "Akademik dasturlarimiz",
+            title:
+              "Intiluvchan o'quvchilar va akademik mijozlar uchun beshta puxta yo'nalish",
+            body:
+              "Dasturlarimiz mustahkam asoslar, strategik murabbiylik va puxta akademik ijroni uyg'unlashtirib, har bir o'quvchiga aniqlik, ishonch va yo'nalish bilan o'sishga yordam beradi.",
+            highlight1Title: "Aniq yo'naltirilgan",
+            highlight1Body:
+              "Har bir yo'nalish amaliy natijalar va ko'rinarli rivojlanish atrofida tuzilgan.",
+            highlight2Title: "Saralangan",
+            highlight2Body:
+              "Yuqori standartlar, aniq yo'l-yo'riq va o'ylangan temp har bir dasturni shakllantiradi.",
+            highlight3Title: "Samimiy",
+            highlight3Body:
+              "O'quvchilar va oilalar intizomli muhitda sokin qo'llab-quvvatlashni his qiladi.",
+            card1Label: "Asosiy akademik poydevor",
+            card1Title: "Umumiy ingliz tili va matematika",
+            card1Body:
+              "Biz muhim til va miqdoriy ko'nikmalarni barqaror darslar, aniq bosqichlar va puxta tempdagi qo'llab-quvvatlash orqali mustahkamlaymiz.",
+            card2Label: "Xalqaro imtihonlarga tayyorgarlik",
+            card2Title: "IELTS, SAT va CEFR",
+            card2Body:
+              "O'quvchilar oqilona strategiya, jiddiy mashqlar va batafsil fikr-mulohaza bilan barqaror natijaga tayyorlanadi.",
+            card3Label: "Strategik rivojlanish",
+            card3Title: "Nufuzli universitetlarga qabul yordami",
+            card3Body:
+              "Biz intiluvchan abituriyentlarga kuchli akademik profil yaratish va raqobatbardosh qabul jarayonini puxta tarzda bosib o'tishda yordam beramiz.",
+            card4Label: "Kognitiv rivojlanish",
+            card4Title: "Raqobatbardosh shaxmat murabbiyligi",
+            card4Body:
+              "Shaxmat mashg'ulotlari diqqatni, strategik fikrlashni va intizomli qaror qabul qilishni kuchaytiradi, bu esa umumiy akademik o'sishni qo'llab-quvvatlaydi.",
+            card5Label: "Tadqiqot xizmatlari",
+            card5Title: "Mustaqil tadqiqot yordami va akademik loyiha ijrosi",
+            card5Body:
+              "Biz puxta yordamga muhtoj mijozlar uchun maxfiy, professional tadqiqot ko'magi va ehtiyotkorlik bilan boshqarilgan akademik loyiha ijrosini taqdim etamiz.",
+          },
+          gallery: {
+            label: "Nega aynan biz",
+            title: "Biz yaratadigan muhitni aks ettiruvchi suratlar galereyasi",
+            body:
+              "O'quvchilar va oilalar akademiyani uning iliqligi, aniqligi va chiroyli tashkil etilgan ta'lim tajribasi uchun tanlaydi.",
+            mainAlt: "Dilrabo Academy dagi qo'llab-quvvatlovchi murabbiylik muhiti",
+            mainLabel: "Murabbiylik",
+            mainTitle:
+              "Talabalarni faol va ruhlantirilgan holda ushlab turadigan ishonchli hamroh",
+            spaceAlt1: "Puxta partalar va tabiiy yorug'likka ega yorug' sinfxona",
+            spaceAlt2:
+              "Kitob javonlari va yorug' o'quv nuri bilan nafis ta'lim interyeri",
+            spaceAlt3: "Kitoblar va sokin akademik muhitga ega puxta o'quv xonasi",
+            spaceTitle: "Yorug' o'quv makonlari",
+            spaceBody:
+              "Zamonaviy va yorug' interyerlar nafis, sokin va akademik jihatdan jiddiy taassurot beradi.",
+            prepAlt1:
+              "Muvozanatli iliq professional yoritishda noutbukda ishlayotgan premium o'quvchi",
+            prepAlt2:
+              "Iliq premium akademiya muhitida stol atrofida birga o'qiyotgan samimiy yosh o'quvchilar",
+            prepAlt3:
+              "Tabiiy yorug'likdagi toza oq stollar bilan yorug' zamonaviy o'quv maydoni",
+            prepTitle: "Ishonchli tayyorgarlik",
+            prepBody:
+              "Diqqatli o'quvchilar, kuchli odatlar va maqsad bilan qo'llaniladigan texnologiya.",
+            growthAlt1:
+              "Iliq yog'och ranglari va vizual tartibga ega yorug' zamonaviy kutubxona javonlari",
+            growthAlt2:
+              "Tartiblangan kitoblar va qulay o'rindiqlarga ega quyoshli akademik interyer",
+            growthAlt3:
+              "Nafis yog'och javonlar va aniq tashkil etilgan makonga ega zamonaviy ta'lim kutubxonasi",
+            growthTitle: "Tartibli rivojlanish",
+            growthBody:
+              "Tashkil etilgan muhit va vizual tartib barqaror akademik o'sishni mustahkamlaydi.",
+          },
+          contact: {
+            label: "Aloqa",
+            title: "Dilrabo Academy bilan boshlashga tayyormisiz?",
+            body:
+              "Biz bilan bog'lanishning eng tez yo'lini tanlang. Akademiyaga to'g'ridan-to'g'ri qo'ng'iroq qiling yoki istalgan mobil qurilmadan tezkor WhatsApp xabarini oching.",
+            callLabel: "Bizga qo'ng'iroq qiling",
+            whatsappLabel: "WhatsApp orqali yozing",
+          },
+          footer: {
+            copy: "\u00A9 2026 Dilrabo Academy. Katta maqsadli o'quvchilar uchun puxta o'ylangan ta'lim.",
+            about: "Biz haqimizda",
+            whyChoose: "Nega aynan biz",
+            call: "Qo'ng'iroq",
+          },
+          bottom: {
+            ariaLabel: "Pastki navigatsiya",
+            home: "Bosh sahifa",
+            call: "Qo'ng'iroq",
+            map: "Xarita",
+          },
+        },
+        bn: {
+          meta: {
+            title: "Dilrabo Academy | শিক্ষা একাডেমি",
+            description:
+              "Dilrabo Academy উচ্চাকাঙ্ক্ষী শিক্ষার্থীদের জন্য একটি মোবাইল-রেসপনসিভ শিক্ষা একাডেমি, যেখানে পরামর্শ, আত্মবিশ্বাস ও একাডেমিক উন্নয়নকে গুরুত্ব দেওয়া হয়।",
+          },
+          brand: {
+            logoAlt: "Dilrabo Academy লোগো",
+            tagline: "উদ্দেশ্য নিয়ে শিখুন",
+          },
+          nav: {
+            languageLabel: "ভাষা নির্বাচন",
+            about: "আমাদের সম্পর্কে",
+            programs: "প্রোগ্রামসমূহ",
+            whyChoose: "কেন আমাদের বেছে নেবেন",
+            callCta: "একাডেমিতে কল করুন",
+            toggleMenu: "মেনু খুলুন",
+          },
+          hero: {
+            badge: "আধুনিক শিক্ষার্থীদের জন্য একাডেমিক কোচিং",
+            titleLead: "শান্ত, উচ্চাভিলাষী এক জায়গা,",
+            titleAccent: "যেখানে আত্মবিশ্বাস ও একাডেমিক শক্তি গড়ে ওঠে।",
+            body:
+              "Dilrabo Academy শিক্ষার্থীদের ভাষাগত দক্ষতা, পরীক্ষার প্রস্তুতি এবং শৃঙ্খলাপূর্ণ পড়াশোনার অভ্যাস গড়ে তুলতে সহায়ক মেন্টরশিপ ও সুন্দরভাবে সংগঠিত পাঠের মাধ্যমে সাহায্য করে।",
+            ctaPrimary: "একাডেমি সম্পর্কে জানুন",
+            ctaSecondary: "কেন শিক্ষার্থীরা আমাদের বেছে নেয় দেখুন",
+            stat1Body:
+              "প্রতিটি শিক্ষার্থীর গতি ও লক্ষ্যের সঙ্গে মানিয়ে নেওয়া নিবিড় মেন্টরশিপ।",
+            stat2Title: "ছোট গ্রুপ",
+            stat2Body:
+              "ঘনিষ্ঠ ফিডব্যাক ও পরিষ্কার জবাবদিহিসহ সহযোগিতামূলক ক্লাস।",
+            stat3Title: "সুশৃঙ্খল ব্যবস্থা",
+            stat3Body:
+              "স্পষ্ট পরিকল্পনা, পরিশীলিত উপকরণ এবং ধারাবাহিক অগ্রগতি পর্যালোচনা।",
+            founderAlt: "Dilrabo Academy-এর প্রতিষ্ঠাতা",
+            founderLabel: "প্রতিষ্ঠাতা-নেতৃত্বাধীন শিক্ষা",
+            founderBody:
+              "আন্তরিক দিকনির্দেশনা, শৃঙ্খলাপূর্ণ পরিকল্পনা এবং উচ্চ-আস্থার একাডেমিক পরিবেশ।",
+            signatureLabel: "বিশেষ পদ্ধতি",
+            signatureTitle: "পরিমাপযোগ্য ফলাফলের সঙ্গে সৌন্দর্যপূর্ণ শিক্ষা",
+            signatureItem1: "পড়াশোনা, লেখা এবং পরীক্ষার প্রস্তুতি",
+            signatureItem2: "কৌশলগত অধ্যয়ন অভ্যাস ও আত্মবিশ্বাস গড়ে তোলা",
+            quickFactsLabel: "দ্রুত তথ্য",
+            quickFact1Title: "মোবাইল-প্রস্তুত",
+            quickFact1Body:
+              "অভিভাবক ও শিক্ষার্থীরা যেকোনো ডিভাইস থেকে সঙ্গে সঙ্গে একাডেমির সাথে যোগাযোগ করতে পারেন।",
+            quickFact2Title: "মানবকেন্দ্রিক",
+            quickFact2Body:
+              "পাঠগুলো যত্নসহকারে সাজানো, উৎসাহদায়ক এবং বাস্তব শেখা ধরে রাখার জন্য তৈরি।",
+          },
+          about: {
+            label: "আমাদের সম্পর্কে",
+            title:
+              "নান্দনিকতা, মনোযোগ ও একাডেমিক গুরুত্ব দিয়ে নির্মিত একটি শিক্ষা একাডেমি",
+            body1:
+              "Dilrabo Academy তাদের জন্য, যাদের সাধারণ টিউটরিংয়ের চেয়ে বেশি কিছু দরকার। আমরা এমন একটি পরিশীলিত শিক্ষার অভিজ্ঞতা তৈরি করি যেখানে স্পষ্ট নির্দেশনা, মানসিক সহায়তা এবং ধারাবাহিক মান একসাথে কাজ করে।",
+            body2:
+              "প্রতিটি ক্লাস এমনভাবে পরিকল্পিত, যাতে শিক্ষার্থীরা প্রস্তুত, সক্ষম এবং সময়ের সঙ্গে নিজের অগ্রগতিতে গর্বিত বোধ করে।",
+            card1Title: "ব্যক্তিগত মনোযোগ",
+            card1Body:
+              "প্রতিটি শিক্ষার্থীকে স্পষ্টভাবে দেখা হয়, এবং তার শক্তি, ঘাটতি ও লক্ষ্যের ভিত্তিতে পাঠ সাজানো হয়।",
+            card2Title: "পরিশীলিত উপস্থাপন",
+            card2Body:
+              "শান্ত ভিজ্যুয়াল, উন্নত উপকরণ এবং ভাবনাপূর্ণ গতির সেশন বিভ্রান্তি কমায় ও আস্থা তৈরি করে।",
+            card3Title: "দৃশ্যমান অগ্রগতি",
+            card3Body:
+              "শিক্ষার্থীরা কাঠামোবদ্ধ ধাপে এগোয়, ফলে উন্নতি সহজে বোঝা যায়।",
+            card4Title: "পরিবারের আস্থা",
+            card4Body:
+              "অভিভাবকরা স্বচ্ছ যোগাযোগকে মূল্য দেন এবং শিক্ষার্থীরা নিরাপদে প্রশ্ন করতে পারে।",
+          },
+          programs: {
+            label: "আমাদের একাডেমিক প্রোগ্রাম",
+            title: "উচ্চাভিলাষী শিক্ষার্থী ও একাডেমিক ক্লায়েন্টদের জন্য পাঁচটি পরিশীলিত পথ",
+            body:
+              "আমাদের প্রোগ্রামগুলো শক্ত ভিত্তি, কৌশলগত মেন্টরশিপ এবং পরিশীলিত একাডেমিক বাস্তবায়ন একত্র করে, যাতে প্রতিটি শিক্ষার্থী স্পষ্টতা, আত্মবিশ্বাস এবং দিকনির্দেশনা নিয়ে এগোতে পারে।",
+            highlight1Title: "ফোকাসড",
+            highlight1Body:
+              "প্রতিটি পথ বাস্তব ফলাফল ও দৃশ্যমান অগ্রগতিকে কেন্দ্র করে সাজানো।",
+            highlight2Title: "নির্বাচিত",
+            highlight2Body:
+              "উচ্চ মান, স্পষ্ট নির্দেশনা এবং ভাবনাপূর্ণ গতি প্রতিটি প্রোগ্রামকে গড়ে তোলে।",
+            highlight3Title: "স্বাগতপূর্ণ",
+            highlight3Body:
+              "শিক্ষার্থী ও পরিবার শৃঙ্খলাপূর্ণ পরিবেশে শান্ত সহায়তা পায়।",
+            card1Label: "মূল একাডেমিক ভিত্তি",
+            card1Title: "সাধারণ ইংরেজি ও গণিত",
+            card1Body:
+              "আমরা ধারাবাহিক নির্দেশনা, স্পষ্ট ধাপ এবং যত্নসহকারে নির্ধারিত সহায়তার মাধ্যমে প্রয়োজনীয় ভাষা ও গাণিতিক দক্ষতা মজবুত করি।",
+            card2Label: "আন্তর্জাতিক পরীক্ষা প্রস্তুতি",
+            card2Title: "IELTS, SAT এবং CEFR",
+            card2Body:
+              "শিক্ষার্থীরা বুদ্ধিদীপ্ত কৌশল, কঠোর অনুশীলন এবং বিস্তারিত ফিডব্যাকের মাধ্যমে শান্ত ও ধারাবাহিক পারফরম্যান্সের জন্য প্রস্তুত হয়।",
+            card3Label: "কৌশলগত বিকাশ",
+            card3Title: "শীর্ষ বিশ্ববিদ্যালয়ে ভর্তি সহায়তা",
+            card3Body:
+              "আমরা উচ্চাভিলাষী আবেদনকারীদের শক্তিশালী একাডেমিক প্রোফাইল তৈরি করতে এবং প্রতিযোগিতামূলক ভর্তি প্রক্রিয়া পরিশীলিতভাবে অতিক্রম করতে সহায়তা করি।",
+            card4Label: "জ্ঞানগত বিকাশ",
+            card4Title: "প্রতিযোগিতামূলক দাবা প্রশিক্ষণ",
+            card4Body:
+              "দাবা প্রশিক্ষণ মনোযোগ, কৌশলগত চিন্তা এবং শৃঙ্খলাপূর্ণ সিদ্ধান্ত গ্রহণকে শাণিত করে, যা সামগ্রিক একাডেমিক উন্নয়নকে সহায়তা করে।",
+            card5Label: "গবেষণা সেবা",
+            card5Title: "স্বতন্ত্র গবেষণা সহায়তা ও একাডেমিক প্রকল্প বাস্তবায়ন",
+            card5Body:
+              "যেসব ক্লায়েন্ট পরিশীলিত সহায়তা চান, তাদের জন্য আমরা গোপনীয়, পেশাদার গবেষণা সহায়তা এবং যত্নসহকারে পরিচালিত একাডেমিক প্রকল্প বাস্তবায়ন প্রদান করি।",
+          },
+          gallery: {
+            label: "কেন আমাদের বেছে নেবেন",
+            title: "একটি ছবি গ্যালারি যা আমাদের গড়ে তোলা পরিবেশকে তুলে ধরে",
+            body:
+              "শিক্ষার্থী ও পরিবার একাডেমিটিকে তার উষ্ণতা, স্বচ্ছতা এবং সুন্দরভাবে সংগঠিত শিক্ষার অভিজ্ঞতার জন্য বেছে নেয়।",
+            mainAlt: "Dilrabo Academy-তে সহায়ক মেন্টরশিপের পরিবেশ",
+            mainLabel: "মেন্টরশিপ",
+            mainTitle:
+              "একটি আশ্বস্ত উপস্থিতি, যা শিক্ষার্থীদের সম্পৃক্ত ও অনুপ্রাণিত রাখে",
+            spaceAlt1: "পরিপাটি ডেস্ক ও প্রাকৃতিক আলোসহ উজ্জ্বল শ্রেণিকক্ষ",
+            spaceAlt2:
+              "বইয়ের তাক ও উজ্জ্বল আলোসহ পরিশীলিত শিক্ষার অভ্যন্তর",
+            spaceAlt3: "বই ও শান্ত একাডেমিক পরিবেশসহ মার্জিত অধ্যয়নকক্ষ",
+            spaceTitle: "উজ্জ্বল শিক্ষার পরিবেশ",
+            spaceBody:
+              "আধুনিক, উজ্জ্বল অভ্যন্তর যা পরিশীলিত, শান্ত এবং একাডেমিকভাবে গুরুতর অনুভূতি দেয়।",
+            prepAlt1:
+              "সুষম উষ্ণ পেশাদার আলোতে ল্যাপটপে মনোযোগী প্রিমিয়াম শিক্ষার্থী",
+            prepAlt2:
+              "উষ্ণ প্রিমিয়াম একাডেমি পরিবেশে টেবিলে একসাথে পড়াশোনা করা বন্ধুসুলভ তরুণ শিক্ষার্থীরা",
+            prepAlt3:
+              "প্রাকৃতিক আলোতে পরিষ্কার সাদা ডেস্কসহ উজ্জ্বল আধুনিক শিক্ষার স্থান",
+            prepTitle: "আত্মবিশ্বাসী প্রস্তুতি",
+            prepBody:
+              "মনোযোগী শিক্ষার্থী, শক্তিশালী অভ্যাস এবং উদ্দেশ্যমূলক প্রযুক্তি ব্যবহার।",
+            growthAlt1:
+              "উষ্ণ কাঠের টোন ও দৃশ্যমান শৃঙ্খলাসহ উজ্জ্বল আধুনিক লাইব্রেরি শেলফ",
+            growthAlt2:
+              "সাজানো বই ও স্বাগতপূর্ণ আসনসহ সূর্যালোকপূর্ণ একাডেমিক অভ্যন্তর",
+            growthAlt3:
+              "পরিষ্কারভাবে সাজানো কাঠের বুকশেলফসহ আধুনিক শিক্ষামূলক লাইব্রেরি",
+            growthTitle: "কাঠামোবদ্ধ উন্নয়ন",
+            growthBody:
+              "সুশৃঙ্খল পরিবেশ ও দৃশ্যমান শৃঙ্খলা, যা স্থির একাডেমিক অগ্রগতিকে শক্তিশালী করে।",
+          },
+          contact: {
+            label: "যোগাযোগ",
+            title: "Dilrabo Academy-এর সঙ্গে শুরু করতে প্রস্তুত?",
+            body:
+              "আমাদের সঙ্গে যোগাযোগের সবচেয়ে দ্রুত উপায় বেছে নিন। সরাসরি কল করুন অথবা যেকোনো মোবাইল ডিভাইস থেকে দ্রুত WhatsApp বার্তা পাঠান।",
+            callLabel: "আমাদের কল করুন",
+            whatsappLabel: "WhatsApp-এ বার্তা দিন",
+          },
+          footer: {
+            copy: "\u00A9 2026 Dilrabo Academy. উচ্চাকাঙ্ক্ষী শিক্ষার্থীদের জন্য চিন্তাশীল শিক্ষা।",
+            about: "আমাদের সম্পর্কে",
+            whyChoose: "কেন আমাদের বেছে নেবেন",
+            call: "কল",
+          },
+          bottom: {
+            ariaLabel: "নিচের নেভিগেশন",
+            home: "হোম",
+            call: "কল",
+            map: "মানচিত্র",
+          },
+        },
+      };
+
       const menuToggle = document.getElementById("menu-toggle");
       const mobileMenu = document.getElementById("mobile-menu");
       const mobileLinks = mobileMenu.querySelectorAll("a");
+
+      const getTranslation = (language, key) =>
+        key.split(".").reduce((value, segment) => value?.[segment], translations[language]);
+
+      const resolveTranslation = (language, key) =>
+        getTranslation(language, key) ?? getTranslation("en", key);
+
+      const updateLanguageButtons = (language) => {
+        document.querySelectorAll(".language-switcher").forEach((switcher) => {
+          switcher.querySelectorAll("[data-lang]").forEach((button) => {
+            const isActive = button.dataset.lang === language;
+            button.setAttribute("aria-pressed", String(isActive));
+            button.classList.toggle("bg-sand", isActive);
+            button.classList.toggle("text-ink", isActive);
+          });
+        });
+      };
+
+      const applyTranslations = (language) => {
+        const activeLanguage = supportedLanguages.includes(language) ? language : "en";
+        document.documentElement.lang = activeLanguage;
+
+        document.querySelectorAll("[data-i18n]").forEach((element) => {
+          const value = resolveTranslation(activeLanguage, element.dataset.i18n);
+
+          if (value) {
+            element.textContent = value;
+          }
+        });
+
+        document.querySelectorAll("[data-i18n-alt]").forEach((element) => {
+          const value = resolveTranslation(activeLanguage, element.dataset.i18nAlt);
+
+          if (value) {
+            element.setAttribute("alt", value);
+          }
+        });
+
+        document.querySelectorAll("[data-i18n-content]").forEach((element) => {
+          const value = resolveTranslation(activeLanguage, element.dataset.i18nContent);
+
+          if (value) {
+            element.setAttribute("content", value);
+          }
+        });
+
+        document.querySelectorAll("[data-i18n-aria-label]").forEach((element) => {
+          const value = resolveTranslation(activeLanguage, element.dataset.i18nAriaLabel);
+
+          if (value) {
+            element.setAttribute("aria-label", value);
+          }
+        });
+
+        updateLanguageButtons(activeLanguage);
+        localStorage.setItem(languageStorageKey, activeLanguage);
+      };
 
       menuToggle.addEventListener("click", () => {
         const isOpen = !mobileMenu.classList.contains("hidden");
@@ -704,6 +1318,24 @@
           menuToggle.innerHTML = '<i class="fa-solid fa-bars text-lg"></i>';
         });
       });
+
+      document.querySelectorAll(".language-switcher").forEach((switcher) => {
+        const buttons = switcher.querySelectorAll("[data-lang]");
+
+        buttons.forEach((button) => {
+          button.addEventListener("click", () => applyTranslations(button.dataset.lang));
+        });
+      });
+
+      const savedLanguage = localStorage.getItem(languageStorageKey);
+      const browserLanguage = navigator.language.slice(0, 2).toLowerCase();
+      const initialLanguage = supportedLanguages.includes(savedLanguage)
+        ? savedLanguage
+        : supportedLanguages.includes(browserLanguage)
+          ? browserLanguage
+          : "en";
+
+      applyTranslations(initialLanguage);
 
       const observer = new IntersectionObserver(
         (entries) => {
