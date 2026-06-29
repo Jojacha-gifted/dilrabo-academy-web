@@ -144,36 +144,70 @@
           </a>
 
           <div
-            class="language-switcher inline-flex shrink-0 items-center rounded-full border border-slate-200/90 bg-white/80 p-1 text-[0.62rem] font-bold uppercase tracking-[0.22em] text-slate-500 shadow-sm backdrop-blur sm:text-[0.68rem]"
+            class="language-switcher relative shrink-0"
             aria-label="Language switcher"
             data-i18n-aria-label="nav.languageLabel"
           >
             <button
               type="button"
-              data-lang="en"
-              aria-pressed="true"
-              class="rounded-full bg-sand px-2.5 py-1.5 text-ink transition hover:text-ink sm:px-3"
+              class="inline-flex min-h-11 items-center gap-2 rounded-full border border-slate-200/90 bg-white/85 px-3 py-2 text-xs font-semibold text-slate-600 shadow-sm backdrop-blur transition hover:border-rose/40 hover:text-ink sm:gap-2.5 sm:px-4"
+              data-lang-trigger
+              aria-expanded="false"
+              aria-haspopup="true"
+              aria-label="Language"
+              data-i18n-aria-label="nav.languageMenu"
             >
-              EN
+              <span class="flex h-8 w-8 items-center justify-center rounded-full bg-sand text-rose">
+                <i class="fa-solid fa-globe text-sm"></i>
+              </span>
+              <span class="hidden text-[0.72rem] uppercase tracking-[0.22em] sm:inline" data-i18n="nav.languageMenu">
+                Language
+              </span>
+              <span class="text-[0.72rem] font-bold uppercase tracking-[0.18em] text-ink" data-active-language>EN</span>
+              <i class="fa-solid fa-chevron-down text-[0.65rem] text-slate-400"></i>
             </button>
-            <span class="px-1 text-slate-300">|</span>
-            <button
-              type="button"
-              data-lang="uz"
-              aria-pressed="false"
-              class="rounded-full px-2.5 py-1.5 transition hover:text-ink sm:px-3"
+
+            <div
+              class="absolute left-0 top-full z-50 mt-3 hidden min-w-[12.5rem] overflow-hidden rounded-[1.35rem] border border-white/80 bg-white/95 p-2 shadow-panel backdrop-blur-xl"
+              data-lang-menu
             >
-              UZ
-            </button>
-            <span class="px-1 text-slate-300">|</span>
-            <button
-              type="button"
-              data-lang="bn"
-              aria-pressed="false"
-              class="rounded-full px-2.5 py-1.5 transition hover:text-ink sm:px-3"
-            >
-              BN
-            </button>
+              <a
+                href="?lang=en#home"
+                class="flex min-h-11 items-center justify-between rounded-[1rem] px-3 py-3 text-sm font-medium text-slate-600 transition hover:bg-sand hover:text-ink"
+                data-lang-option
+                data-lang="en"
+              >
+                <span>English</span>
+                <span class="text-[0.72rem] font-bold uppercase tracking-[0.18em] text-slate-400">EN</span>
+              </a>
+              <a
+                href="?lang=uz#home"
+                class="flex min-h-11 items-center justify-between rounded-[1rem] px-3 py-3 text-sm font-medium text-slate-600 transition hover:bg-sand hover:text-ink"
+                data-lang-option
+                data-lang="uz"
+              >
+                <span>Uzbek</span>
+                <span class="text-[0.72rem] font-bold uppercase tracking-[0.18em] text-slate-400">UZ</span>
+              </a>
+              <a
+                href="?lang=bn#home"
+                class="flex min-h-11 items-center justify-between rounded-[1rem] px-3 py-3 text-sm font-medium text-slate-600 transition hover:bg-sand hover:text-ink"
+                data-lang-option
+                data-lang="bn"
+              >
+                <span>Bangla</span>
+                <span class="text-[0.72rem] font-bold uppercase tracking-[0.18em] text-slate-400">BN</span>
+              </a>
+              <a
+                href="?lang=ru#home"
+                class="flex min-h-11 items-center justify-between rounded-[1rem] px-3 py-3 text-sm font-medium text-slate-600 transition hover:bg-sand hover:text-ink"
+                data-lang-option
+                data-lang="ru"
+              >
+                <span>Russian</span>
+                <span class="text-[0.72rem] font-bold uppercase tracking-[0.18em] text-slate-400">RU</span>
+              </a>
+            </div>
           </div>
         </div>
 
@@ -750,7 +784,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
     <script>
-      const supportedLanguages = ["en", "uz", "bn"];
+      const supportedLanguages = ["en", "uz", "bn", "ru"];
       const languageStorageKey = "dilrabo-language";
 
       // Centralized copy for easier review and editing.
@@ -767,6 +801,7 @@
           },
           nav: {
             languageLabel: "Language switcher",
+            languageMenu: "Language",
             about: "About",
             programs: "Programs",
             whyChoose: "Why Choose Us",
@@ -926,6 +961,7 @@
           },
           nav: {
             languageLabel: "Tilni tanlash",
+            languageMenu: "Til",
             about: "Biz haqimizda",
             programs: "Dasturlar",
             whyChoose: "Nega aynan biz",
@@ -1077,6 +1113,170 @@
             map: "Xarita",
           },
         },
+        ru: {
+          meta: {
+            title: "Dilrabo Academy | Образовательная академия",
+            description:
+              "Dilrabo Academy — это адаптивная образовательная академия для целеустремленных учеников, которым важны наставничество, уверенность и академический рост.",
+          },
+          brand: {
+            logoAlt: "Логотип Dilrabo Academy",
+            tagline: "Учитесь осмысленно",
+          },
+          nav: {
+            languageLabel: "Переключатель языка",
+            languageMenu: "Язык",
+            about: "О нас",
+            programs: "Программы",
+            whyChoose: "Почему выбирают нас",
+            callCta: "Позвонить в академию",
+            toggleMenu: "Открыть меню",
+          },
+          hero: {
+            badge: "Академическое наставничество для современных учеников",
+            titleLead: "Спокойное и амбициозное пространство,",
+            titleAccent: "где растут уверенность и академическая сила.",
+            body:
+              "Dilrabo Academy помогает ученикам развивать языковую уверенность, готовность к экзаменам и дисциплинированные учебные привычки благодаря вдумчивому наставничеству и красиво выстроенным занятиям.",
+            ctaPrimary: "Открыть академию",
+            ctaSecondary: "Узнать, почему нас выбирают",
+            stat1Body:
+              "Сфокусированное наставничество, которое адаптируется к темпу и целям каждого ученика.",
+            stat2Title: "Небольшие группы",
+            stat2Body:
+              "Совместные занятия с близкой обратной связью и понятной ответственностью.",
+            stat3Title: "Продуманные системы",
+            stat3Body:
+              "Четкие планы, качественные материалы и регулярный обзор прогресса.",
+            founderAlt: "Основатель Dilrabo Academy",
+            founderLabel: "Обучение под руководством основателя",
+            founderBody:
+              "Теплое сопровождение, дисциплинированное планирование и академическая среда высокого доверия.",
+            signatureLabel: "Наш подход",
+            signatureTitle: "Элегантное обучение с измеримыми результатами",
+            signatureItem1: "Чтение, письмо и подготовка к тестам",
+            signatureItem2: "Стратегические учебные привычки и развитие уверенности",
+            quickFactsLabel: "Краткие факты",
+            quickFact1Title: "Удобно с мобильного",
+            quickFact1Body:
+              "Родители и ученики могут быстро связаться с академией с любого устройства.",
+            quickFact2Title: "Ориентировано на человека",
+            quickFact2Body:
+              "Занятия выстроены бережно, поддерживающе и нацелены на устойчивое усвоение знаний.",
+          },
+          about: {
+            label: "О нас",
+            title:
+              "Образовательная академия, созданная с изяществом, вниманием и академической серьезностью",
+            body1:
+              "Dilrabo Academy существует для учеников, которым нужно больше, чем стандартное репетиторство. Мы создаем утонченную образовательную среду, где ясное объяснение, эмоциональная поддержка и стабильные стандарты работают вместе.",
+            body2:
+              "Каждое занятие планируется так, чтобы ученики чувствовали себя подготовленными, способными и гордились своим прогрессом со временем.",
+            card1Title: "Индивидуальное внимание",
+            card1Body:
+              "Каждого ученика видят ясно, а обучение выстраивается вокруг его сильных сторон, пробелов и целей.",
+            card2Title: "Элегантная подача",
+            card2Body:
+              "Спокойная визуальная среда, качественные материалы и продуманный темп занятий уменьшают шум и укрепляют доверие.",
+            card3Title: "Заметный прогресс",
+            card3Body:
+              "Ученики проходят через структурированные этапы, благодаря которым улучшения легко увидеть.",
+            card4Title: "Уверенность семьи",
+            card4Body:
+              "Родители ценят прозрачное общение, а ученики чувствуют себя спокойно, задавая вопросы.",
+          },
+          programs: {
+            label: "Наши академические программы",
+            title:
+              "Пять продуманных направлений для амбициозных учеников и академических клиентов",
+            body:
+              "Наши программы объединяют сильную базу, стратегическое наставничество и качественное академическое исполнение, чтобы каждый ученик развивался с ясностью, уверенностью и направлением.",
+            highlight1Title: "Сфокусировано",
+            highlight1Body:
+              "Каждое направление выстроено вокруг практических результатов и заметного прогресса.",
+            highlight2Title: "Избирательно",
+            highlight2Body:
+              "Высокие стандарты, четкое руководство и продуманный темп формируют каждую программу.",
+            highlight3Title: "Доброжелательно",
+            highlight3Body:
+              "Ученики и семьи получают спокойную поддержку в дисциплинированной среде.",
+            card1Label: "Ключевая академическая база",
+            card1Title: "Общий английский язык и математика",
+            card1Body:
+              "Мы укрепляем основные языковые и количественные навыки через последовательное обучение, четкие этапы и аккуратно выстроенную поддержку.",
+            card2Label: "Подготовка к международным экзаменам",
+            card2Title: "IELTS, SAT и CEFR",
+            card2Body:
+              "Ученики готовятся с умной стратегией, серьезной практикой и детальной обратной связью, которая формирует спокойную и стабильную результативность.",
+            card3Label: "Стратегический рост",
+            card3Title: "Поддержка поступления в ведущие университеты",
+            card3Body:
+              "Мы помогаем амбициозным абитуриентам выстраивать сильный академический профиль и уверенно проходить конкурентный процесс поступления.",
+            card4Label: "Когнитивное развитие",
+            card4Title: "Соревновательное обучение шахматам",
+            card4Body:
+              "Шахматная подготовка развивает концентрацию, стратегическое мышление и дисциплину принятия решений, что поддерживает более широкий академический рост.",
+            card5Label: "Исследовательские услуги",
+            card5Title: "Поддержка независимых исследований и реализация академических проектов",
+            card5Body:
+              "Мы предоставляем деликатную профессиональную исследовательскую помощь и тщательно организованное выполнение академических проектов для клиентов, которым нужна качественная поддержка.",
+          },
+          gallery: {
+            label: "Почему выбирают нас",
+            title: "Галерея, отражающая атмосферу, которую мы создаем",
+            body:
+              "Ученики и семьи выбирают академию за ее тепло, ясность и красиво организованный образовательный опыт.",
+            mainAlt: "Поддерживающая атмосфера наставничества в Dilrabo Academy",
+            mainLabel: "Наставничество",
+            mainTitle:
+              "Уверенное присутствие, которое помогает ученикам сохранять вовлеченность и мотивацию",
+            spaceAlt1: "Светлый класс с аккуратными партами и естественным освещением",
+            spaceAlt2:
+              "Элегантный учебный интерьер с книжными полками и ярким светом",
+            spaceAlt3: "Утонченная учебная комната с книгами и спокойной академической атмосферой",
+            spaceTitle: "Светлые учебные пространства",
+            spaceBody:
+              "Современные светлые интерьеры, которые выглядят аккуратно, спокойно и академически серьезно.",
+            prepAlt1:
+              "Сосредоточенный ученик за ноутбуком в сбалансированном теплом профессиональном освещении",
+            prepAlt2:
+              "Дружелюбные молодые ученики, занимающиеся вместе за столом в теплой академической атмосфере",
+            prepAlt3:
+              "Светлое современное учебное пространство с чистыми белыми столами и естественным светом",
+            prepTitle: "Уверенная подготовка",
+            prepBody:
+              "Сосредоточенные ученики, сильные привычки и технология, используемая осмысленно.",
+            growthAlt1:
+              "Светлые современные библиотечные полки с теплыми деревянными оттенками и визуальным порядком",
+            growthAlt2:
+              "Залитый солнцем академический интерьер с организованными книгами и уютными местами для учебы",
+            growthAlt3:
+              "Современная образовательная библиотека с элегантными деревянными полками и четко организованным пространством",
+            growthTitle: "Структурированный рост",
+            growthBody:
+              "Организованная среда и визуальный порядок укрепляют устойчивый академический прогресс.",
+          },
+          contact: {
+            label: "Контакты",
+            title: "Готовы начать с Dilrabo Academy?",
+            body:
+              "Выберите самый быстрый способ связаться с нами. Позвоните в академию напрямую или откройте WhatsApp для быстрого сообщения с любого мобильного устройства.",
+            callLabel: "Позвоните нам",
+            whatsappLabel: "Напишите нам в WhatsApp",
+          },
+          footer: {
+            copy: "\u00A9 2026 Dilrabo Academy. Продуманное образование для амбициозных учеников.",
+            about: "О нас",
+            whyChoose: "Почему выбирают нас",
+            call: "Позвонить",
+          },
+          bottom: {
+            ariaLabel: "Нижняя навигация",
+            home: "Главная",
+            call: "Звонок",
+            map: "Карта",
+          },
+        },
         bn: {
           meta: {
             title: "Dilrabo Academy | শিক্ষা একাডেমি",
@@ -1089,6 +1289,7 @@
           },
           nav: {
             languageLabel: "ভাষা নির্বাচন",
+            languageMenu: "ভাষা",
             about: "আমাদের সম্পর্কে",
             programs: "প্রোগ্রামসমূহ",
             whyChoose: "কেন আমাদের বেছে নেবেন",
@@ -1251,13 +1452,37 @@
       const resolveTranslation = (language, key) =>
         getTranslation(language, key) ?? getTranslation("en", key);
 
+      const buildLanguageHref = (language) => {
+        const url = new URL(window.location.href);
+        url.searchParams.set("lang", language);
+
+        if (!url.hash) {
+          url.hash = "home";
+        }
+
+        return `${url.pathname}${url.search}${url.hash}`;
+      };
+
       const updateLanguageButtons = (language) => {
         document.querySelectorAll(".language-switcher").forEach((switcher) => {
-          switcher.querySelectorAll("[data-lang]").forEach((button) => {
-            const isActive = button.dataset.lang === language;
-            button.setAttribute("aria-pressed", String(isActive));
-            button.classList.toggle("bg-sand", isActive);
-            button.classList.toggle("text-ink", isActive);
+          const activeLabel = switcher.querySelector("[data-active-language]");
+
+          if (activeLabel) {
+            activeLabel.textContent = language.toUpperCase();
+          }
+
+          switcher.querySelectorAll("[data-lang-option]").forEach((option) => {
+            const isActive = option.dataset.lang === language;
+            option.setAttribute("href", buildLanguageHref(option.dataset.lang));
+            option.classList.toggle("bg-sand", isActive);
+            option.classList.toggle("text-ink", isActive);
+            option.classList.toggle("font-semibold", isActive);
+
+            if (isActive) {
+              option.setAttribute("aria-current", "true");
+            } else {
+              option.removeAttribute("aria-current");
+            }
           });
         });
       };
@@ -1300,6 +1525,35 @@
 
         updateLanguageButtons(activeLanguage);
         localStorage.setItem(languageStorageKey, activeLanguage);
+        window.history.replaceState(null, "", buildLanguageHref(activeLanguage));
+      };
+
+      const closeLanguageMenu = (switcher) => {
+        const trigger = switcher.querySelector("[data-lang-trigger]");
+        const menu = switcher.querySelector("[data-lang-menu]");
+
+        if (!trigger || !menu) {
+          return;
+        }
+
+        menu.classList.add("hidden");
+        trigger.setAttribute("aria-expanded", "false");
+      };
+
+      const openLanguageMenu = (switcher) => {
+        const trigger = switcher.querySelector("[data-lang-trigger]");
+        const menu = switcher.querySelector("[data-lang-menu]");
+
+        if (!trigger || !menu) {
+          return;
+        }
+
+        menu.classList.remove("hidden");
+        trigger.setAttribute("aria-expanded", "true");
+      };
+
+      const closeAllLanguageMenus = () => {
+        document.querySelectorAll(".language-switcher").forEach((switcher) => closeLanguageMenu(switcher));
       };
 
       menuToggle.addEventListener("click", () => {
@@ -1320,17 +1574,49 @@
       });
 
       document.querySelectorAll(".language-switcher").forEach((switcher) => {
-        const buttons = switcher.querySelectorAll("[data-lang]");
+        const trigger = switcher.querySelector("[data-lang-trigger]");
+        const options = switcher.querySelectorAll("[data-lang-option]");
 
-        buttons.forEach((button) => {
-          button.addEventListener("click", () => applyTranslations(button.dataset.lang));
+        trigger?.addEventListener("click", (event) => {
+          event.stopPropagation();
+          const menu = switcher.querySelector("[data-lang-menu]");
+          const isOpen = menu && !menu.classList.contains("hidden");
+
+          closeAllLanguageMenus();
+
+          if (!isOpen) {
+            openLanguageMenu(switcher);
+          }
+        });
+
+        options.forEach((option) => {
+          option.addEventListener("click", (event) => {
+            event.preventDefault();
+            applyTranslations(option.dataset.lang);
+            closeLanguageMenu(switcher);
+          });
         });
       });
 
+      document.addEventListener("click", (event) => {
+        if (!event.target.closest(".language-switcher")) {
+          closeAllLanguageMenus();
+        }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeAllLanguageMenus();
+        }
+      });
+
       const savedLanguage = localStorage.getItem(languageStorageKey);
+      const urlLanguage = new URLSearchParams(window.location.search).get("lang")?.toLowerCase();
       const browserLanguage = navigator.language.slice(0, 2).toLowerCase();
-      const initialLanguage = supportedLanguages.includes(savedLanguage)
-        ? savedLanguage
+      const initialLanguage = supportedLanguages.includes(urlLanguage)
+        ? urlLanguage
+        : supportedLanguages.includes(savedLanguage)
+          ? savedLanguage
         : supportedLanguages.includes(browserLanguage)
           ? browserLanguage
           : "en";
