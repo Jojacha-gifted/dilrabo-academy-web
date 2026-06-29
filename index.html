@@ -120,6 +120,17 @@
       html[lang="bn"] [class*="tracking-"] {
         letter-spacing: 0.02em;
       }
+
+      @media (max-width: 639px) {
+        html[lang="uz"] .founder-overlay-card {
+          left: 50%;
+          right: auto;
+          width: calc(100% - 1.5rem);
+          max-width: calc(100% - 1.5rem);
+          margin: 0 auto;
+          transform: translateX(-50%);
+        }
+      }
     </style>
   </head>
   <body class="font-sans text-slate-700 antialiased">
@@ -329,7 +340,7 @@
                     data-i18n-alt="hero.founderAlt"
                     class="aspect-[6/5] w-full object-cover object-center"
                   />
-                  <div class="absolute bottom-2 left-3 max-w-[72%] rounded-[1.1rem] border border-white/70 bg-white/[0.84] p-3 shadow-soft backdrop-blur sm:inset-x-5 sm:bottom-3 sm:max-w-none sm:rounded-[1.4rem] sm:p-4">
+                  <div class="founder-overlay-card absolute bottom-2 left-3 max-w-[72%] rounded-[1.1rem] border border-white/70 bg-white/[0.84] p-3 shadow-soft backdrop-blur sm:inset-x-5 sm:bottom-3 sm:max-w-none sm:rounded-[1.4rem] sm:p-4">
                     <p class="text-[0.62rem] font-bold uppercase tracking-[0.22em] text-rose sm:text-xs sm:tracking-[0.3em]" data-i18n="hero.founderLabel">Founder-Led Learning</p>
                     <p class="mt-1.5 text-sm font-semibold leading-5 text-ink sm:mt-2 sm:text-lg sm:leading-7" data-i18n="hero.founderBody">Warm guidance, disciplined planning, and a high-trust academic environment.</p>
                   </div>
