@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Explore the General English and Mathematics programme at Dilrabo Academy, including the learning journey, skill assessment, and student success stories."
+    />
+    <title>General English and Mathematics | Dilrabo Academy</title>
+    <link rel="icon" type="image/jpeg" href="./favicon.jpg?v=3" />
+    <link rel="shortcut icon" type="image/jpeg" href="./favicon.jpg?v=3" />
+    <link rel="apple-touch-icon" href="./favicon.jpg?v=3" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Manrope", "sans-serif"],
+              display: ["Cormorant Garamond", "serif"],
+            },
+            colors: {
+              ink: "#1E2A44",
+              rose: "#A23E48",
+              sand: "#F6F0E8",
+              gold: "#D5B67A",
+              mist: "#EDF3F8",
+            },
+            boxShadow: {
+              panel: "0 22px 60px rgba(30, 42, 68, 0.12)",
+              soft: "0 16px 40px rgba(162, 62, 72, 0.12)",
+            },
+          },
+        },
+      };
+    </script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background:
+          radial-gradient(circle at top left, rgba(213, 182, 122, 0.22), transparent 30%),
+          radial-gradient(circle at 92% 8%, rgba(162, 62, 72, 0.15), transparent 24%),
+          linear-gradient(180deg, #fdfaf6 0%, #f8efe5 42%, #eff5f8 100%);
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(28px);
+        transition: opacity 760ms ease, transform 760ms ease;
+      }
+
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.82);
+        backdrop-filter: blur(18px);
+      }
+
+      .journey-line::before {
+        content: "";
+        position: absolute;
+        left: 1.1rem;
+        top: 0.4rem;
+        bottom: 0.4rem;
+        width: 2px;
+        background: linear-gradient(180deg, rgba(213, 182, 122, 0.9), rgba(162, 62, 72, 0.35));
+      }
+
+      .journey-step {
+        transition: transform 260ms ease, box-shadow 260ms ease, border-color 260ms ease;
+      }
+
+      .journey-step:hover {
+        transform: translateY(-4px);
+        border-color: rgba(162, 62, 72, 0.26);
+        box-shadow: 0 20px 40px rgba(30, 42, 68, 0.12);
+      }
+
+      .level-card {
+        transition: border-color 220ms ease, transform 220ms ease, box-shadow 220ms ease;
+      }
+
+      .level-card:hover {
+        transform: translateY(-2px);
+        border-color: rgba(162, 62, 72, 0.28);
+      }
+
+      .level-card.is-selected {
+        border-color: rgba(162, 62, 72, 0.5);
+        box-shadow: 0 16px 36px rgba(162, 62, 72, 0.12);
+      }
+
+      .level-result {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transform: translateY(10px);
+        transition:
+          max-height 420ms ease,
+          opacity 320ms ease,
+          transform 320ms ease,
+          margin-top 320ms ease;
+      }
+
+      .level-result.is-visible {
+        max-height: 18rem;
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body class="font-sans text-slate-700 antialiased">
+    <header class="sticky top-0 z-40 border-b border-white/70 bg-white/85 backdrop-blur-xl">
+      <nav class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 sm:px-6 sm:py-4 lg:px-8">
+        <a href="./index.html#programs" class="flex min-w-0 items-center gap-3">
+          <span class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full shadow-soft">
+            <img
+              src="./favicon.jpg"
+              alt="Dilrabo Academy logo"
+              class="h-full w-full object-cover"
+            />
+          </span>
+          <span class="min-w-0">
+            <span class="block font-display text-xl font-semibold text-ink sm:text-2xl">Dilrabo Academy</span>
+            <span class="hidden text-[0.65rem] font-semibold uppercase tracking-[0.35em] text-rose sm:block">
+              Learn with intention
+            </span>
+          </span>
+        </a>
+
+        <div class="flex items-center gap-3">
+          <a
+            href="./index.html#programs"
+            class="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white/80 px-4 py-2.5 text-sm font-semibold text-ink transition hover:border-rose hover:text-rose"
+          >
+            <i class="fa-solid fa-arrow-left text-xs"></i>
+            Back
+          </a>
+          <a
+            href="#level-check"
+            class="hidden rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white transition hover:bg-rose sm:inline-flex"
+          >
+            Test Your Level
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="relative overflow-hidden">
+        <div class="mx-auto grid max-w-7xl gap-10 px-5 pb-14 pt-16 sm:gap-12 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-20">
+          <div class="reveal flex flex-col justify-center">
+            <div class="inline-flex w-fit items-center gap-3 rounded-full border border-gold/40 bg-white/80 px-4 py-2 text-sm font-semibold text-rose shadow-sm">
+              <span class="h-2.5 w-2.5 rounded-full bg-gold"></span>
+              Dedicated programme page
+            </div>
+
+            <h1 class="mt-7 max-w-4xl font-display text-5xl font-semibold leading-tight text-ink sm:text-6xl lg:text-7xl">
+              General English and Mathematics with a premium, structured learning path.
+            </h1>
+
+            <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-600 sm:text-xl">
+              This pathway blends English fluency, mathematical precision, and disciplined
+              study habits so students move from uncertainty to calm, visible academic
+              growth with the standards expected at Dilrabo Academy.
+            </p>
+
+            <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+              <a
+                href="#course-cta"
+                class="inline-flex items-center justify-center rounded-full bg-rose px-7 py-4 text-base font-semibold text-white transition hover:scale-[1.02] hover:bg-[#8E3540]"
+              >
+                Enroll Now
+              </a>
+              <a
+                href="#journey"
+                class="inline-flex items-center justify-center rounded-full border border-ink/15 bg-white/80 px-7 py-4 text-base font-semibold text-ink transition hover:border-rose hover:text-rose"
+              >
+                Explore the Learning Journey
+              </a>
+            </div>
+
+            <div class="mt-10 grid gap-4 sm:grid-cols-3">
+              <div class="glass-panel rounded-[1.75rem] border border-white/80 p-5 shadow-sm">
+                <p class="text-sm font-bold uppercase tracking-[0.24em] text-rose">Language</p>
+                <p class="mt-2 text-sm leading-6 text-slate-600">
+                  Grammar, vocabulary, speaking, reading, and writing with guided feedback.
+                </p>
+              </div>
+              <div class="glass-panel rounded-[1.75rem] border border-white/80 p-5 shadow-sm">
+                <p class="text-sm font-bold uppercase tracking-[0.24em] text-ink">Reasoning</p>
+                <p class="mt-2 text-sm leading-6 text-slate-600">
+                  Arithmetic, algebra, geometry, and confident problem-solving practice.
+                </p>
+              </div>
+              <div class="glass-panel rounded-[1.75rem] border border-white/80 p-5 shadow-sm">
+                <p class="text-sm font-bold uppercase tracking-[0.24em] text-gold">Guidance</p>
+                <p class="mt-2 text-sm leading-6 text-slate-600">
+                  Small-group support, progress checkpoints, and practical weekly routines.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="reveal relative">
+            <div class="absolute -left-6 top-12 h-28 w-28 rounded-full bg-gold/30 blur-3xl"></div>
+            <div class="absolute -right-10 bottom-10 h-40 w-40 rounded-full bg-rose/20 blur-3xl"></div>
+
+            <div class="glass-panel relative overflow-hidden rounded-[2rem] border border-white/80 p-4 shadow-panel sm:p-6">
+              <div class="grid gap-4">
+                <div class="relative overflow-hidden rounded-[1.75rem]">
+                  <img
+                    src="./src/assets/center.jpeg"
+                    alt="Dilrabo Academy classroom"
+                    class="aspect-[6/5] w-full object-cover object-center"
+                  />
+                  <div class="absolute inset-x-4 bottom-4 rounded-[1.35rem] border border-white/70 bg-white/[0.88] p-4 shadow-soft backdrop-blur">
+                    <p class="text-[0.68rem] font-bold uppercase tracking-[0.3em] text-rose">Premium learning atmosphere</p>
+                    <p class="mt-2 text-base font-semibold leading-6 text-ink">
+                      Calm spaces, polished materials, and clear expectations create a serious but welcoming academic environment.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="grid gap-4 sm:grid-cols-[1.08fr_0.92fr]">
+                  <div class="rounded-[1.75rem] bg-ink p-6 text-white">
+                    <p class="text-sm font-semibold uppercase tracking-[0.28em] text-gold">What students gain</p>
+                    <div class="mt-5 space-y-3 text-sm text-slate-200">
+                      <div class="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                        <span class="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-gold">
+                          <i class="fa-solid fa-comments"></i>
+                        </span>
+                        <span>Clearer speaking, stronger writing, and more academic confidence</span>
+                      </div>
+                      <div class="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                        <span class="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-gold">
+                          <i class="fa-solid fa-square-root-variable"></i>
+                        </span>
+                        <span>Better logic, accuracy, and readiness for higher-level study</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="rounded-[1.75rem] border border-slate-200 bg-mist p-6">
+                    <p class="text-sm font-bold uppercase tracking-[0.28em] text-rose">Format</p>
+                    <div class="mt-4 space-y-4">
+                      <div>
+                        <p class="text-3xl font-extrabold text-ink">Weekly</p>
+                        <p class="mt-1 text-sm leading-6 text-slate-600">
+                          Structured lessons, guided practice, and revision flow.
+                        </p>
+                      </div>
+                      <div>
+                        <p class="text-3xl font-extrabold text-ink">Progressive</p>
+                        <p class="mt-1 text-sm leading-6 text-slate-600">
+                          Students move steadily from fundamentals to more advanced academic performance.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-16 sm:py-20">
+        <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div class="reveal max-w-3xl">
+            <p class="text-sm font-bold uppercase tracking-[0.3em] text-rose">Programme overview</p>
+            <h2 class="mt-4 font-display text-4xl font-semibold text-ink sm:text-5xl">
+              A curriculum built around fluency, accuracy, and lasting academic control.
+            </h2>
+            <p class="mt-5 text-lg leading-8 text-slate-600">
+              Students work through grammar development, vocabulary building, reading comprehension,
+              writing tasks, arithmetic confidence, algebraic thinking, geometry, and
+              strategy-led problem solving in a sequence that feels ambitious, but manageable.
+            </p>
+          </div>
+
+          <div class="mt-12 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+            <article class="reveal rounded-[2rem] bg-gradient-to-br from-[#F9F1E7] via-white to-[#EEF5F8] p-8 shadow-panel sm:p-10">
+              <p class="text-sm font-bold uppercase tracking-[0.3em] text-rose">How we teach</p>
+              <p class="mt-5 text-lg leading-8 text-slate-600">
+                Each module combines explanation, guided examples, speaking practice,
+                written work, independent review, and teacher feedback. Students are
+                coached to understand why an answer works, not just how to finish an exercise.
+              </p>
+              <p class="mt-5 text-lg leading-8 text-slate-600">
+                The result is a programme that feels structured, premium, and serious enough
+                for families who want stronger academic habits and more visible progress.
+              </p>
+            </article>
+
+            <div class="grid gap-6 sm:grid-cols-3">
+              <article class="reveal rounded-[1.9rem] border border-white/80 bg-white/85 p-7 shadow-sm backdrop-blur">
+                <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-sand text-rose">
+                  <i class="fa-solid fa-language text-xl"></i>
+                </span>
+                <h3 class="mt-5 text-2xl font-bold text-ink">English Foundations</h3>
+                <p class="mt-3 leading-7 text-slate-600">
+                  Grammar accuracy, richer vocabulary, reading confidence, and more natural speaking.
+                </p>
+              </article>
+
+              <article class="reveal rounded-[1.9rem] border border-white/80 bg-white/85 p-7 shadow-sm backdrop-blur">
+                <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-mist text-ink">
+                  <i class="fa-solid fa-calculator text-xl"></i>
+                </span>
+                <h3 class="mt-5 text-2xl font-bold text-ink">Mathematics Mastery</h3>
+                <p class="mt-3 leading-7 text-slate-600">
+                  Core operations, algebra, geometry, and calm, methodical problem solving.
+                </p>
+              </article>
+
+              <article class="reveal rounded-[1.9rem] border border-white/80 bg-white/85 p-7 shadow-sm backdrop-blur">
+                <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-ink text-gold">
+                  <i class="fa-solid fa-chart-line text-xl"></i>
+                </span>
+                <h3 class="mt-5 text-2xl font-bold text-ink">Integrated Progress</h3>
+                <p class="mt-3 leading-7 text-slate-600">
+                  Revision routines, teacher feedback, and checkpoints that keep momentum visible.
+                </p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="journey" class="py-16 sm:py-20">
+        <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div class="reveal max-w-3xl">
+            <p class="text-sm font-bold uppercase tracking-[0.3em] text-rose">Learning journey</p>
+            <h2 class="mt-4 font-display text-4xl font-semibold text-ink sm:text-5xl">
+              A clear path from Beginner to Advanced.
+            </h2>
+            <p class="mt-5 text-lg leading-8 text-slate-600">
+              This timeline helps families see how students progress through the programme,
+              how expectations rise, and where stronger fluency and academic maturity are built.
+            </p>
+          </div>
+
+          <div class="mt-12 grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
+            <article class="reveal rounded-[2rem] bg-ink p-8 text-white shadow-panel sm:p-10">
+              <p class="text-sm font-bold uppercase tracking-[0.3em] text-gold">Journey snapshot</p>
+              <h3 class="mt-4 font-display text-4xl font-semibold leading-tight">
+                Students move from core confidence to advanced academic readiness.
+              </h3>
+              <p class="mt-5 text-lg leading-8 text-slate-200">
+                Every stage combines English and mathematics so the student’s communication,
+                reasoning, discipline, and self-belief develop together rather than in isolation.
+              </p>
+            </article>
+
+            <div class="journey-line relative space-y-5 pl-10">
+              <article class="journey-step reveal rounded-[1.9rem] border border-white/80 bg-white/90 p-7 shadow-sm backdrop-blur">
+                <div class="absolute left-[0.35rem] mt-2 h-6 w-6 rounded-full border-4 border-white bg-gold shadow-sm"></div>
+                <p class="text-sm font-bold uppercase tracking-[0.28em] text-rose">Stage 01</p>
+                <h3 class="mt-3 text-2xl font-bold text-ink">Beginner</h3>
+                <p class="mt-3 leading-7 text-slate-600">
+                  Students build sentence patterns, key vocabulary, basic arithmetic confidence,
+                  and the habit of attempting work without fear.
+                </p>
+              </article>
+
+              <article class="journey-step reveal rounded-[1.9rem] border border-white/80 bg-white/90 p-7 shadow-sm backdrop-blur">
+                <div class="absolute left-[0.35rem] mt-2 h-6 w-6 rounded-full border-4 border-white bg-rose shadow-sm"></div>
+                <p class="text-sm font-bold uppercase tracking-[0.28em] text-rose">Stage 02</p>
+                <h3 class="mt-3 text-2xl font-bold text-ink">Developing</h3>
+                <p class="mt-3 leading-7 text-slate-600">
+                  Learners begin reading longer passages, writing more clearly, and solving
+                  multi-step mathematical tasks with more control and accuracy.
+                </p>
+              </article>
+
+              <article class="journey-step reveal rounded-[1.9rem] border border-white/80 bg-white/90 p-7 shadow-sm backdrop-blur">
+                <div class="absolute left-[0.35rem] mt-2 h-6 w-6 rounded-full border-4 border-white bg-ink shadow-sm"></div>
+                <p class="text-sm font-bold uppercase tracking-[0.28em] text-rose">Stage 03</p>
+                <h3 class="mt-3 text-2xl font-bold text-ink">Confident</h3>
+                <p class="mt-3 leading-7 text-slate-600">
+                  Students can discuss ideas with more fluency, write with better structure,
+                  and approach algebra, geometry, and applied questions more strategically.
+                </p>
+              </article>
+
+              <article class="journey-step reveal rounded-[1.9rem] border border-white/80 bg-white/90 p-7 shadow-sm backdrop-blur">
+                <div class="absolute left-[0.35rem] mt-2 h-6 w-6 rounded-full border-4 border-white bg-gold shadow-sm"></div>
+                <p class="text-sm font-bold uppercase tracking-[0.28em] text-rose">Stage 04</p>
+                <h3 class="mt-3 text-2xl font-bold text-ink">Advanced</h3>
+                <p class="mt-3 leading-7 text-slate-600">
+                  At the advanced stage, learners show academic independence, stronger written
+                  expression, and the higher-order reasoning expected for selective schools and
+                  ambitious university pathways.
+                </p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="level-check" class="py-16 sm:py-20">
+        <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div class="reveal max-w-3xl">
+            <p class="text-sm font-bold uppercase tracking-[0.3em] text-rose">Test your level</p>
+            <h2 class="mt-4 font-display text-4xl font-semibold text-ink sm:text-5xl">
+              A quick, interactive skill check for placement guidance.
+            </h2>
+            <p class="mt-5 text-lg leading-8 text-slate-600">
+              This component helps students or parents choose the level that best matches
+              the learner’s current confidence. It is a polished pre-assessment, not a final placement test.
+            </p>
+          </div>
+
+          <div class="mt-12 grid gap-8 lg:grid-cols-[0.92fr_1.08fr]">
+            <article class="reveal rounded-[2rem] bg-gradient-to-br from-[#F9F1E7] via-white to-[#EEF5F8] p-8 shadow-panel sm:p-10">
+              <p class="text-sm font-bold uppercase tracking-[0.3em] text-rose">How it works</p>
+              <ul class="mt-5 space-y-4 text-base leading-7 text-slate-600">
+                <li class="flex gap-3">
+                  <span class="mt-1 h-2.5 w-2.5 rounded-full bg-gold"></span>
+                  Choose the option that best describes current English confidence.
+                </li>
+                <li class="flex gap-3">
+                  <span class="mt-1 h-2.5 w-2.5 rounded-full bg-rose"></span>
+                  Select the most accurate match for mathematics readiness.
+                </li>
+                <li class="flex gap-3">
+                  <span class="mt-1 h-2.5 w-2.5 rounded-full bg-ink"></span>
+                  Add the student’s comfort level with independent study and class discussion.
+                </li>
+              </ul>
+              <button
+                type="button"
+                id="assessment-trigger"
+                class="mt-8 inline-flex items-center justify-center rounded-full bg-ink px-7 py-4 text-base font-semibold text-white transition hover:scale-[1.02] hover:bg-rose"
+              >
+                Test Your Level
+              </button>
+            </article>
+
+            <section class="reveal rounded-[2rem] border border-white/80 bg-white/90 p-8 shadow-panel backdrop-blur sm:p-10">
+              <form id="assessment-form" class="space-y-8">
+                <fieldset>
+                  <legend class="text-lg font-bold text-ink">1. English confidence</legend>
+                  <div class="mt-4 grid gap-4 sm:grid-cols-3">
+                    <label class="level-card flex cursor-pointer flex-col rounded-[1.4rem] border border-slate-200 p-5">
+                      <input class="sr-only" type="radio" name="english" value="1" />
+                      <span class="text-sm font-bold uppercase tracking-[0.22em] text-rose">Beginner</span>
+                      <span class="mt-2 text-sm leading-6 text-slate-600">Needs support with grammar, simple sentences, and speaking confidence.</span>
+                    </label>
+                    <label class="level-card flex cursor-pointer flex-col rounded-[1.4rem] border border-slate-200 p-5">
+                      <input class="sr-only" type="radio" name="english" value="2" />
+                      <span class="text-sm font-bold uppercase tracking-[0.22em] text-ink">Intermediate</span>
+                      <span class="mt-2 text-sm leading-6 text-slate-600">Can read and respond, but needs accuracy, fluency, and richer vocabulary.</span>
+                    </label>
+                    <label class="level-card flex cursor-pointer flex-col rounded-[1.4rem] border border-slate-200 p-5">
+                      <input class="sr-only" type="radio" name="english" value="3" />
+                      <span class="text-sm font-bold uppercase tracking-[0.22em] text-gold">Advanced</span>
+                      <span class="mt-2 text-sm leading-6 text-slate-600">Communicates well and is ready for higher-level discussion and writing polish.</span>
+                    </label>
+                  </div>
+                </fieldset>
+
+                <fieldset>
+                  <legend class="text-lg font-bold text-ink">2. Mathematics readiness</legend>
+                  <div class="mt-4 grid gap-4 sm:grid-cols-3">
+                    <label class="level-card flex cursor-pointer flex-col rounded-[1.4rem] border border-slate-200 p-5">
+                      <input class="sr-only" type="radio" name="math" value="1" />
+                      <span class="text-sm font-bold uppercase tracking-[0.22em] text-rose">Beginner</span>
+                      <span class="mt-2 text-sm leading-6 text-slate-600">Needs help with fundamentals, accuracy, and working step by step.</span>
+                    </label>
+                    <label class="level-card flex cursor-pointer flex-col rounded-[1.4rem] border border-slate-200 p-5">
+                      <input class="sr-only" type="radio" name="math" value="2" />
+                      <span class="text-sm font-bold uppercase tracking-[0.22em] text-ink">Intermediate</span>
+                      <span class="mt-2 text-sm leading-6 text-slate-600">Understands many topics but needs consistency and stronger problem-solving.</span>
+                    </label>
+                    <label class="level-card flex cursor-pointer flex-col rounded-[1.4rem] border border-slate-200 p-5">
+                      <input class="sr-only" type="radio" name="math" value="3" />
+                      <span class="text-sm font-bold uppercase tracking-[0.22em] text-gold">Advanced</span>
+                      <span class="mt-2 text-sm leading-6 text-slate-600">Handles complex questions and is ready for stretch tasks and sharper pacing.</span>
+                    </label>
+                  </div>
+                </fieldset>
+
+                <fieldset>
+                  <legend class="text-lg font-bold text-ink">3. Academic independence</legend>
+                  <div class="mt-4 grid gap-4 sm:grid-cols-3">
+                    <label class="level-card flex cursor-pointer flex-col rounded-[1.4rem] border border-slate-200 p-5">
+                      <input class="sr-only" type="radio" name="independence" value="1" />
+                      <span class="text-sm font-bold uppercase tracking-[0.22em] text-rose">Needs support</span>
+                      <span class="mt-2 text-sm leading-6 text-slate-600">The student needs frequent prompting, encouragement, and structure.</span>
+                    </label>
+                    <label class="level-card flex cursor-pointer flex-col rounded-[1.4rem] border border-slate-200 p-5">
+                      <input class="sr-only" type="radio" name="independence" value="2" />
+                      <span class="text-sm font-bold uppercase tracking-[0.22em] text-ink">Building consistency</span>
+                      <span class="mt-2 text-sm leading-6 text-slate-600">The student can work alone sometimes, but still benefits from guided routines.</span>
+                    </label>
+                    <label class="level-card flex cursor-pointer flex-col rounded-[1.4rem] border border-slate-200 p-5">
+                      <input class="sr-only" type="radio" name="independence" value="3" />
+                      <span class="text-sm font-bold uppercase tracking-[0.22em] text-gold">Self-directed</span>
+                      <span class="mt-2 text-sm leading-6 text-slate-600">The student follows instructions well and is ready for higher expectations.</span>
+                    </label>
+                  </div>
+                </fieldset>
+
+                <div class="flex flex-col gap-4 sm:flex-row">
+                  <button
+                    type="submit"
+                    class="inline-flex items-center justify-center rounded-full bg-rose px-7 py-4 text-base font-semibold text-white transition hover:scale-[1.02] hover:bg-[#8E3540]"
+                  >
+                    Show My Suggested Level
+                  </button>
+                  <button
+                    type="button"
+                    id="assessment-reset"
+                    class="inline-flex items-center justify-center rounded-full border border-ink/15 bg-white px-7 py-4 text-base font-semibold text-ink transition hover:border-rose hover:text-rose"
+                  >
+                    Reset
+                  </button>
+                </div>
+              </form>
+
+              <div
+                id="assessment-result"
+                class="level-result rounded-[1.5rem] bg-sand px-6 py-5"
+                aria-live="polite"
+              >
+                <p class="text-sm font-bold uppercase tracking-[0.24em] text-rose">Suggested starting point</p>
+                <h3 id="result-title" class="mt-3 text-2xl font-bold text-ink"></h3>
+                <p id="result-body" class="mt-3 leading-7 text-slate-600"></p>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="materials" class="py-16 sm:py-20">
+        <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div class="reveal max-w-3xl">
+            <p class="text-sm font-bold uppercase tracking-[0.3em] text-rose">Study materials</p>
+            <h2 class="mt-4 font-display text-4xl font-semibold text-ink sm:text-5xl">
+              Placeholder resources ready for guides, worksheets, and revision packs.
+            </h2>
+          </div>
+
+          <div class="mt-12 grid gap-6 md:grid-cols-3">
+            <article class="reveal rounded-[1.9rem] border border-white/80 bg-white/90 p-8 shadow-sm backdrop-blur">
+              <p class="inline-flex rounded-full bg-sand px-3 py-1 text-xs font-bold uppercase tracking-[0.22em] text-rose">PDF Guide</p>
+              <h3 class="mt-5 text-2xl font-bold text-ink">Grammar Starter Pack</h3>
+              <p class="mt-4 leading-7 text-slate-600">
+                A placeholder bundle for grammar rules, sentence patterns, and classroom language essentials.
+              </p>
+              <a href="#course-cta" class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-rose transition hover:text-ink">
+                Request access
+                <i class="fa-solid fa-arrow-right text-xs"></i>
+              </a>
+            </article>
+
+            <article class="reveal rounded-[1.9rem] border border-white/80 bg-white/90 p-8 shadow-sm backdrop-blur">
+              <p class="inline-flex rounded-full bg-mist px-3 py-1 text-xs font-bold uppercase tracking-[0.22em] text-ink">Worksheet Set</p>
+              <h3 class="mt-5 text-2xl font-bold text-ink">Math Skills Workbook</h3>
+              <p class="mt-4 leading-7 text-slate-600">
+                Space for downloadable practice sheets covering arithmetic, algebra, and revision drills.
+              </p>
+              <a href="#course-cta" class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-rose transition hover:text-ink">
+                Request access
+                <i class="fa-solid fa-arrow-right text-xs"></i>
+              </a>
+            </article>
+
+            <article class="reveal rounded-[1.9rem] border border-white/80 bg-white/90 p-8 shadow-sm backdrop-blur">
+              <p class="inline-flex rounded-full bg-sand px-3 py-1 text-xs font-bold uppercase tracking-[0.22em] text-rose">Study Planner</p>
+              <h3 class="mt-5 text-2xl font-bold text-ink">Revision Roadmap</h3>
+              <p class="mt-4 leading-7 text-slate-600">
+                A weekly planner placeholder for progress tracking, test preparation, and home study routines.
+              </p>
+              <a href="#course-cta" class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-rose transition hover:text-ink">
+                Request access
+                <i class="fa-solid fa-arrow-right text-xs"></i>
+              </a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="success-stories" class="py-16 sm:py-20">
+        <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div class="reveal max-w-3xl">
+            <p class="text-sm font-bold uppercase tracking-[0.3em] text-rose">Success stories</p>
+            <h2 class="mt-4 font-display text-4xl font-semibold text-ink sm:text-5xl">
+              Academic outcomes that support ambitious futures.
+            </h2>
+            <p class="mt-5 text-lg leading-8 text-slate-600">
+              This section is designed to build trust with families who expect the academy
+              to prepare students for selective opportunities, including the type of disciplined
+              academic growth associated with top university aspirations such as Seoul National University.
+            </p>
+          </div>
+
+          <div class="mt-12 grid gap-6 lg:grid-cols-3">
+            <article class="reveal rounded-[1.9rem] border border-white/80 bg-white/90 p-8 shadow-sm backdrop-blur">
+              <p class="text-sm font-bold uppercase tracking-[0.24em] text-rose">High ambition pathway</p>
+              <h3 class="mt-4 text-2xl font-bold text-ink">From uncertain basics to selective university preparation</h3>
+              <p class="mt-4 leading-7 text-slate-600">
+                One student used this combined foundation route to strengthen writing discipline,
+                mathematical reasoning, and academic self-management before moving into a more competitive admissions track.
+              </p>
+            </article>
+
+            <article class="reveal rounded-[1.9rem] border border-white/80 bg-white/90 p-8 shadow-sm backdrop-blur">
+              <p class="text-sm font-bold uppercase tracking-[0.24em] text-rose">Consistency story</p>
+              <h3 class="mt-4 text-2xl font-bold text-ink">Weekly structure that translated into stronger school results</h3>
+              <p class="mt-4 leading-7 text-slate-600">
+                Through guided revision, calm accountability, and clearer communication skills,
+                learners improved classroom participation and handled more demanding subject work with less hesitation.
+              </p>
+            </article>
+
+            <article class="reveal rounded-[1.9rem] border border-white/80 bg-white/90 p-8 shadow-sm backdrop-blur">
+              <p class="text-sm font-bold uppercase tracking-[0.24em] text-rose">Future-ready profile</p>
+              <h3 class="mt-4 text-2xl font-bold text-ink">The type of preparation serious applicants need</h3>
+              <p class="mt-4 leading-7 text-slate-600">
+                Stronger English expression, better analytical thinking, and disciplined independent study
+                all contribute to the academic profile expected of students pursuing top regional and global universities.
+              </p>
+            </article>
+          </div>
+
+          <div class="mt-8 reveal rounded-[2rem] bg-ink p-8 text-white shadow-panel sm:p-10">
+            <div class="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+              <div>
+                <p class="text-sm font-bold uppercase tracking-[0.3em] text-gold">Achievement mindset</p>
+                <h3 class="mt-4 font-display text-4xl font-semibold leading-tight">
+                  Built for students who want more than passing marks.
+                </h3>
+                <p class="mt-4 max-w-3xl text-lg leading-8 text-slate-200">
+                  The programme lays the discipline, fluency, and quantitative maturity that ambitious students need before progressing toward exam preparation, top-tier admissions work, and advanced academic goals.
+                </p>
+              </div>
+              <a
+                href="#course-cta"
+                class="inline-flex items-center justify-center rounded-full bg-white px-7 py-4 text-base font-semibold text-ink transition hover:bg-gold"
+              >
+                Start the Journey
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="course-cta" class="pb-16 pt-6 sm:pb-24">
+        <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div class="reveal flex flex-col gap-6 rounded-[2rem] border border-white/80 bg-white/90 p-8 shadow-panel backdrop-blur lg:flex-row lg:items-center lg:justify-between lg:p-10">
+            <div class="max-w-3xl">
+              <p class="text-sm font-bold uppercase tracking-[0.3em] text-rose">Take the next step</p>
+              <h2 class="mt-4 font-display text-4xl font-semibold text-ink sm:text-5xl">
+                Enroll now or return to the main homepage to explore the academy further.
+              </h2>
+              <p class="mt-5 text-lg leading-8 text-slate-600">
+                This final section gives you a clean conversion point while preserving the calm,
+                premium presentation of the programme page.
+              </p>
+            </div>
+
+            <div class="flex flex-col gap-4 sm:flex-row">
+              <a
+                href="tel:+998000000000"
+                class="inline-flex items-center justify-center rounded-full bg-rose px-7 py-4 text-base font-semibold text-white transition hover:scale-[1.02] hover:bg-[#8E3540]"
+              >
+                Enroll Now
+              </a>
+              <a
+                href="./index.html#programs"
+                class="inline-flex items-center justify-center rounded-full border border-ink/15 bg-white/80 px-7 py-4 text-base font-semibold text-ink transition hover:border-rose hover:text-rose"
+              >
+                Back to Homepage
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.14 }
+      );
+
+      document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
+
+      const assessmentTrigger = document.getElementById("assessment-trigger");
+      const assessmentForm = document.getElementById("assessment-form");
+      const assessmentReset = document.getElementById("assessment-reset");
+      const assessmentResult = document.getElementById("assessment-result");
+      const resultTitle = document.getElementById("result-title");
+      const resultBody = document.getElementById("result-body");
+      const levelCards = document.querySelectorAll(".level-card");
+
+      const resultMap = {
+        beginner: {
+          title: "Suggested Level: Beginner",
+          body: "A beginner start would give this student the strongest foundation. We would focus on core grammar, essential vocabulary, arithmetic confidence, and guided routines that make learning feel safer and more consistent.",
+        },
+        developing: {
+          title: "Suggested Level: Developing / Intermediate",
+          body: "This learner appears ready for an intermediate starting point. The best fit would include stronger writing structure, speaking fluency, multi-step mathematics practice, and more disciplined weekly revision.",
+        },
+        advanced: {
+          title: "Suggested Level: Advanced",
+          body: "This student is likely ready for advanced expectations. The programme can focus on polished academic expression, sharper analytical reasoning, and the higher-level independence needed for ambitious future pathways.",
+        },
+      };
+
+      assessmentTrigger?.addEventListener("click", () => {
+        document.getElementById("level-check")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      levelCards.forEach((card) => {
+        const input = card.querySelector("input");
+
+        input?.addEventListener("change", () => {
+          const groupName = input.name;
+          document.querySelectorAll(`input[name="${groupName}"]`).forEach((groupInput) => {
+            groupInput.closest(".level-card")?.classList.remove("is-selected");
+          });
+          card.classList.add("is-selected");
+        });
+      });
+
+      assessmentForm?.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(assessmentForm);
+        const english = Number(formData.get("english"));
+        const math = Number(formData.get("math"));
+        const independence = Number(formData.get("independence"));
+
+        if (!english || !math || !independence) {
+          resultTitle.textContent = "Please complete all three selections";
+          resultBody.textContent = "Choose one option in each category so the page can suggest an appropriate starting point.";
+          assessmentResult.classList.add("is-visible");
+          return;
+        }
+
+        const score = english + math + independence;
+        const level =
+          score <= 4 ? "beginner" : score <= 7 ? "developing" : "advanced";
+
+        resultTitle.textContent = resultMap[level].title;
+        resultBody.textContent = resultMap[level].body;
+        assessmentResult.classList.add("is-visible");
+        assessmentResult.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      });
+
+      assessmentReset?.addEventListener("click", () => {
+        assessmentForm.reset();
+        levelCards.forEach((card) => card.classList.remove("is-selected"));
+        assessmentResult.classList.remove("is-visible");
+        resultTitle.textContent = "";
+        resultBody.textContent = "";
+      });
+    </script>
+  </body>
+</html>

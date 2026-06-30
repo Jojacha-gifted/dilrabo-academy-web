@@ -123,14 +123,26 @@ function App() {
     }
   }
 
-  if (path === COURSE_PATH) {
-    return <CoursePage navigate={navigate} />
+  function linkProps(nextPath, sectionId) {
+    const href = sectionId ? `${nextPath}#${sectionId}` : nextPath
+
+    return {
+      href,
+      onClick(event) {
+        event.preventDefault()
+        navigate(nextPath, sectionId)
+      },
+    }
   }
 
-  return <HomePage navigate={navigate} />
+  if (path === COURSE_PATH) {
+    return <CoursePage navigate={navigate} linkProps={linkProps} />
+  }
+
+  return <HomePage navigate={navigate} linkProps={linkProps} />
 }
 
-function HomePage({ navigate }) {
+function HomePage({ navigate, linkProps }) {
   return (
     <div className="page-shell">
       <header className="site-header">
@@ -166,13 +178,12 @@ function HomePage({ navigate }) {
               next academic level.
             </p>
             <div className="hero-actions">
-              <button
-                type="button"
+              <a
                 className="button button--primary"
-                onClick={() => navigate(COURSE_PATH)}
+                {...linkProps(COURSE_PATH)}
               >
                 Explore the Programme
-              </button>
+              </a>
               <button
                 type="button"
                 className="button button--ghost"
@@ -207,13 +218,12 @@ function HomePage({ navigate }) {
             <div className="hero-note">
               <span>Now highlighted</span>
               <strong>General English and Mathematics</strong>
-              <button
-                type="button"
+              <a
                 className="inline-link"
-                onClick={() => navigate(COURSE_PATH)}
+                {...linkProps(COURSE_PATH)}
               >
                 View dedicated page
-              </button>
+              </a>
             </div>
           </div>
         </section>
@@ -225,7 +235,10 @@ function HomePage({ navigate }) {
           </div>
 
           <div className="program-grid">
-            <article className="program-card program-card--featured">
+            <a
+              className="program-card program-card--featured program-card--link"
+              {...linkProps(COURSE_PATH)}
+            >
               <span className="program-tag">Most requested</span>
               <h3>General English and Mathematics</h3>
               <p>
@@ -237,14 +250,10 @@ function HomePage({ navigate }) {
                 <li>Core mathematics concepts with guided exercises</li>
                 <li>Study materials, progress support, and revision routines</li>
               </ul>
-              <button
-                type="button"
-                className="button button--primary"
-                onClick={() => navigate(COURSE_PATH)}
-              >
+              <span className="button button--primary program-card__cta">
                 Open Dedicated Page
-              </button>
-            </article>
+              </span>
+            </a>
 
             <article className="program-card">
               <h3>Focused Study Support</h3>
@@ -311,13 +320,12 @@ function HomePage({ navigate }) {
               </p>
             </div>
             <div className="cta-panel__actions">
-              <button
-                type="button"
+              <a
                 className="button button--primary"
-                onClick={() => navigate(COURSE_PATH)}
+                {...linkProps(COURSE_PATH)}
               >
                 View Featured Programme
-              </button>
+              </a>
               <button
                 type="button"
                 className="button button--ghost"
@@ -333,7 +341,7 @@ function HomePage({ navigate }) {
   )
 }
 
-function CoursePage({ navigate }) {
+function CoursePage({ navigate, linkProps }) {
   return (
     <div className="page-shell page-shell--course">
       <header className="site-header">
@@ -381,20 +389,18 @@ function CoursePage({ navigate }) {
               <span>Downloadable study support</span>
             </div>
             <div className="hero-actions">
-              <button
-                type="button"
+              <a
                 className="button button--primary"
-                onClick={() => navigate(COURSE_PATH, 'course-cta')}
+                {...linkProps(COURSE_PATH, 'course-cta')}
               >
                 Enroll Now
-              </button>
-              <button
-                type="button"
+              </a>
+              <a
                 className="button button--ghost"
-                onClick={() => navigate(COURSE_PATH, 'materials')}
+                {...linkProps(COURSE_PATH, 'materials')}
               >
                 View Materials
-              </button>
+              </a>
             </div>
           </div>
 
