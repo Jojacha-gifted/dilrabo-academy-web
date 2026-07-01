@@ -141,7 +141,25 @@
 
       .assessment-points {
         display: grid;
-        gap: 0.85rem;
+        gap: 1rem;
+      }
+
+      .assessment-point {
+        align-items: flex-start;
+        border: 1px solid #e0e0e0;
+        background: #f9f9f9;
+        box-shadow: 0 10px 24px rgba(30, 42, 68, 0.05);
+      }
+
+      .assessment-point p {
+        margin: 0;
+      }
+
+      .assessment-actions {
+        display: flex;
+        justify-content: center;
+        margin-top: 1.75rem;
+        padding-top: 0.25rem;
       }
 
       .assessment-cards {
@@ -501,26 +519,28 @@
             <article class="reveal rounded-[2rem] bg-gradient-to-br from-[#F9F1E7] via-white to-[#EEF5F8] p-8 shadow-panel sm:p-10">
               <p class="text-sm font-bold uppercase tracking-[0.3em] text-rose">How it works</p>
               <div class="assessment-points mt-5 text-base leading-7 text-slate-600">
-                <div class="flex gap-3 rounded-[1.35rem] border border-white/80 bg-white/75 px-4 py-4">
+                <div class="assessment-point flex gap-3 rounded-[1.35rem] px-4 py-4">
                   <span class="mt-1 h-2.5 w-2.5 rounded-full bg-gold"></span>
                   <p>Choose the closest match for English confidence, mathematics readiness, and independent study habits.</p>
                 </div>
-                <div class="flex gap-3 rounded-[1.35rem] border border-white/80 bg-white/75 px-4 py-4">
+                <div class="assessment-point flex gap-3 rounded-[1.35rem] px-4 py-4">
                   <span class="mt-1 h-2.5 w-2.5 rounded-full bg-rose"></span>
                   <p>Each category stays separate so the recommendation reflects the student more accurately.</p>
                 </div>
-                <div class="flex gap-3 rounded-[1.35rem] border border-white/80 bg-white/75 px-4 py-4">
+                <div class="assessment-point flex gap-3 rounded-[1.35rem] px-4 py-4">
                   <span class="mt-1 h-2.5 w-2.5 rounded-full bg-ink"></span>
-                  Add the student’s comfort level with independent study and class discussion.
+                  <p>Add the student&rsquo;s comfort level with independent study and class discussion.</p>
                 </div>
               </div>
-              <button
-                type="button"
-                id="assessment-trigger"
-                class="mt-6 inline-flex items-center justify-center rounded-full bg-ink px-7 py-4 text-base font-semibold text-white transition hover:scale-[1.02] hover:bg-rose"
-              >
-                Test Your Level
-              </button>
+              <div class="assessment-actions">
+                <button
+                  type="button"
+                  id="assessment-trigger"
+                  class="inline-flex items-center justify-center rounded-full bg-ink px-7 py-4 text-base font-semibold text-white transition hover:scale-[1.02] hover:bg-rose"
+                >
+                  Test Your Level
+                </button>
+              </div>
             </article>
 
             <section class="reveal rounded-[2rem] border border-white/80 bg-white/90 p-8 shadow-panel backdrop-blur sm:p-10">
