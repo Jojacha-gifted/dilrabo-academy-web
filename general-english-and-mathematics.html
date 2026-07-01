@@ -162,6 +162,19 @@
         padding-top: 0.25rem;
       }
 
+      .assessment-form-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-top: 0.5rem;
+      }
+
+      .assessment-button {
+        min-width: 14rem;
+      }
+
       .assessment-cards {
         display: grid;
         gap: 1.25rem;
@@ -240,6 +253,17 @@
       @media (min-width: 1024px) {
         .assessment-cards {
           grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 639px) {
+        .assessment-form-actions {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .assessment-button {
+          width: min(100%, 18rem);
         }
       }
     </style>
@@ -568,7 +592,7 @@
                 <button
                   type="button"
                   id="assessment-trigger"
-                  class="inline-flex items-center justify-center rounded-full bg-ink px-7 py-4 text-base font-semibold text-white transition hover:scale-[1.02] hover:bg-rose"
+                  class="assessment-button inline-flex items-center justify-center rounded-full bg-ink px-7 py-4 text-base font-semibold text-white transition hover:scale-[1.02] hover:bg-rose"
                 >
                   Test Your Level
                 </button>
@@ -655,17 +679,17 @@
 
                 </div>
 
-                <div class="flex flex-col gap-4 sm:flex-row">
+                <div class="assessment-form-actions">
                   <button
                     type="submit"
-                    class="inline-flex items-center justify-center rounded-full bg-rose px-7 py-4 text-base font-semibold text-white transition hover:scale-[1.02] hover:bg-[#8E3540]"
+                    class="assessment-button inline-flex items-center justify-center rounded-full bg-rose px-7 py-4 text-base font-semibold text-white transition hover:scale-[1.02] hover:bg-[#8E3540]"
                   >
                     Show My Suggested Level
                   </button>
                   <button
                     type="button"
                     id="assessment-reset"
-                    class="inline-flex items-center justify-center rounded-full border border-ink/15 bg-white px-7 py-4 text-base font-semibold text-ink transition hover:border-rose hover:text-rose"
+                    class="assessment-button inline-flex items-center justify-center rounded-full border border-ink/15 bg-white px-7 py-4 text-base font-semibold text-ink transition hover:border-rose hover:text-rose"
                   >
                     Reset
                   </button>
