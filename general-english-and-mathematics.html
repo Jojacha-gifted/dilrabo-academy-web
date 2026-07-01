@@ -175,6 +175,10 @@
         min-width: 14rem;
       }
 
+      .assessment-panel {
+        scroll-margin-top: 8rem;
+      }
+
       .assessment-cards {
         display: grid;
         gap: 1.25rem;
@@ -612,7 +616,10 @@
               </div>
             </article>
 
-            <section class="reveal rounded-[2rem] border border-white/80 bg-white/90 p-8 shadow-panel backdrop-blur sm:p-10">
+            <section
+              id="assessment-section"
+              class="assessment-panel reveal rounded-[2rem] border border-white/80 bg-white/90 p-8 shadow-panel backdrop-blur sm:p-10"
+            >
               <form id="assessment-form" class="space-y-6">
                 <div id="assessment-cards" class="assessment-cards">
                   <fieldset class="assessment-card rounded-[1.75rem] border border-slate-200 bg-white/85 p-6">
@@ -892,6 +899,7 @@
       const resultTitle = document.getElementById("result-title");
       const resultBody = document.getElementById("result-body");
       const levelCards = document.querySelectorAll(".level-card");
+      const assessmentSection = document.getElementById("assessment-section");
       const assessmentCards = document.getElementById("assessment-cards");
       const stickyHeader = document.querySelector("header.sticky");
       let assessmentHighlightTimer;
@@ -929,13 +937,13 @@
       }
 
       assessmentTrigger?.addEventListener("click", () => {
-        if (!assessmentCards) {
+        if (!assessmentSection) {
           return;
         }
 
         const headerOffset = stickyHeader ? stickyHeader.offsetHeight + 20 : 24;
         const scrollTarget =
-          assessmentCards.getBoundingClientRect().top + window.scrollY - headerOffset;
+          assessmentSection.getBoundingClientRect().top + window.scrollY - headerOffset;
 
         window.scrollTo({
           top: Math.max(scrollTarget, 0),
