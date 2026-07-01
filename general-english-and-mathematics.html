@@ -179,6 +179,19 @@
         display: grid;
         gap: 1.25rem;
         align-items: stretch;
+        scroll-margin-top: 8rem;
+      }
+
+      .assessment-cards.is-guided .assessment-card {
+        border-color: rgba(162, 62, 72, 0.34);
+        box-shadow:
+          0 18px 38px rgba(30, 42, 68, 0.08),
+          0 0 0 3px rgba(213, 182, 122, 0.16);
+        transform: translateY(-2px);
+      }
+
+      .assessment-cards.is-guided .assessment-card__title {
+        color: #a23e48;
       }
 
       .assessment-card {
@@ -879,6 +892,9 @@
       const resultTitle = document.getElementById("result-title");
       const resultBody = document.getElementById("result-body");
       const levelCards = document.querySelectorAll(".level-card");
+      const assessmentCards = document.getElementById("assessment-cards");
+      const stickyHeader = document.querySelector("header.sticky");
+      let assessmentHighlightTimer;
 
       const resultMap = {
         beginner: {
@@ -895,8 +911,38 @@
         },
       };
 
+      function highlightAssessmentCards() {
+        if (!assessmentCards) {
+          return;
+        }
+
+        window.clearTimeout(assessmentHighlightTimer);
+        assessmentCards.classList.remove("is-guided");
+
+        requestAnimationFrame(() => {
+          assessmentCards.classList.add("is-guided");
+        });
+
+        assessmentHighlightTimer = window.setTimeout(() => {
+          assessmentCards.classList.remove("is-guided");
+        }, 1800);
+      }
+
       assessmentTrigger?.addEventListener("click", () => {
-        document.getElementById("assessment-cards")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        if (!assessmentCards) {
+          return;
+        }
+
+        const headerOffset = stickyHeader ? stickyHeader.offsetHeight + 20 : 24;
+        const scrollTarget =
+          assessmentCards.getBoundingClientRect().top + window.scrollY - headerOffset;
+
+        window.scrollTo({
+          top: Math.max(scrollTarget, 0),
+          behavior: "smooth",
+        });
+
+        window.setTimeout(highlightAssessmentCards, 420);
       });
 
       levelCards.forEach((card) => {
