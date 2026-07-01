@@ -134,6 +134,35 @@
         box-shadow: 0 16px 36px rgba(162, 62, 72, 0.12);
       }
 
+      .assessment-stack {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .assessment-points {
+        display: grid;
+        gap: 0.85rem;
+      }
+
+      .assessment-cards {
+        display: grid;
+        gap: 1.25rem;
+        align-items: stretch;
+      }
+
+      .assessment-card {
+        height: 100%;
+      }
+
+      .assessment-card legend {
+        padding: 0;
+      }
+
+      .assessment-options {
+        display: grid;
+        gap: 0.85rem;
+      }
+
       .level-result {
         max-height: 0;
         opacity: 0;
@@ -150,6 +179,18 @@
         max-height: 18rem;
         opacity: 1;
         transform: translateY(0);
+      }
+
+      @media (min-width: 640px) {
+        .assessment-points {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .assessment-cards {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
       }
     </style>
   </head>
@@ -456,48 +497,52 @@
             </p>
           </div>
 
-          <div class="mt-12 grid gap-8 lg:grid-cols-[0.92fr_1.08fr]">
+          <div class="assessment-stack mt-10">
             <article class="reveal rounded-[2rem] bg-gradient-to-br from-[#F9F1E7] via-white to-[#EEF5F8] p-8 shadow-panel sm:p-10">
               <p class="text-sm font-bold uppercase tracking-[0.3em] text-rose">How it works</p>
-              <ul class="mt-5 space-y-4 text-base leading-7 text-slate-600">
-                <li class="flex gap-3">
+              <div class="assessment-points mt-5 text-base leading-7 text-slate-600">
+                <div class="flex gap-3 rounded-[1.35rem] border border-white/80 bg-white/75 px-4 py-4">
                   <span class="mt-1 h-2.5 w-2.5 rounded-full bg-gold"></span>
-                  Choose the option that best describes current English confidence.
-                </li>
-                <li class="flex gap-3">
+                  <p>Choose the closest match for English confidence, mathematics readiness, and independent study habits.</p>
+                </div>
+                <div class="flex gap-3 rounded-[1.35rem] border border-white/80 bg-white/75 px-4 py-4">
                   <span class="mt-1 h-2.5 w-2.5 rounded-full bg-rose"></span>
-                  Select the most accurate match for mathematics readiness.
-                </li>
-                <li class="flex gap-3">
+                  <p>Each category stays separate so the recommendation reflects the student more accurately.</p>
+                </div>
+                <div class="flex gap-3 rounded-[1.35rem] border border-white/80 bg-white/75 px-4 py-4">
                   <span class="mt-1 h-2.5 w-2.5 rounded-full bg-ink"></span>
                   Add the student’s comfort level with independent study and class discussion.
-                </li>
-              </ul>
+                </div>
+              </div>
               <button
                 type="button"
                 id="assessment-trigger"
-                class="mt-8 inline-flex items-center justify-center rounded-full bg-ink px-7 py-4 text-base font-semibold text-white transition hover:scale-[1.02] hover:bg-rose"
+                class="mt-6 inline-flex items-center justify-center rounded-full bg-ink px-7 py-4 text-base font-semibold text-white transition hover:scale-[1.02] hover:bg-rose"
               >
                 Test Your Level
               </button>
             </article>
 
             <section class="reveal rounded-[2rem] border border-white/80 bg-white/90 p-8 shadow-panel backdrop-blur sm:p-10">
-              <form id="assessment-form" class="space-y-8">
-                <fieldset>
+              <form id="assessment-form" class="space-y-6">
+                <div id="assessment-cards" class="assessment-cards">
+                  <fieldset class="assessment-card rounded-[1.75rem] border border-slate-200 bg-white/85 p-6">
                   <legend class="text-lg font-bold text-ink">1. English confidence</legend>
-                  <div class="mt-4 grid gap-4 sm:grid-cols-3">
-                    <label class="level-card flex cursor-pointer flex-col rounded-[1.4rem] border border-slate-200 p-5">
+                  <p class="mt-2 text-sm leading-6 text-slate-600">
+                    Select the statement that best matches the student&rsquo;s current comfort with English.
+                  </p>
+                  <div class="assessment-options mt-5">
+                    <label class="level-card flex cursor-pointer flex-col rounded-[1.25rem] border border-slate-200 bg-white p-4">
                       <input class="sr-only" type="radio" name="english" value="1" />
                       <span class="text-sm font-bold uppercase tracking-[0.22em] text-rose">Beginner</span>
                       <span class="mt-2 text-sm leading-6 text-slate-600">Needs support with grammar, simple sentences, and speaking confidence.</span>
                     </label>
-                    <label class="level-card flex cursor-pointer flex-col rounded-[1.4rem] border border-slate-200 p-5">
+                    <label class="level-card flex cursor-pointer flex-col rounded-[1.25rem] border border-slate-200 bg-white p-4">
                       <input class="sr-only" type="radio" name="english" value="2" />
                       <span class="text-sm font-bold uppercase tracking-[0.22em] text-ink">Intermediate</span>
                       <span class="mt-2 text-sm leading-6 text-slate-600">Can read and respond, but needs accuracy, fluency, and richer vocabulary.</span>
                     </label>
-                    <label class="level-card flex cursor-pointer flex-col rounded-[1.4rem] border border-slate-200 p-5">
+                    <label class="level-card flex cursor-pointer flex-col rounded-[1.25rem] border border-slate-200 bg-white p-4">
                       <input class="sr-only" type="radio" name="english" value="3" />
                       <span class="text-sm font-bold uppercase tracking-[0.22em] text-gold">Advanced</span>
                       <span class="mt-2 text-sm leading-6 text-slate-600">Communicates well and is ready for higher-level discussion and writing polish.</span>
@@ -505,20 +550,23 @@
                   </div>
                 </fieldset>
 
-                <fieldset>
+                <fieldset class="assessment-card rounded-[1.75rem] border border-slate-200 bg-white/85 p-6">
                   <legend class="text-lg font-bold text-ink">2. Mathematics readiness</legend>
-                  <div class="mt-4 grid gap-4 sm:grid-cols-3">
-                    <label class="level-card flex cursor-pointer flex-col rounded-[1.4rem] border border-slate-200 p-5">
+                  <p class="mt-2 text-sm leading-6 text-slate-600">
+                    Choose the option that reflects current mathematical control and consistency.
+                  </p>
+                  <div class="assessment-options mt-5">
+                    <label class="level-card flex cursor-pointer flex-col rounded-[1.25rem] border border-slate-200 bg-white p-4">
                       <input class="sr-only" type="radio" name="math" value="1" />
                       <span class="text-sm font-bold uppercase tracking-[0.22em] text-rose">Beginner</span>
                       <span class="mt-2 text-sm leading-6 text-slate-600">Needs help with fundamentals, accuracy, and working step by step.</span>
                     </label>
-                    <label class="level-card flex cursor-pointer flex-col rounded-[1.4rem] border border-slate-200 p-5">
+                    <label class="level-card flex cursor-pointer flex-col rounded-[1.25rem] border border-slate-200 bg-white p-4">
                       <input class="sr-only" type="radio" name="math" value="2" />
                       <span class="text-sm font-bold uppercase tracking-[0.22em] text-ink">Intermediate</span>
                       <span class="mt-2 text-sm leading-6 text-slate-600">Understands many topics but needs consistency and stronger problem-solving.</span>
                     </label>
-                    <label class="level-card flex cursor-pointer flex-col rounded-[1.4rem] border border-slate-200 p-5">
+                    <label class="level-card flex cursor-pointer flex-col rounded-[1.25rem] border border-slate-200 bg-white p-4">
                       <input class="sr-only" type="radio" name="math" value="3" />
                       <span class="text-sm font-bold uppercase tracking-[0.22em] text-gold">Advanced</span>
                       <span class="mt-2 text-sm leading-6 text-slate-600">Handles complex questions and is ready for stretch tasks and sharper pacing.</span>
@@ -526,26 +574,31 @@
                   </div>
                 </fieldset>
 
-                <fieldset>
+                <fieldset class="assessment-card rounded-[1.75rem] border border-slate-200 bg-white/85 p-6">
                   <legend class="text-lg font-bold text-ink">3. Academic independence</legend>
-                  <div class="mt-4 grid gap-4 sm:grid-cols-3">
-                    <label class="level-card flex cursor-pointer flex-col rounded-[1.4rem] border border-slate-200 p-5">
+                  <p class="mt-2 text-sm leading-6 text-slate-600">
+                    Pick the level that best describes how independently the student can study and participate.
+                  </p>
+                  <div class="assessment-options mt-5">
+                    <label class="level-card flex cursor-pointer flex-col rounded-[1.25rem] border border-slate-200 bg-white p-4">
                       <input class="sr-only" type="radio" name="independence" value="1" />
                       <span class="text-sm font-bold uppercase tracking-[0.22em] text-rose">Needs support</span>
                       <span class="mt-2 text-sm leading-6 text-slate-600">The student needs frequent prompting, encouragement, and structure.</span>
                     </label>
-                    <label class="level-card flex cursor-pointer flex-col rounded-[1.4rem] border border-slate-200 p-5">
+                    <label class="level-card flex cursor-pointer flex-col rounded-[1.25rem] border border-slate-200 bg-white p-4">
                       <input class="sr-only" type="radio" name="independence" value="2" />
                       <span class="text-sm font-bold uppercase tracking-[0.22em] text-ink">Building consistency</span>
                       <span class="mt-2 text-sm leading-6 text-slate-600">The student can work alone sometimes, but still benefits from guided routines.</span>
                     </label>
-                    <label class="level-card flex cursor-pointer flex-col rounded-[1.4rem] border border-slate-200 p-5">
+                    <label class="level-card flex cursor-pointer flex-col rounded-[1.25rem] border border-slate-200 bg-white p-4">
                       <input class="sr-only" type="radio" name="independence" value="3" />
                       <span class="text-sm font-bold uppercase tracking-[0.22em] text-gold">Self-directed</span>
                       <span class="mt-2 text-sm leading-6 text-slate-600">The student follows instructions well and is ready for higher expectations.</span>
                     </label>
                   </div>
                 </fieldset>
+
+                </div>
 
                 <div class="flex flex-col gap-4 sm:flex-row">
                   <button
@@ -764,7 +817,7 @@
       };
 
       assessmentTrigger?.addEventListener("click", () => {
-        document.getElementById("level-check")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        document.getElementById("assessment-cards")?.scrollIntoView({ behavior: "smooth", block: "start" });
       });
 
       levelCards.forEach((card) => {
