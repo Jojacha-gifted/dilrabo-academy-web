@@ -171,6 +171,27 @@
         padding-top: 0.5rem;
       }
 
+      .assessment-instruction {
+        max-height: 0;
+        margin: 0;
+        overflow: hidden;
+        opacity: 0;
+        color: #66758a;
+        font-size: 0.96rem;
+        line-height: 1.7;
+        text-align: center;
+        transition:
+          max-height 240ms ease,
+          opacity 240ms ease,
+          margin-top 240ms ease;
+      }
+
+      .assessment-instruction.is-visible {
+        max-height: 4rem;
+        margin-top: 1.1rem;
+        opacity: 1;
+      }
+
       .assessment-button {
         min-width: 14rem;
       }
@@ -207,6 +228,41 @@
         padding: 1.5rem 1.5rem 1.6rem;
       }
 
+      .assessment-card--interactive {
+        cursor: pointer;
+        transition:
+          border-color 220ms ease,
+          box-shadow 220ms ease,
+          transform 220ms ease;
+      }
+
+      .assessment-card--interactive:hover {
+        border-color: rgba(162, 62, 72, 0.24);
+        box-shadow: 0 18px 34px rgba(30, 42, 68, 0.08);
+        transform: translateY(-2px);
+      }
+
+      .assessment-card--interactive.is-active {
+        border-color: rgba(213, 182, 122, 0.5);
+        box-shadow:
+          0 18px 34px rgba(30, 42, 68, 0.08),
+          0 0 0 3px rgba(213, 182, 122, 0.14);
+      }
+
+      .assessment-card--interactive.is-selected {
+        border-color: rgba(26, 60, 107, 0.28);
+        box-shadow:
+          0 18px 34px rgba(30, 42, 68, 0.08),
+          0 0 0 3px rgba(26, 60, 107, 0.08);
+      }
+
+      .assessment-card--interactive.is-completed {
+        border-color: rgba(58, 138, 92, 0.38);
+        box-shadow:
+          0 18px 34px rgba(30, 42, 68, 0.08),
+          0 0 0 3px rgba(58, 138, 92, 0.14);
+      }
+
       .assessment-card legend {
         position: absolute;
         width: 1px;
@@ -222,6 +278,8 @@
       .assessment-card__title {
         display: flex;
         align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
         width: 100%;
         min-height: 3.25rem;
         margin: 0;
@@ -229,6 +287,35 @@
         line-height: 1.35;
         text-align: left;
         box-sizing: border-box;
+      }
+
+      .assessment-card__status {
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 0.35rem 0.7rem;
+        background: rgba(26, 60, 107, 0.08);
+        color: #1e2a44;
+        font-size: 0.73rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .assessment-card--interactive.is-active .assessment-card__status {
+        background: rgba(213, 182, 122, 0.18);
+        color: #8e3540;
+      }
+
+      .assessment-card--interactive.is-selected .assessment-card__status {
+        background: rgba(26, 60, 107, 0.1);
+        color: #1e2a44;
+      }
+
+      .assessment-card--interactive.is-completed .assessment-card__status {
+        background: rgba(225, 244, 231, 0.96);
+        color: #24593c;
       }
 
       .assessment-card > p,
@@ -241,6 +328,374 @@
       .assessment-options {
         display: grid;
         gap: 0.85rem;
+      }
+
+      .skill-test {
+        display: none;
+        margin-top: 1.3rem;
+        border: 1px solid rgba(26, 60, 107, 0.12);
+        border-radius: 1.35rem;
+        background: linear-gradient(180deg, rgba(237, 243, 248, 0.72), rgba(255, 255, 255, 0.92));
+        padding: 1rem;
+      }
+
+      .skill-test.is-available {
+        display: block;
+      }
+
+      .skill-test__trigger {
+        width: 100%;
+        box-shadow: 0 14px 30px rgba(30, 42, 68, 0.12);
+      }
+
+      .skill-test__panel {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition:
+          max-height 260ms ease,
+          opacity 220ms ease,
+          margin-top 220ms ease;
+      }
+
+      .skill-test__panel.is-visible {
+        max-height: 28rem;
+        opacity: 1;
+        margin-top: 1rem;
+      }
+
+      .skill-test__question {
+        margin: 0;
+        color: #1e2a44;
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.6;
+      }
+
+      .skill-test__options {
+        display: grid;
+        gap: 0.75rem;
+        margin-top: 0.9rem;
+      }
+
+      .skill-test__option {
+        width: 100%;
+        justify-content: flex-start;
+        border: 1px solid rgba(26, 60, 107, 0.12);
+        background: rgba(255, 255, 255, 0.96);
+        color: #1e2a44;
+        box-shadow: none;
+      }
+
+      .skill-test__option.is-correct {
+        border-color: rgba(58, 138, 92, 0.4);
+        background: rgba(225, 244, 231, 0.96);
+        color: #24593c;
+      }
+
+      .skill-test__option.is-incorrect {
+        border-color: rgba(162, 62, 72, 0.34);
+        background: rgba(252, 239, 241, 0.96);
+        color: #8e3540;
+      }
+
+      .skill-test__feedback {
+        min-height: 1.6rem;
+        margin: 0.9rem 0 0;
+        color: #66758a;
+        font-size: 0.94rem;
+        font-weight: 600;
+      }
+
+      .skill-test__feedback.is-correct {
+        color: #24593c;
+      }
+
+      .skill-test__feedback.is-incorrect {
+        color: #8e3540;
+      }
+
+      .assessment-grid {
+        display: grid;
+        gap: 1.25rem;
+      }
+
+      .assessment-test-card {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        border: 1px solid rgba(26, 60, 107, 0.12);
+        border-radius: 1.75rem;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 1.6rem;
+        box-shadow: 0 18px 38px rgba(30, 42, 68, 0.07);
+        transition:
+          border-color 220ms ease,
+          box-shadow 220ms ease,
+          transform 220ms ease;
+      }
+
+      .assessment-test-card.is-ready {
+        border-color: rgba(213, 182, 122, 0.42);
+        box-shadow:
+          0 18px 38px rgba(30, 42, 68, 0.07),
+          0 0 0 3px rgba(213, 182, 122, 0.12);
+      }
+
+      .assessment-test-card.is-completed {
+        border-color: rgba(58, 138, 92, 0.38);
+        box-shadow:
+          0 18px 38px rgba(30, 42, 68, 0.07),
+          0 0 0 3px rgba(58, 138, 92, 0.12);
+      }
+
+      .assessment-test-card__head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .assessment-test-card__status {
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 0.4rem 0.78rem;
+        background: rgba(26, 60, 107, 0.08);
+        color: #1e2a44;
+        font-size: 0.74rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .assessment-test-card.is-ready .assessment-test-card__status {
+        background: rgba(213, 182, 122, 0.18);
+        color: #8e3540;
+      }
+
+      .assessment-test-card.is-completed .assessment-test-card__status {
+        background: rgba(225, 244, 231, 0.98);
+        color: #24593c;
+      }
+
+      .assessment-test-card__summary {
+        min-height: 1.5rem;
+        margin: 0;
+        color: #66758a;
+        font-size: 0.95rem;
+        line-height: 1.65;
+      }
+
+      .assessment-test-card__launch {
+        display: none;
+        width: 100%;
+        margin-top: auto;
+        box-shadow: 0 14px 30px rgba(30, 42, 68, 0.12);
+      }
+
+      .assessment-test-card__launch.is-visible {
+        display: inline-flex;
+      }
+
+      .assessment-independence {
+        margin-top: 1.4rem;
+        border: 1px solid rgba(26, 60, 107, 0.12);
+        border-radius: 1.75rem;
+        background: linear-gradient(180deg, rgba(246, 240, 232, 0.88), rgba(255, 255, 255, 0.94));
+        padding: 1.5rem;
+      }
+
+      .assessment-independence__options {
+        display: grid;
+        gap: 0.9rem;
+        margin-top: 1rem;
+      }
+
+      .assessment-independence__option {
+        display: block;
+        cursor: pointer;
+      }
+
+      .assessment-independence__card {
+        display: block;
+        border: 1px solid rgba(26, 60, 107, 0.12);
+        border-radius: 1.35rem;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 1rem 1.05rem;
+        transition:
+          border-color 220ms ease,
+          box-shadow 220ms ease,
+          transform 220ms ease;
+      }
+
+      .assessment-independence__option:hover .assessment-independence__card,
+      .assessment-independence__option.is-selected .assessment-independence__card {
+        border-color: rgba(162, 62, 72, 0.28);
+        box-shadow: 0 14px 26px rgba(30, 42, 68, 0.06);
+        transform: translateY(-1px);
+      }
+
+      .assessment-progress-note {
+        margin: 1.3rem 0 0;
+        color: #66758a;
+        font-size: 0.96rem;
+        line-height: 1.7;
+        text-align: center;
+      }
+
+      .assessment-final {
+        max-height: 0;
+        margin-top: 0;
+        overflow: hidden;
+        opacity: 0;
+        border-radius: 1.75rem;
+        background: linear-gradient(180deg, rgba(246, 240, 232, 0.88), rgba(255, 255, 255, 0.94));
+        transition:
+          max-height 320ms ease,
+          opacity 240ms ease,
+          margin-top 240ms ease;
+      }
+
+      .assessment-final.is-visible {
+        max-height: 22rem;
+        margin-top: 1.5rem;
+        opacity: 1;
+      }
+
+      .assessment-final__inner {
+        border: 1px solid rgba(26, 60, 107, 0.12);
+        border-radius: 1.75rem;
+        padding: 1.5rem;
+        box-shadow: 0 18px 36px rgba(30, 42, 68, 0.08);
+      }
+
+      .assessment-final__meta {
+        margin-top: 0.95rem;
+        color: #66758a;
+        font-size: 0.94rem;
+        line-height: 1.65;
+      }
+
+      .assessment-modal[hidden] {
+        display: none !important;
+      }
+
+      .assessment-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 80;
+        display: grid;
+        place-items: center;
+        padding: 1rem;
+      }
+
+      .assessment-modal__backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(30, 42, 68, 0.5);
+        backdrop-filter: blur(8px);
+      }
+
+      .assessment-modal__dialog {
+        position: relative;
+        width: min(100%, 42rem);
+        border: 1px solid rgba(255, 255, 255, 0.72);
+        border-radius: 2rem;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 240, 232, 0.96));
+        padding: 1.6rem;
+        box-shadow: 0 28px 70px rgba(30, 42, 68, 0.28);
+      }
+
+      .assessment-modal__close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        width: 2.75rem;
+        height: 2.75rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(26, 60, 107, 0.12);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.96);
+        color: #1e2a44;
+      }
+
+      .assessment-modal__options {
+        display: grid;
+        gap: 0.85rem;
+        margin-top: 1.35rem;
+      }
+
+      .assessment-modal__option {
+        width: 100%;
+        border: 1px solid rgba(26, 60, 107, 0.12);
+        border-radius: 1.2rem;
+        background: rgba(255, 255, 255, 0.96);
+        padding: 1rem 1.05rem;
+        text-align: left;
+        color: #1e2a44;
+        font-size: 0.98rem;
+        font-weight: 600;
+        line-height: 1.55;
+        transition:
+          border-color 180ms ease,
+          box-shadow 180ms ease,
+          transform 180ms ease;
+      }
+
+      .assessment-modal__option:hover,
+      .assessment-modal__option.is-selected {
+        border-color: rgba(162, 62, 72, 0.3);
+        box-shadow: 0 14px 28px rgba(30, 42, 68, 0.08);
+        transform: translateY(-1px);
+      }
+
+      .assessment-modal__footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+
+      .assessment-modal__feedback {
+        min-height: 1.5rem;
+        margin: 0;
+        color: #66758a;
+        font-size: 0.93rem;
+        line-height: 1.6;
+      }
+
+      .assessment-modal__next:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+
+      .assessment-panel.is-guided {
+        box-shadow:
+          0 22px 60px rgba(30, 42, 68, 0.12),
+          0 0 0 3px rgba(213, 182, 122, 0.12);
+      }
+
+      @media (min-width: 900px) {
+        .assessment-grid,
+        .assessment-independence__options {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 639px) {
+        .assessment-modal__dialog {
+          padding: 1.25rem;
+        }
+
+        .assessment-modal__footer {
+          flex-direction: column;
+          align-items: stretch;
+        }
       }
 
       .level-result {
@@ -620,112 +1075,148 @@
               id="assessment-section"
               class="assessment-panel reveal rounded-[2rem] border border-white/80 bg-white/90 p-8 shadow-panel backdrop-blur sm:p-10"
             >
-              <form id="assessment-form" class="space-y-6">
-                <div id="assessment-cards" class="assessment-cards">
-                  <fieldset class="assessment-card rounded-[1.75rem] border border-slate-200 bg-white/85 p-6">
-                  <legend>1. English confidence</legend>
-                  <h3 class="assessment-card__title text-lg font-bold text-ink">1. English confidence</h3>
-                  <p class="mt-2 text-sm leading-6 text-slate-600">
-                    Select the statement that best matches the student&rsquo;s current comfort with English.
-                  </p>
-                  <div class="assessment-options mt-5">
-                    <label class="level-card flex cursor-pointer flex-col rounded-[1.25rem] border border-slate-200 bg-white p-4">
-                      <input class="sr-only" type="radio" name="english" value="1" />
-                      <span class="text-sm font-bold uppercase tracking-[0.22em] text-rose">Beginner</span>
-                      <span class="mt-2 text-sm leading-6 text-slate-600">Needs support with grammar, simple sentences, and speaking confidence.</span>
-                    </label>
-                    <label class="level-card flex cursor-pointer flex-col rounded-[1.25rem] border border-slate-200 bg-white p-4">
-                      <input class="sr-only" type="radio" name="english" value="2" />
-                      <span class="text-sm font-bold uppercase tracking-[0.22em] text-ink">Intermediate</span>
-                      <span class="mt-2 text-sm leading-6 text-slate-600">Can read and respond, but needs accuracy, fluency, and richer vocabulary.</span>
-                    </label>
-                    <label class="level-card flex cursor-pointer flex-col rounded-[1.25rem] border border-slate-200 bg-white p-4">
-                      <input class="sr-only" type="radio" name="english" value="3" />
-                      <span class="text-sm font-bold uppercase tracking-[0.22em] text-gold">Advanced</span>
-                      <span class="mt-2 text-sm leading-6 text-slate-600">Communicates well and is ready for higher-level discussion and writing polish.</span>
-                    </label>
+              <div id="assessment-grid" class="assessment-grid">
+                <article id="english-test-card" class="assessment-test-card">
+                  <div class="assessment-test-card__head">
+                    <div>
+                      <p class="text-sm font-bold uppercase tracking-[0.24em] text-rose">Interactive pathway</p>
+                      <h3 class="mt-3 text-2xl font-bold text-ink">English confidence</h3>
+                    </div>
+                    <span id="english-test-status" class="assessment-test-card__status">Locked</span>
                   </div>
-                </fieldset>
-
-                <fieldset class="assessment-card rounded-[1.75rem] border border-slate-200 bg-white/85 p-6">
-                  <legend>2. Mathematics readiness</legend>
-                  <h3 class="assessment-card__title text-lg font-bold text-ink">2. Mathematics readiness</h3>
-                  <p class="mt-2 text-sm leading-6 text-slate-600">
-                    Choose the option that reflects current mathematical control and consistency.
+                  <p class="leading-7 text-slate-600">
+                    Launch a guided sequence that checks grammar, vocabulary awareness, and
+                    reading accuracy through multiple-choice questions.
                   </p>
-                  <div class="assessment-options mt-5">
-                    <label class="level-card flex cursor-pointer flex-col rounded-[1.25rem] border border-slate-200 bg-white p-4">
-                      <input class="sr-only" type="radio" name="math" value="1" />
-                      <span class="text-sm font-bold uppercase tracking-[0.22em] text-rose">Beginner</span>
-                      <span class="mt-2 text-sm leading-6 text-slate-600">Needs help with fundamentals, accuracy, and working step by step.</span>
-                    </label>
-                    <label class="level-card flex cursor-pointer flex-col rounded-[1.25rem] border border-slate-200 bg-white p-4">
-                      <input class="sr-only" type="radio" name="math" value="2" />
-                      <span class="text-sm font-bold uppercase tracking-[0.22em] text-ink">Intermediate</span>
-                      <span class="mt-2 text-sm leading-6 text-slate-600">Understands many topics but needs consistency and stronger problem-solving.</span>
-                    </label>
-                    <label class="level-card flex cursor-pointer flex-col rounded-[1.25rem] border border-slate-200 bg-white p-4">
-                      <input class="sr-only" type="radio" name="math" value="3" />
-                      <span class="text-sm font-bold uppercase tracking-[0.22em] text-gold">Advanced</span>
-                      <span class="mt-2 text-sm leading-6 text-slate-600">Handles complex questions and is ready for stretch tasks and sharper pacing.</span>
-                    </label>
-                  </div>
-                </fieldset>
-
-                <fieldset class="assessment-card rounded-[1.75rem] border border-slate-200 bg-white/85 p-6">
-                  <legend>3. Academic independence</legend>
-                  <h3 class="assessment-card__title text-lg font-bold text-ink">3. Academic independence</h3>
-                  <p class="mt-2 text-sm leading-6 text-slate-600">
-                    Pick the level that best describes how independently the student can study and participate.
+                  <p id="english-test-summary" class="assessment-test-card__summary">
+                    Unlock the assessment to begin the English test.
                   </p>
-                  <div class="assessment-options mt-5">
-                    <label class="level-card flex cursor-pointer flex-col rounded-[1.25rem] border border-slate-200 bg-white p-4">
-                      <input class="sr-only" type="radio" name="independence" value="1" />
-                      <span class="text-sm font-bold uppercase tracking-[0.22em] text-rose">Needs support</span>
-                      <span class="mt-2 text-sm leading-6 text-slate-600">The student needs frequent prompting, encouragement, and structure.</span>
-                    </label>
-                    <label class="level-card flex cursor-pointer flex-col rounded-[1.25rem] border border-slate-200 bg-white p-4">
-                      <input class="sr-only" type="radio" name="independence" value="2" />
-                      <span class="text-sm font-bold uppercase tracking-[0.22em] text-ink">Building consistency</span>
-                      <span class="mt-2 text-sm leading-6 text-slate-600">The student can work alone sometimes, but still benefits from guided routines.</span>
-                    </label>
-                    <label class="level-card flex cursor-pointer flex-col rounded-[1.25rem] border border-slate-200 bg-white p-4">
-                      <input class="sr-only" type="radio" name="independence" value="3" />
-                      <span class="text-sm font-bold uppercase tracking-[0.22em] text-gold">Self-directed</span>
-                      <span class="mt-2 text-sm leading-6 text-slate-600">The student follows instructions well and is ready for higher expectations.</span>
-                    </label>
-                  </div>
-                </fieldset>
-
-                </div>
-
-                <div class="assessment-form-actions">
-                  <button
-                    type="submit"
-                    class="assessment-button inline-flex items-center justify-center rounded-full bg-rose px-7 py-4 text-base font-semibold text-white transition hover:scale-[1.02] hover:bg-[#8E3540]"
-                  >
-                    Show My Suggested Level
-                  </button>
                   <button
                     type="button"
-                    id="assessment-reset"
-                    class="assessment-button inline-flex items-center justify-center rounded-full border border-ink/15 bg-white px-7 py-4 text-base font-semibold text-ink transition hover:border-rose hover:text-rose"
+                    id="english-test-trigger"
+                    class="assessment-button assessment-test-card__launch inline-flex items-center justify-center rounded-full bg-ink px-7 py-4 text-base font-semibold text-white transition hover:scale-[1.02] hover:bg-rose"
                   >
-                    Reset
+                    Start English Test
                   </button>
-                </div>
-              </form>
+                </article>
 
-              <div
-                id="assessment-result"
-                class="level-result rounded-[1.5rem] bg-sand px-6 py-5"
-                aria-live="polite"
-              >
-                <p class="text-sm font-bold uppercase tracking-[0.24em] text-rose">Suggested starting point</p>
-                <h3 id="result-title" class="mt-3 text-2xl font-bold text-ink"></h3>
-                <p id="result-body" class="mt-3 leading-7 text-slate-600"></p>
+                <article id="math-test-card" class="assessment-test-card">
+                  <div class="assessment-test-card__head">
+                    <div>
+                      <p class="text-sm font-bold uppercase tracking-[0.24em] text-rose">Interactive pathway</p>
+                      <h3 class="mt-3 text-2xl font-bold text-ink">Mathematics readiness</h3>
+                    </div>
+                    <span id="math-test-status" class="assessment-test-card__status">Locked</span>
+                  </div>
+                  <p class="leading-7 text-slate-600">
+                    Open a structured set of short algebra, geometry, and reasoning prompts
+                    to estimate mathematical control and response accuracy.
+                  </p>
+                  <p id="math-test-summary" class="assessment-test-card__summary">
+                    Unlock the assessment to begin the Mathematics test.
+                  </p>
+                  <button
+                    type="button"
+                    id="math-test-trigger"
+                    class="assessment-button assessment-test-card__launch inline-flex items-center justify-center rounded-full bg-ink px-7 py-4 text-base font-semibold text-white transition hover:scale-[1.02] hover:bg-rose"
+                  >
+                    Start Math Test
+                  </button>
+                </article>
+              </div>
+
+              <section class="assessment-independence">
+                <p class="text-sm font-bold uppercase tracking-[0.24em] text-rose">Academic independence</p>
+                <h3 class="mt-3 text-2xl font-bold text-ink">Add the student&rsquo;s study independence.</h3>
+                <p class="mt-3 leading-7 text-slate-600">
+                  This final metric balances the test scores with the learner&rsquo;s consistency,
+                  self-management, and comfort working without constant prompting.
+                </p>
+
+                <div class="assessment-independence__options">
+                  <label class="assessment-independence__option">
+                    <input class="sr-only" type="radio" name="academic-independence" value="1" />
+                    <span class="assessment-independence__card">
+                      <strong class="block text-ink">Needs support</strong>
+                      <span class="mt-2 block text-sm leading-6 text-slate-600">
+                        Works best with close guidance, reminders, and step-by-step structure.
+                      </span>
+                    </span>
+                  </label>
+
+                  <label class="assessment-independence__option">
+                    <input class="sr-only" type="radio" name="academic-independence" value="2" />
+                    <span class="assessment-independence__card">
+                      <strong class="block text-ink">Building consistency</strong>
+                      <span class="mt-2 block text-sm leading-6 text-slate-600">
+                        Can work independently at times, but still benefits from routines and accountability.
+                      </span>
+                    </span>
+                  </label>
+
+                  <label class="assessment-independence__option">
+                    <input class="sr-only" type="radio" name="academic-independence" value="3" />
+                    <span class="assessment-independence__card">
+                      <strong class="block text-ink">Self-directed</strong>
+                      <span class="mt-2 block text-sm leading-6 text-slate-600">
+                        Follows instructions well, stays organised, and handles tasks with minimal prompting.
+                      </span>
+                    </span>
+                  </label>
+                </div>
+              </section>
+
+              <p id="assessment-progress-note" class="assessment-progress-note" aria-live="polite">
+                Click &ldquo;Test Your Level&rdquo; above to unlock both test pathways.
+              </p>
+
+              <div id="assessment-final" class="assessment-final" aria-live="polite">
+                <div class="assessment-final__inner">
+                  <p class="text-sm font-bold uppercase tracking-[0.24em] text-rose">Recommended starting point</p>
+                  <h3 id="assessment-final-title" class="mt-3 text-3xl font-bold text-ink"></h3>
+                  <p id="assessment-final-body" class="mt-3 leading-7 text-slate-600"></p>
+                  <p id="assessment-final-meta" class="assessment-final__meta"></p>
+                </div>
               </div>
             </section>
+
+            <div id="assessment-modal" class="assessment-modal" hidden>
+              <div class="assessment-modal__backdrop" data-close-modal="true"></div>
+              <div
+                class="assessment-modal__dialog"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="assessment-modal-title"
+              >
+                <button
+                  type="button"
+                  id="assessment-modal-close"
+                  class="assessment-modal__close transition hover:border-rose hover:text-rose"
+                  aria-label="Close assessment modal"
+                >
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+
+                <p id="assessment-modal-kicker" class="text-sm font-bold uppercase tracking-[0.24em] text-rose"></p>
+                <h3 id="assessment-modal-title" class="mt-3 text-3xl font-bold text-ink"></h3>
+                <p id="assessment-modal-progress" class="mt-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-500"></p>
+                <p id="assessment-modal-question" class="mt-5 text-lg leading-8 text-slate-700"></p>
+
+                <div id="assessment-modal-options" class="assessment-modal__options"></div>
+
+                <div class="assessment-modal__footer">
+                  <p id="assessment-modal-feedback" class="assessment-modal__feedback"></p>
+                  <button
+                    type="button"
+                    id="assessment-modal-next"
+                    class="assessment-button assessment-modal__next inline-flex items-center justify-center rounded-full bg-rose px-7 py-4 text-base font-semibold text-white transition hover:scale-[1.02] hover:bg-[#8E3540]"
+                    disabled
+                  >
+                    Next Question
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -893,47 +1384,363 @@
       document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
 
       const assessmentTrigger = document.getElementById("assessment-trigger");
-      const assessmentForm = document.getElementById("assessment-form");
-      const assessmentReset = document.getElementById("assessment-reset");
-      const assessmentResult = document.getElementById("assessment-result");
-      const resultTitle = document.getElementById("result-title");
-      const resultBody = document.getElementById("result-body");
-      const levelCards = document.querySelectorAll(".level-card");
       const assessmentSection = document.getElementById("assessment-section");
-      const assessmentCards = document.getElementById("assessment-cards");
       const stickyHeader = document.querySelector("header.sticky");
+      const progressNote = document.getElementById("assessment-progress-note");
+      const finalResult = document.getElementById("assessment-final");
+      const finalTitle = document.getElementById("assessment-final-title");
+      const finalBody = document.getElementById("assessment-final-body");
+      const finalMeta = document.getElementById("assessment-final-meta");
+
+      const englishTestCard = document.getElementById("english-test-card");
+      const englishTestTrigger = document.getElementById("english-test-trigger");
+      const englishTestStatus = document.getElementById("english-test-status");
+      const englishTestSummary = document.getElementById("english-test-summary");
+
+      const mathTestCard = document.getElementById("math-test-card");
+      const mathTestTrigger = document.getElementById("math-test-trigger");
+      const mathTestStatus = document.getElementById("math-test-status");
+      const mathTestSummary = document.getElementById("math-test-summary");
+
+      const independenceInputs = document.querySelectorAll('input[name="academic-independence"]');
+      const independenceOptions = document.querySelectorAll(".assessment-independence__option");
+
+      const assessmentModal = document.getElementById("assessment-modal");
+      const modalClose = document.getElementById("assessment-modal-close");
+      const modalKicker = document.getElementById("assessment-modal-kicker");
+      const modalTitle = document.getElementById("assessment-modal-title");
+      const modalProgress = document.getElementById("assessment-modal-progress");
+      const modalQuestion = document.getElementById("assessment-modal-question");
+      const modalOptions = document.getElementById("assessment-modal-options");
+      const modalFeedback = document.getElementById("assessment-modal-feedback");
+      const modalNext = document.getElementById("assessment-modal-next");
+
       let assessmentHighlightTimer;
 
-      const resultMap = {
-        beginner: {
-          title: "Suggested Level: Beginner",
-          body: "A beginner start would give this student the strongest foundation. We would focus on core grammar, essential vocabulary, arithmetic confidence, and guided routines that make learning feel safer and more consistent.",
+      const tests = {
+        english: {
+          label: "English confidence",
+          kicker: "English test",
+          questions: [
+            {
+              prompt: "Which sentence is grammatically correct?",
+              options: [
+                "She go to school every morning.",
+                "She goes to school every morning.",
+                "She going to school every morning.",
+              ],
+              correct: 1,
+            },
+            {
+              prompt: "Choose the word closest in meaning to 'careful'.",
+              options: ["Thoughtless", "Attentive", "Noisy"],
+              correct: 1,
+            },
+            {
+              prompt: "Which reply best completes the question: 'How often do you read in English?'",
+              options: [
+                "I read in English three times a week.",
+                "Because my teacher is kind.",
+                "At the library yesterday.",
+              ],
+              correct: 0,
+            },
+          ],
         },
-        developing: {
-          title: "Suggested Level: Developing / Intermediate",
-          body: "This learner appears ready for an intermediate starting point. The best fit would include stronger writing structure, speaking fluency, multi-step mathematics practice, and more disciplined weekly revision.",
-        },
-        advanced: {
-          title: "Suggested Level: Advanced",
-          body: "This student is likely ready for advanced expectations. The programme can focus on polished academic expression, sharper analytical reasoning, and the higher-level independence needed for ambitious future pathways.",
+        math: {
+          label: "Mathematics readiness",
+          kicker: "Mathematics test",
+          questions: [
+            {
+              prompt: "Solve for x: 2x + 5 = 17",
+              options: ["x = 5", "x = 6", "x = 7"],
+              correct: 1,
+            },
+            {
+              prompt: "A rectangle has length 8 cm and width 3 cm. What is its area?",
+              options: ["11 cm²", "24 cm²", "22 cm²"],
+              correct: 1,
+            },
+            {
+              prompt: "What is 3/4 of 20?",
+              options: ["12", "15", "18"],
+              correct: 1,
+            },
+          ],
         },
       };
 
-      function highlightAssessmentCards() {
-        if (!assessmentCards) {
+      const recommendationMap = {
+        beginner: {
+          title: "Beginner Foundations",
+          body: "This learner would benefit from a foundation-first pathway with close guidance in grammar, essential vocabulary, arithmetic confidence, and carefully structured routines.",
+        },
+        developing: {
+          title: "Developing / Intermediate",
+          body: "This learner appears ready for an intermediate pathway that strengthens accuracy, fluency, multi-step reasoning, and more consistent independent study habits.",
+        },
+        advanced: {
+          title: "Advanced Readiness",
+          body: "This learner is showing strong readiness for advanced expectations, including more polished communication, sharper analytical thinking, and higher levels of academic independence.",
+        },
+      };
+
+      const assessmentState = {
+        unlocked: false,
+        activeTestKey: null,
+        questionIndex: 0,
+        answers: [],
+        scores: {
+          english: null,
+          math: null,
+        },
+        independence: null,
+      };
+
+      function highlightAssessmentPanel() {
+        if (!assessmentSection) {
           return;
         }
 
         window.clearTimeout(assessmentHighlightTimer);
-        assessmentCards.classList.remove("is-guided");
+        assessmentSection.classList.remove("is-guided");
 
         requestAnimationFrame(() => {
-          assessmentCards.classList.add("is-guided");
+          assessmentSection.classList.add("is-guided");
         });
 
         assessmentHighlightTimer = window.setTimeout(() => {
-          assessmentCards.classList.remove("is-guided");
+          assessmentSection.classList.remove("is-guided");
         }, 1800);
+      }
+
+      function getBandFromScore(score, total) {
+        if (score <= Math.floor(total / 3)) {
+          return 1;
+        }
+
+        if (score < total) {
+          return 2;
+        }
+
+        return 3;
+      }
+
+      function updateTestCard(key) {
+        const refs =
+          key === "english"
+            ? {
+                card: englishTestCard,
+                status: englishTestStatus,
+                summary: englishTestSummary,
+                trigger: englishTestTrigger,
+              }
+            : {
+                card: mathTestCard,
+                status: mathTestStatus,
+                summary: mathTestSummary,
+                trigger: mathTestTrigger,
+              };
+
+        const score = assessmentState.scores[key];
+        const total = tests[key].questions.length;
+
+        refs.trigger?.classList.toggle("is-visible", assessmentState.unlocked);
+        refs.card?.classList.toggle("is-ready", assessmentState.unlocked && score === null);
+        refs.card?.classList.toggle("is-completed", score !== null);
+
+        if (!assessmentState.unlocked) {
+          refs.status.textContent = "Locked";
+          refs.summary.textContent = `Unlock the assessment to begin the ${tests[key].label} test.`;
+          return;
+        }
+
+        if (score === null) {
+          refs.status.textContent = "Ready";
+          refs.summary.textContent = `Open the ${tests[key].label.toLowerCase()} test when the learner is ready to answer the guided questions.`;
+          return;
+        }
+
+        refs.status.textContent = "Completed";
+        refs.summary.textContent = `Latest result: ${score}/${total} correct. You can reopen the test if you want to try again.`;
+      }
+
+      function updateIndependenceSelection() {
+        independenceOptions.forEach((option) => {
+          const input = option.querySelector("input");
+          option.classList.toggle("is-selected", Boolean(input?.checked));
+        });
+      }
+
+      function updateProgressNote() {
+        if (!progressNote) {
+          return;
+        }
+
+        if (!assessmentState.unlocked) {
+          progressNote.textContent = 'Click "Test Your Level" above to unlock both test pathways.';
+          return;
+        }
+
+        if (assessmentState.scores.english === null || assessmentState.scores.math === null) {
+          progressNote.textContent = "Complete both test pathways, then choose the Academic Independence metric to generate the final recommendation.";
+          return;
+        }
+
+        if (assessmentState.independence === null) {
+          progressNote.textContent = "Both tests are complete. Select the Academic Independence metric to finalise the recommendation.";
+          return;
+        }
+
+        progressNote.textContent = "Assessment complete. Review the recommended starting point below.";
+      }
+
+      function updateRecommendation() {
+        const englishScore = assessmentState.scores.english;
+        const mathScore = assessmentState.scores.math;
+        const independence = assessmentState.independence;
+
+        if (englishScore === null || mathScore === null || independence === null) {
+          finalResult?.classList.remove("is-visible");
+          return;
+        }
+
+        const englishBand = getBandFromScore(englishScore, tests.english.questions.length);
+        const mathBand = getBandFromScore(mathScore, tests.math.questions.length);
+        const weightedScore =
+          englishBand * 0.4 +
+          mathBand * 0.4 +
+          independence * 0.2;
+
+        const level =
+          weightedScore < 1.75
+            ? "beginner"
+            : weightedScore < 2.45
+              ? "developing"
+              : "advanced";
+
+        finalTitle.textContent = recommendationMap[level].title;
+        finalBody.textContent = recommendationMap[level].body;
+        finalMeta.textContent =
+          `English test: ${englishScore}/${tests.english.questions.length}. Mathematics test: ${mathScore}/${tests.math.questions.length}. Academic Independence: ${independence}/3.`;
+        finalResult?.classList.add("is-visible");
+      }
+
+      function unlockAssessment() {
+        if (!assessmentState.unlocked) {
+          assessmentState.unlocked = true;
+        }
+
+        updateTestCard("english");
+        updateTestCard("math");
+        updateProgressNote();
+      }
+
+      function openModal(testKey) {
+        if (!assessmentState.unlocked || !assessmentModal) {
+          return;
+        }
+
+        assessmentState.activeTestKey = testKey;
+        assessmentState.questionIndex = 0;
+        assessmentState.answers = Array(tests[testKey].questions.length).fill(null);
+
+        renderModalQuestion();
+        assessmentModal.hidden = false;
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeModal() {
+        if (!assessmentModal) {
+          return;
+        }
+
+        assessmentModal.hidden = true;
+        document.body.style.overflow = "";
+        assessmentState.activeTestKey = null;
+        assessmentState.questionIndex = 0;
+        assessmentState.answers = [];
+      }
+
+      function renderModalQuestion() {
+        const test = tests[assessmentState.activeTestKey];
+        if (!test) {
+          return;
+        }
+
+        const question = test.questions[assessmentState.questionIndex];
+        const selectedIndex = assessmentState.answers[assessmentState.questionIndex];
+
+        modalKicker.textContent = test.kicker;
+        modalTitle.textContent = test.label;
+        modalProgress.textContent = `Question ${assessmentState.questionIndex + 1} of ${test.questions.length}`;
+        modalQuestion.textContent = question.prompt;
+        modalFeedback.textContent = selectedIndex === null ? "Choose one answer to continue." : "Answer recorded. Continue when ready.";
+        modalNext.textContent =
+          assessmentState.questionIndex === test.questions.length - 1
+            ? "Finish Test"
+            : "Next Question";
+        modalNext.disabled = selectedIndex === null;
+
+        modalOptions.innerHTML = "";
+
+        question.options.forEach((optionText, index) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className =
+            "assessment-modal__option inline-flex items-center justify-center";
+          button.textContent = optionText;
+
+          if (selectedIndex === index) {
+            button.classList.add("is-selected");
+          }
+
+          button.addEventListener("click", () => {
+            assessmentState.answers[assessmentState.questionIndex] = index;
+            renderModalQuestion();
+          });
+
+          modalOptions.appendChild(button);
+        });
+      }
+
+      function finishActiveTest() {
+        const testKey = assessmentState.activeTestKey;
+        const test = tests[testKey];
+        if (!test) {
+          return;
+        }
+
+        const correctCount = test.questions.reduce((total, question, index) => {
+          return total + Number(assessmentState.answers[index] === question.correct);
+        }, 0);
+
+        assessmentState.scores[testKey] = correctCount;
+        updateTestCard(testKey);
+        updateProgressNote();
+        updateRecommendation();
+        closeModal();
+      }
+
+      function handleModalAdvance() {
+        if (!assessmentState.activeTestKey) {
+          return;
+        }
+
+        const selectedIndex = assessmentState.answers[assessmentState.questionIndex];
+        if (selectedIndex === null) {
+          return;
+        }
+
+        const test = tests[assessmentState.activeTestKey];
+
+        if (assessmentState.questionIndex === test.questions.length - 1) {
+          finishActiveTest();
+          return;
+        }
+
+        assessmentState.questionIndex += 1;
+        renderModalQuestion();
       }
 
       assessmentTrigger?.addEventListener("click", () => {
@@ -950,53 +1757,54 @@
           behavior: "smooth",
         });
 
-        window.setTimeout(highlightAssessmentCards, 420);
+        window.setTimeout(() => {
+          unlockAssessment();
+          highlightAssessmentPanel();
+          englishTestTrigger?.focus({ preventScroll: true });
+        }, 420);
       });
 
-      levelCards.forEach((card) => {
-        const input = card.querySelector("input");
+      englishTestTrigger?.addEventListener("click", () => {
+        openModal("english");
+      });
 
-        input?.addEventListener("change", () => {
-          const groupName = input.name;
-          document.querySelectorAll(`input[name="${groupName}"]`).forEach((groupInput) => {
-            groupInput.closest(".level-card")?.classList.remove("is-selected");
-          });
-          card.classList.add("is-selected");
+      mathTestTrigger?.addEventListener("click", () => {
+        openModal("math");
+      });
+
+      independenceInputs.forEach((input) => {
+        input.addEventListener("change", () => {
+          assessmentState.independence = Number(input.value);
+          updateIndependenceSelection();
+          updateProgressNote();
+          updateRecommendation();
         });
       });
 
-      assessmentForm?.addEventListener("submit", (event) => {
-        event.preventDefault();
+      modalNext?.addEventListener("click", () => {
+        handleModalAdvance();
+      });
 
-        const formData = new FormData(assessmentForm);
-        const english = Number(formData.get("english"));
-        const math = Number(formData.get("math"));
-        const independence = Number(formData.get("independence"));
+      modalClose?.addEventListener("click", () => {
+        closeModal();
+      });
 
-        if (!english || !math || !independence) {
-          resultTitle.textContent = "Please complete all three selections";
-          resultBody.textContent = "Choose one option in each category so the page can suggest an appropriate starting point.";
-          assessmentResult.classList.add("is-visible");
-          return;
+      assessmentModal?.addEventListener("click", (event) => {
+        if (event.target instanceof HTMLElement && event.target.dataset.closeModal === "true") {
+          closeModal();
         }
-
-        const score = english + math + independence;
-        const level =
-          score <= 4 ? "beginner" : score <= 7 ? "developing" : "advanced";
-
-        resultTitle.textContent = resultMap[level].title;
-        resultBody.textContent = resultMap[level].body;
-        assessmentResult.classList.add("is-visible");
-        assessmentResult.scrollIntoView({ behavior: "smooth", block: "nearest" });
       });
 
-      assessmentReset?.addEventListener("click", () => {
-        assessmentForm.reset();
-        levelCards.forEach((card) => card.classList.remove("is-selected"));
-        assessmentResult.classList.remove("is-visible");
-        resultTitle.textContent = "";
-        resultBody.textContent = "";
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !assessmentModal?.hidden) {
+          closeModal();
+        }
       });
+
+      updateTestCard("english");
+      updateTestCard("math");
+      updateIndependenceSelection();
+      updateProgressNote();
     </script>
   </body>
 </html>
