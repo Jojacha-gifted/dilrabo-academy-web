@@ -740,6 +740,10 @@
         gap: 0.85rem;
       }
 
+      .assessment-modal__actions .assessment-button {
+        flex: 1 1 12rem;
+      }
+
       .assessment-modal__feedback {
         min-height: 1.5rem;
         margin: 0;
@@ -794,6 +798,11 @@
 
         .assessment-modal__actions {
           justify-content: stretch;
+        }
+
+        .assessment-modal__actions .assessment-button {
+          width: 100%;
+          min-width: 0;
         }
       }
 
@@ -1490,6 +1499,7 @@
       const DIAGNOSTIC_LENGTH = 30;
       const QUESTIONS_PER_TIER = 10;
       const TIER_KEYS = ["tier1", "tier2", "tier3"];
+      const ASSESSMENT_STORAGE_KEY = "dilrabo-general-assessment-v1";
 
       const assessmentTrigger = document.getElementById("assessment-trigger");
       const assessmentSection = document.getElementById("assessment-section");
@@ -1565,6 +1575,141 @@
           math: null,
         },
       };
+
+      function getAssessmentStorage() {
+        try {
+          return window.sessionStorage;
+        } catch {
+          return null;
+        }
+      }
+
+      function isQuestionEntry(question) {
+        return (
+          question &&
+          typeof question.prompt === "string" &&
+          Array.isArray(question.options) &&
+          question.options.length >= 2 &&
+          question.options.every((option) => typeof option === "string") &&
+          Number.isInteger(question.correct) &&
+          question.correct >= 0 &&
+          question.correct < question.options.length
+        );
+      }
+
+      function sanitiseScore(score) {
+        return Number.isInteger(score) && score >= 0 && score <= DIAGNOSTIC_LENGTH ? score : null;
+      }
+
+      function sanitisePersistedState(rawState) {
+        if (!rawState || typeof rawState !== "object") {
+          return null;
+        }
+
+        const activeTestKey =
+          rawState.activeTestKey === "english" || rawState.activeTestKey === "math"
+            ? rawState.activeTestKey
+            : null;
+        const activeQuestions = Array.isArray(rawState.activeQuestions)
+          ? rawState.activeQuestions.filter(isQuestionEntry).slice(0, DIAGNOSTIC_LENGTH)
+          : [];
+        const shouldResumeModal =
+          Boolean(rawState.shouldResumeModal) &&
+          activeTestKey !== null &&
+          activeQuestions.length === DIAGNOSTIC_LENGTH;
+        const rawAnswers = shouldResumeModal && Array.isArray(rawState.answers) ? rawState.answers : [];
+        const answers = shouldResumeModal
+          ? activeQuestions.map((question, index) => {
+              const answer = rawAnswers[index];
+              return Number.isInteger(answer) && answer >= 0 && answer < question.options.length
+                ? answer
+                : null;
+            })
+          : [];
+        const questionIndex = shouldResumeModal
+          ? Math.min(
+              Math.max(Number.isInteger(rawState.questionIndex) ? rawState.questionIndex : 0, 0),
+              activeQuestions.length - 1
+            )
+          : 0;
+        const scores = {
+          english: sanitiseScore(rawState.scores?.english),
+          math: sanitiseScore(rawState.scores?.math),
+        };
+
+        return {
+          unlocked:
+            Boolean(rawState.unlocked) ||
+            scores.english !== null ||
+            scores.math !== null ||
+            shouldResumeModal,
+          activeTestKey: shouldResumeModal ? activeTestKey : null,
+          activeQuestions: shouldResumeModal ? activeQuestions : [],
+          questionIndex,
+          answers,
+          scores,
+          shouldResumeModal,
+        };
+      }
+
+      function persistAssessmentState() {
+        const storage = getAssessmentStorage();
+        if (!storage) {
+          return;
+        }
+
+        try {
+          storage.setItem(
+            ASSESSMENT_STORAGE_KEY,
+            JSON.stringify({
+              unlocked: assessmentState.unlocked,
+              activeTestKey: assessmentState.activeTestKey,
+              activeQuestions: assessmentState.activeQuestions,
+              questionIndex: assessmentState.questionIndex,
+              answers: assessmentState.answers,
+              scores: assessmentState.scores,
+              shouldResumeModal: !assessmentModal?.hidden,
+            })
+          );
+        } catch {
+          storage.removeItem(ASSESSMENT_STORAGE_KEY);
+        }
+      }
+
+      function restoreAssessmentState() {
+        const storage = getAssessmentStorage();
+        if (!storage) {
+          return;
+        }
+
+        try {
+          const storedState = storage.getItem(ASSESSMENT_STORAGE_KEY);
+          if (!storedState) {
+            return;
+          }
+
+          const parsedState = sanitisePersistedState(JSON.parse(storedState));
+          if (!parsedState) {
+            storage.removeItem(ASSESSMENT_STORAGE_KEY);
+            return;
+          }
+
+          assessmentState.unlocked = parsedState.unlocked;
+          assessmentState.activeTestKey = parsedState.activeTestKey;
+          assessmentState.activeQuestions = parsedState.activeQuestions;
+          assessmentState.questionIndex = parsedState.questionIndex;
+          assessmentState.answers = parsedState.answers;
+          assessmentState.scores = parsedState.scores;
+
+          if (parsedState.shouldResumeModal && assessmentModal) {
+            assessmentModal.hidden = false;
+            document.body.style.overflow = "hidden";
+            renderModalQuestion();
+          }
+        } catch {
+          storage.removeItem(ASSESSMENT_STORAGE_KEY);
+        }
+      }
 
       function shuffleArray(items) {
         const clone = [...items];
@@ -1746,6 +1891,7 @@
         updateTestCard("english");
         updateTestCard("math");
         updateProgressNote();
+        persistAssessmentState();
       }
 
       function openModal(testKey) {
@@ -1755,17 +1901,28 @@
 
         const test = tests[testKey];
         if (!test?.bank) {
+          progressNote.textContent = "The assessment data could not be loaded. Refresh the page and try again.";
           return;
         }
 
-        assessmentState.activeTestKey = testKey;
-        assessmentState.activeQuestions = generateBalancedQuiz(test.bank);
+        try {
+          assessmentState.activeTestKey = testKey;
+          assessmentState.activeQuestions = generateBalancedQuiz(test.bank);
+        } catch {
+          assessmentState.activeTestKey = null;
+          assessmentState.activeQuestions = [];
+          progressNote.textContent = "The assessment could not be prepared. Refresh the page and try again.";
+          persistAssessmentState();
+          return;
+        }
+
         assessmentState.questionIndex = 0;
         assessmentState.answers = Array(assessmentState.activeQuestions.length).fill(null);
 
-        renderModalQuestion();
         assessmentModal.hidden = false;
         document.body.style.overflow = "hidden";
+        renderModalQuestion();
+        persistAssessmentState();
       }
 
       function closeModal() {
@@ -1779,6 +1936,7 @@
         assessmentState.activeQuestions = [];
         assessmentState.questionIndex = 0;
         assessmentState.answers = [];
+        persistAssessmentState();
       }
 
       function renderModalQuestion() {
@@ -1826,6 +1984,7 @@
           button.addEventListener("click", () => {
             assessmentState.answers[assessmentState.questionIndex] = index;
             renderModalQuestion();
+            persistAssessmentState();
           });
 
           modalOptions.appendChild(button);
@@ -1848,6 +2007,7 @@
         updateProgressNote();
         updateRecommendation();
         closeModal();
+        persistAssessmentState();
       }
 
       function handleModalAdvance() {
@@ -1867,6 +2027,7 @@
 
         assessmentState.questionIndex += 1;
         renderModalQuestion();
+        persistAssessmentState();
       }
 
       function handleModalPrevious() {
@@ -1876,6 +2037,7 @@
 
         assessmentState.questionIndex -= 1;
         renderModalQuestion();
+        persistAssessmentState();
       }
 
       assessmentTrigger?.addEventListener("click", () => {
@@ -1940,6 +2102,11 @@
         }
       });
 
+      window.addEventListener("pagehide", () => {
+        persistAssessmentState();
+      });
+
+      restoreAssessmentState();
       updateTestCard("english");
       updateTestCard("math");
       updateProgressNote();
