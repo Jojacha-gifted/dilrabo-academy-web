@@ -2344,15 +2344,7 @@
         const assessmentBtn = event.target.closest(".exam-assessment-btn");
         if (assessmentBtn) {
           event.stopPropagation();
-          const targetTest = assessmentBtn.getAttribute("data-target-test");
-          const examType = targetTest === "english" ? "ielts" : "sat";
-
-          // Trigger URL navigation / address bar update
-          const diagnosticPath = `/diagnostic/${examType}`;
-          window.history.pushState({ path: diagnosticPath }, '', diagnosticPath);
-
-          // Open the new multi-step modal directly
-          openExamModal(examType);
+          openExamSelectionModal();
           return;
         }
 
@@ -2513,6 +2505,72 @@
               ]
             }
           ]
+        },
+        cefr: {
+          title: "CEFR Level Assessment",
+          kicker: "Common European Framework",
+          modules: [
+            {
+              name: "Grammar (A1/A2)",
+              questions: [
+                {
+                  text: "Choose the correct verb: 'She [ ] to school every day.'",
+                  options: ["go", "goes", "going", "gone"],
+                  correct: 1
+                },
+                {
+                  text: "Select the correct pronoun: 'This is my book. Give it to [ ].'",
+                  options: ["I", "me", "he", "they"],
+                  correct: 1
+                }
+              ]
+            },
+            {
+              name: "Vocabulary (B1)",
+              questions: [
+                {
+                  text: "What is the synonym of 'generous'?",
+                  options: ["selfish", "kind/giving", "lazy", "angry"],
+                  correct: 1
+                },
+                {
+                  text: "Complete the phrase: 'Please pay attention [ ] the teacher.'",
+                  options: ["to", "at", "for", "on"],
+                  correct: 0
+                }
+              ]
+            },
+            {
+              name: "Sentence Structure (B2)",
+              questions: [
+                {
+                  text: "Identify the correct sentence:",
+                  options: ["If it will rain, we would stay home.", "If it rains, we will stay home.", "If it rained, we will stay home.", "If it rains, we would have stayed home."],
+                  correct: 1
+                },
+                {
+                  text: "Complete the sentence: 'She avoided [ ] to him about the issue.'",
+                  options: ["speak", "speaking", "to speak", "spoke"],
+                  correct: 1
+                }
+              ]
+            },
+            {
+              name: "Advanced English (C1/C2)",
+              questions: [
+                {
+                  text: "What does the idiom 'barking up the wrong tree' mean?",
+                  options: ["Planting a tree", "Shouting at a dog", "Pursuing a mistaken line of thought", "Singing loudly"],
+                  correct: 2
+                },
+                {
+                  text: "Identify the correct advanced preposition: 'He was vindicated [ ] all charges.'",
+                  options: ["from", "of", "for", "against"],
+                  correct: 1
+                }
+              ]
+            }
+          ]
         }
       };
 
@@ -2520,14 +2578,53 @@
       let currentExamModuleIndex = 0;
       let examAnswers = {};
 
-      const examModal = document.getElementById("exam-assessment-modal");
-      const examKicker = document.getElementById("exam-modal-kicker");
-      const examTitle = document.getElementById("exam-modal-title");
-      const examBody = document.getElementById("exam-modal-body");
-      const examStepText = document.getElementById("exam-modal-step-text");
-      const examNextBtn = document.getElementById("exam-modal-next-btn");
+      let examModal = null;
+      let examKicker = null;
+      let examTitle = null;
+      let examBody = null;
+      let examStepText = null;
+      let examNextBtn = null;
+      let selectionModal = null;
+
+      function initExamModalElements() {
+        if (!examModal) examModal = document.getElementById("exam-assessment-modal");
+        if (!examKicker) examKicker = document.getElementById("exam-modal-kicker");
+        if (!examTitle) examTitle = document.getElementById("exam-modal-title");
+        if (!examBody) examBody = document.getElementById("exam-modal-body");
+        if (!examStepText) examStepText = document.getElementById("exam-modal-step-text");
+        if (!examNextBtn) examNextBtn = document.getElementById("exam-modal-next-btn");
+        if (!selectionModal) selectionModal = document.getElementById("exam-selection-modal");
+      }
+
+      window.openExamSelectionModal = function() {
+        initExamModalElements();
+        if (selectionModal) {
+          selectionModal.hidden = false;
+        }
+        document.body.style.overflow = "hidden";
+        
+        window.history.pushState({ path: "/diagnostic/select" }, '', "/diagnostic/select");
+      };
+
+      window.closeExamSelectionModal = function() {
+        initExamModalElements();
+        if (selectionModal) {
+          selectionModal.hidden = true;
+        }
+        document.body.style.overflow = "";
+      };
+
+      window.selectExamPath = function(path) {
+        closeExamSelectionModal();
+        
+        const diagnosticPath = `/diagnostic/${path}`;
+        window.history.pushState({ path: diagnosticPath }, '', diagnosticPath);
+
+        openExamModal(path);
+      };
 
       window.openExamModal = function(type) {
+        initExamModalElements();
         currentExamType = type;
         currentExamModuleIndex = 0;
         examAnswers = {};
@@ -2535,20 +2632,27 @@
         const data = examQuestions[type];
         if (!data) return;
 
-        examKicker.textContent = data.kicker;
-        examTitle.textContent = data.title;
+        if (examKicker) examKicker.textContent = data.kicker;
+        if (examTitle) examTitle.textContent = data.title;
         
-        examNextBtn.onclick = nextExamModule;
-        examNextBtn.disabled = true;
+        if (examNextBtn) {
+          examNextBtn.onclick = nextExamModule;
+          examNextBtn.disabled = true;
+        }
 
-        examModal.hidden = false;
+        if (examModal) {
+          examModal.hidden = false;
+        }
         document.body.style.overflow = "hidden";
         
         renderExamModule();
       };
 
       window.closeExamModal = function() {
-        examModal.hidden = true;
+        initExamModalElements();
+        if (examModal) {
+          examModal.hidden = true;
+        }
         document.body.style.overflow = "";
         currentExamType = null;
         currentExamModuleIndex = 0;
@@ -2556,6 +2660,7 @@
       };
 
       function renderExamModule() {
+        initExamModalElements();
         const data = examQuestions[currentExamType];
         if (!data) return;
 
@@ -2650,6 +2755,7 @@
       };
 
       function validateExamModuleInput() {
+        initExamModalElements();
         const data = examQuestions[currentExamType];
         if (!data) return;
 
@@ -2678,6 +2784,7 @@
       };
 
       function showExamResults() {
+        initExamModalElements();
         const data = examQuestions[currentExamType];
         if (!data) return;
 
@@ -2728,7 +2835,7 @@
             feedbackTitle = "Language Foundation Recommended";
             feedbackMsg = "To achieve an IELTS band above 6.0, we recommend starting with a short review of General English to strengthen core grammar and speaking fluency.";
           }
-        } else {
+        } else if (currentExamType === "sat") {
           if (scorePercent >= 80) {
             feedbackTitle = "Excellent High-Score Candidate";
             feedbackMsg = "Your reading speed and mathematical accuracy align with a 1500+ target. We recommend our Advanced SAT Prep focusing on Desmos efficiency and syntax pacing.";
@@ -2738,6 +2845,18 @@
           } else {
             feedbackTitle = "Math & Grammar Prep Recommended";
             feedbackMsg = "We suggest consolidating intermediate algebra and grammar milestones before entering standard SAT prep to optimize your score progression.";
+          }
+        } else {
+          // CEFR feedback
+          if (scorePercent >= 85) {
+            feedbackTitle = "CEFR Advanced Level (C1/C2)";
+            feedbackMsg = "Your understanding of advanced grammar, vocabulary idioms, and syntactical logic corresponds to C1/C2 level. We recommend advanced literature and focus tracks.";
+          } else if (scorePercent >= 50) {
+            feedbackTitle = "CEFR Intermediate Level (B1/B2)";
+            feedbackMsg = "You showed solid upper-intermediate reading structure and sentence building. We suggest targeted courses focusing on academic grammar resolution.";
+          } else {
+            feedbackTitle = "CEFR Basic Level (A1/A2)";
+            feedbackMsg = "You understand basic sentence formulas. We recommend reinforcing foundational reading and conversational grammar in our General English course.";
           }
         }
 
@@ -2779,10 +2898,22 @@
         examNextBtn.onclick = closeExamModal;
       }
 
-      // Escape close listener for the exam modal
+      // Check URL query parameters to launch selection modal on page load
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("action") === "select-exam") {
+        window.setTimeout(() => {
+          openExamSelectionModal();
+        }, 150);
+      }
+
+      // Escape close listener for the exam modals
       document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && !examModal.hidden) {
-          closeExamModal();
+        if (event.key === "Escape") {
+          if (selectionModal && !selectionModal.hidden) {
+            closeExamSelectionModal();
+          } else if (examModal && !examModal.hidden) {
+            closeExamModal();
+          }
         }
       });
     </script>
@@ -2843,6 +2974,63 @@
           </span>
           <button type="button" id="exam-modal-next-btn" onclick="nextExamModule()" class="inline-flex items-center justify-center rounded-full bg-ink px-6 py-2.5 text-xs font-semibold text-white transition hover:bg-rose disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-ink" disabled>
             Next Module <i class="fa-solid fa-arrow-right ml-1.5 text-[0.65rem]"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exam Selection Modal -->
+    <div id="exam-selection-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-md transition-all duration-300" hidden>
+      <!-- Backdrop -->
+      <div class="absolute inset-0 cursor-default" onclick="closeExamSelectionModal()"></div>
+      
+      <!-- Dialog Card -->
+      <div class="relative bg-white/95 rounded-[2rem] border border-white/80 max-w-xl w-full p-8 shadow-panel transform transition-all flex flex-col z-10">
+        <!-- Close button -->
+        <button type="button" onclick="closeExamSelectionModal()" class="absolute top-6 right-6 text-slate-400 hover:text-rose transition focus:outline-none" aria-label="Close modal">
+          <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+
+        <!-- Modal Header -->
+        <div class="mb-6 text-center">
+          <p class="text-xs font-bold uppercase tracking-[0.25em] text-rose">Academic Path Selection</p>
+          <h3 class="mt-2 text-2xl font-bold text-ink">Choose your Assessment</h3>
+          <p class="mt-2 text-xs text-slate-500 leading-relaxed max-w-sm mx-auto">Select the diagnostic track you wish to start. Completing the modules helps determine your target path level.</p>
+        </div>
+
+        <!-- Options Container -->
+        <div class="space-y-4">
+          <!-- IELTS Card -->
+          <button type="button" onclick="selectExamPath('ielts')" class="w-full text-left exam-option-card flex items-start p-5 border border-slate-100 hover:border-rose/30 bg-white hover:bg-rose/5 rounded-2xl transition duration-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-rose/30">
+            <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-sand text-rose mr-4">
+              <i class="fa-solid fa-graduation-cap text-lg"></i>
+            </span>
+            <div>
+              <h4 class="text-sm font-bold text-ink">IELTS Assessment</h4>
+              <p class="text-xs text-slate-500 mt-1 leading-relaxed">Test academic reading, listening, essay structures, and interview conversation skills.</p>
+            </div>
+          </button>
+
+          <!-- SAT Card -->
+          <button type="button" onclick="selectExamPath('sat')" class="w-full text-left exam-option-card flex items-start p-5 border border-slate-100 hover:border-rose/30 bg-white hover:bg-rose/5 rounded-2xl transition duration-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-rose/30">
+            <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-mist text-ink mr-4">
+              <i class="fa-solid fa-calculator text-lg"></i>
+            </span>
+            <div>
+              <h4 class="text-sm font-bold text-ink">SAT Digital Assessment</h4>
+              <p class="text-xs text-slate-500 mt-1 leading-relaxed">Evaluate digital SAT algebra, Desmos calculations, and evidence-based reading rules.</p>
+            </div>
+          </button>
+
+          <!-- CEFR Card -->
+          <button type="button" onclick="selectExamPath('cefr')" class="w-full text-left exam-option-card flex items-start p-5 border border-slate-100 hover:border-rose/30 bg-white hover:bg-rose/5 rounded-2xl transition duration-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-rose/30">
+            <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-sand text-rose mr-4">
+              <i class="fa-solid fa-globe text-lg"></i>
+            </span>
+            <div>
+              <h4 class="text-sm font-bold text-ink">CEFR Level Assessment</h4>
+              <p class="text-xs text-slate-500 mt-1 leading-relaxed">Evaluate European standard language metrics, core grammar accuracy, and vocabulary.</p>
+            </div>
           </button>
         </div>
       </div>
