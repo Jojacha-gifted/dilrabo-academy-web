@@ -2574,6 +2574,7 @@
         }
       };
 
+      window.activeAssessment = null;
       let currentExamType = null;
       let currentExamModuleIndex = 0;
       let examAnswers = {};
@@ -2615,6 +2616,7 @@
       };
 
       window.selectExamPath = function(path) {
+        window.activeAssessment = path;
         closeExamSelectionModal();
         
         const diagnosticPath = `/diagnostic/${path}`;
@@ -2625,6 +2627,7 @@
 
       window.openExamModal = function(type) {
         initExamModalElements();
+        window.activeAssessment = type;
         currentExamType = type;
         currentExamModuleIndex = 0;
         examAnswers = {};
