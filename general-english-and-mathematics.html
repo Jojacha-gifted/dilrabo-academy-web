@@ -864,7 +864,7 @@
         box-shadow: 0 20px 40px rgba(162, 62, 72, 0.08);
       }
       .exam-card.is-expanded .exam-card-details {
-        max-height: 15rem;
+        max-height: 20rem;
         margin-top: 1rem;
         opacity: 1;
       }
@@ -1406,6 +1406,11 @@
                     <div><strong>Target Band:</strong> 7.0 - 8.5+</div>
                     <div><strong>Key Focus:</strong> Essay structure rubrics, coherent speaking drills, and full mock testing under real conditions.</div>
                     <div><strong>Course Duration:</strong> 8-12 weeks of customized study.</div>
+                    <div class="pt-2">
+                      <button type="button" class="exam-assessment-btn inline-flex items-center justify-center rounded-full border border-rose/30 bg-white px-4 py-1.5 text-xs font-semibold text-rose transition hover:bg-rose hover:text-white" data-target-test="english">
+                        Take Assessment
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1437,6 +1442,11 @@
                     <div><strong>Target Score:</strong> 1450 - 1600</div>
                     <div><strong>Key Focus:</strong> Desmos calculator efficiency, advanced algebra pacing, and reading syntax/comprehension shortcuts.</div>
                     <div><strong>Course Duration:</strong> 10-14 weeks of intensive practice.</div>
+                    <div class="pt-2">
+                      <button type="button" class="exam-assessment-btn inline-flex items-center justify-center rounded-full border border-rose/30 bg-white px-4 py-1.5 text-xs font-semibold text-rose transition hover:bg-rose hover:text-white" data-target-test="math">
+                        Take Assessment
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2274,6 +2284,29 @@
 
       // Interactive Exam Cards Logic (Accordion & Click-Outside)
       document.addEventListener("click", (event) => {
+        const assessmentBtn = event.target.closest(".exam-assessment-btn");
+        if (assessmentBtn) {
+          event.stopPropagation();
+          const targetTest = assessmentBtn.getAttribute("data-target-test");
+
+          // Smooth scroll to level-check
+          const scrollTarget = document.getElementById("level-check");
+          if (scrollTarget) {
+            scrollTarget.scrollIntoView({ behavior: "smooth" });
+          }
+
+          // Trigger URL navigation / address bar update
+          const diagnosticPath = targetTest === "english" ? "/diagnostic/ielts" : "/diagnostic/sat";
+          window.history.pushState({ path: diagnosticPath }, '', diagnosticPath);
+
+          // Unlock assessment and open modal after a small scroll delay
+          window.setTimeout(() => {
+            unlockAssessment();
+            openModal(targetTest);
+          }, 350);
+          return;
+        }
+
         const toggleBtn = event.target.closest(".exam-details-toggle");
 
         if (toggleBtn) {
