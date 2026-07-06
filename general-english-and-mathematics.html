@@ -1413,9 +1413,9 @@
                 <button type="button" class="inline-flex items-center justify-center rounded-full bg-ink px-5 py-2 text-xs font-semibold text-white transition hover:bg-rose">
                   Enroll Course
                 </button>
-                <span class="flex items-center gap-1 text-[0.72rem] font-bold text-rose uppercase tracking-wider">
+                <button type="button" class="exam-details-toggle flex items-center gap-1 text-[0.72rem] font-bold text-rose uppercase tracking-wider transition hover:text-ink">
                   Details <i class="fa-solid fa-chevron-down text-[0.6rem] transition-transform duration-300"></i>
-                </span>
+                </button>
               </div>
             </article>
 
@@ -1444,9 +1444,9 @@
                 <button type="button" class="inline-flex items-center justify-center rounded-full bg-ink px-5 py-2 text-xs font-semibold text-white transition hover:bg-rose">
                   Enroll Course
                 </button>
-                <span class="flex items-center gap-1 text-[0.72rem] font-bold text-rose uppercase tracking-wider">
+                <button type="button" class="exam-details-toggle flex items-center gap-1 text-[0.72rem] font-bold text-rose uppercase tracking-wider transition hover:text-ink">
                   Details <i class="fa-solid fa-chevron-down text-[0.6rem] transition-transform duration-300"></i>
-                </span>
+                </button>
               </div>
             </article>
 
@@ -1475,9 +1475,9 @@
                 <button type="button" class="inline-flex items-center justify-center rounded-full bg-ink px-5 py-2 text-xs font-semibold text-white transition hover:bg-rose">
                   Enroll Course
                 </button>
-                <span class="flex items-center gap-1 text-[0.72rem] font-bold text-rose uppercase tracking-wider">
+                <button type="button" class="exam-details-toggle flex items-center gap-1 text-[0.72rem] font-bold text-rose uppercase tracking-wider transition hover:text-ink">
                   Details <i class="fa-solid fa-chevron-down text-[0.6rem] transition-transform duration-300"></i>
-                </span>
+                </button>
               </div>
             </article>
 
@@ -2272,23 +2272,29 @@
       updateProgressNote();
       updateRecommendation();
 
-      // Interactive Exam Cards Logic
-      document.querySelectorAll(".exam-card").forEach((card) => {
-        card.addEventListener("click", (event) => {
-          // If the user clicked the enroll button, don't toggle the expansion
-          if (event.target.closest("button")) {
-            return;
-          }
+      // Interactive Exam Cards Logic (Accordion & Click-Outside)
+      document.addEventListener("click", (event) => {
+        const toggleBtn = event.target.closest(".exam-details-toggle");
+
+        if (toggleBtn) {
+          const card = toggleBtn.closest(".exam-card");
           const isExpanded = card.classList.contains("is-expanded");
-          
-          // Collapse all cards first for accordion behavior
+
+          // Collapse all cards
           document.querySelectorAll(".exam-card").forEach((c) => {
             c.classList.remove("is-expanded");
           });
 
+          // Toggle the clicked card
           if (!isExpanded) {
             card.classList.add("is-expanded");
           }
+          return;
+        }
+
+        // Collapse all cards if clicking outside details toggles
+        document.querySelectorAll(".exam-card").forEach((c) => {
+          c.classList.remove("is-expanded");
         });
       });
     </script>
