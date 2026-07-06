@@ -846,6 +846,34 @@
           width: min(100%, 18rem);
         }
       }
+
+      /* International Exam Prep Cards Styling */
+      .exam-card {
+        transition: border-color 260ms ease, transform 260ms ease, box-shadow 260ms ease;
+      }
+      .exam-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(162, 62, 72, 0.28);
+        box-shadow: 0 20px 40px rgba(30, 42, 68, 0.12);
+      }
+      .exam-card.is-expanded {
+        border-color: rgba(162, 62, 72, 0.5);
+        box-shadow: 0 20px 40px rgba(162, 62, 72, 0.08);
+      }
+      .exam-card.is-expanded .exam-card-details {
+        max-height: 15rem;
+        margin-top: 1rem;
+        opacity: 1;
+      }
+      .exam-card.is-expanded .fa-chevron-down {
+        transform: rotate(180deg);
+      }
+      .exam-card-details {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: max-height 300ms ease, opacity 250ms ease, margin-top 300ms ease;
+      }
     </style>
   </head>
   <body class="font-sans text-slate-700 antialiased">
@@ -1330,7 +1358,128 @@
                 </div>
               </div>
             </div>
+        </div>
+      </section>
+
+      <!-- International Exam Preparation Section -->
+      <section id="exam-prep" class="py-16 sm:py-20 bg-slate-50/50 border-t border-b border-slate-100">
+        <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div class="reveal max-w-3xl mb-12">
+            <p class="text-sm font-bold uppercase tracking-[0.3em] text-rose">Exam readiness</p>
+            <h2 class="mt-4 font-display text-4xl font-semibold text-ink sm:text-5xl">
+              International Exam Preparation
+            </h2>
+            <p class="mt-5 text-lg leading-8 text-slate-600">
+              Prepare for critical milestones with strategy-focused lessons, mock testing, and personal feedback built for top-tier academic outcomes.
+            </p>
           </div>
+
+          <!-- Cards Grid -->
+          <div class="grid gap-6 md:grid-cols-3">
+            
+            <!-- IELTS Preparation Card -->
+            <article class="exam-card reveal flex flex-col justify-between rounded-[1.9rem] border border-white/80 bg-white/90 p-8 shadow-sm backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-rose/30 hover:shadow-panel cursor-pointer" data-exam="ielts">
+              <div>
+                <div class="flex items-center justify-between">
+                  <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-sand text-rose">
+                    <i class="fa-solid fa-graduation-cap text-lg"></i>
+                  </span>
+                  <span class="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">English Prep</span>
+                </div>
+                <h3 class="mt-6 text-2xl font-bold text-ink">IELTS Preparation</h3>
+                <p class="mt-3 leading-7 text-slate-600 text-sm">
+                  Achieve your target band score with focused training in academic writing, rapid reading, listening accuracy, and confident interview skills.
+                </p>
+                <div class="exam-card-details max-h-0 overflow-hidden transition-all duration-300 mt-0 opacity-0">
+                  <div class="pt-4 border-t border-slate-100 mt-4 space-y-3 text-xs leading-5 text-slate-600">
+                    <div><strong>Target Band:</strong> 7.0 - 8.5+</div>
+                    <div><strong>Key Focus:</strong> Essay structure rubrics, coherent speaking drills, and full mock testing under real conditions.</div>
+                    <div><strong>Course Duration:</strong> 8-12 weeks of customized study.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                <button type="button" class="inline-flex items-center justify-center rounded-full bg-ink px-5 py-2 text-xs font-semibold text-white transition hover:bg-rose">
+                  Enroll Course
+                </button>
+                <span class="flex items-center gap-1 text-[0.72rem] font-bold text-rose uppercase tracking-wider">
+                  Details <i class="fa-solid fa-chevron-down text-[0.6rem] transition-transform duration-300"></i>
+                </span>
+              </div>
+            </article>
+
+            <!-- SAT Preparation Card -->
+            <article class="exam-card reveal flex flex-col justify-between rounded-[1.9rem] border border-white/80 bg-white/90 p-8 shadow-sm backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-rose/30 hover:shadow-panel cursor-pointer" data-exam="sat">
+              <div>
+                <div class="flex items-center justify-between">
+                  <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-mist text-ink">
+                    <i class="fa-solid fa-calculator text-lg"></i>
+                  </span>
+                  <span class="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">Standardized Test</span>
+                </div>
+                <h3 class="mt-6 text-2xl font-bold text-ink">SAT Digital Prep</h3>
+                <p class="mt-3 leading-7 text-slate-600 text-sm">
+                  Master the digital SAT format with targeted math coaching, evidence-based reading analysis, and adaptive mock testing that aligns with top-tier university expectations.
+                </p>
+                <div class="exam-card-details max-h-0 overflow-hidden transition-all duration-300 mt-0 opacity-0">
+                  <div class="pt-4 border-t border-slate-100 mt-4 space-y-3 text-xs leading-5 text-slate-600">
+                    <div><strong>Target Score:</strong> 1450 - 1600</div>
+                    <div><strong>Key Focus:</strong> Desmos calculator efficiency, advanced algebra pacing, and reading syntax/comprehension shortcuts.</div>
+                    <div><strong>Course Duration:</strong> 10-14 weeks of intensive practice.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                <button type="button" class="inline-flex items-center justify-center rounded-full bg-ink px-5 py-2 text-xs font-semibold text-white transition hover:bg-rose">
+                  Enroll Course
+                </button>
+                <span class="flex items-center gap-1 text-[0.72rem] font-bold text-rose uppercase tracking-wider">
+                  Details <i class="fa-solid fa-chevron-down text-[0.6rem] transition-transform duration-300"></i>
+                </span>
+              </div>
+            </article>
+
+            <!-- CEFR Card -->
+            <article class="exam-card reveal flex flex-col justify-between rounded-[1.9rem] border border-white/80 bg-white/90 p-8 shadow-sm backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-rose/30 hover:shadow-panel cursor-pointer" data-exam="cefr">
+              <div>
+                <div class="flex items-center justify-between">
+                  <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-sand text-rose">
+                    <i class="fa-solid fa-globe text-lg"></i>
+                  </span>
+                  <span class="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">Language Standard</span>
+                </div>
+                <h3 class="mt-6 text-2xl font-bold text-ink">CEFR Level Prep</h3>
+                <p class="mt-3 leading-7 text-slate-600 text-sm">
+                  Strengthen your English proficiency from A1 to C1. Follow a structured pathway aligned with European standards, perfect for local academic requirements and work certifications.
+                </p>
+                <div class="exam-card-details max-h-0 overflow-hidden transition-all duration-300 mt-0 opacity-0">
+                  <div class="pt-4 border-t border-slate-100 mt-4 space-y-3 text-xs leading-5 text-slate-600">
+                    <div><strong>Target Level:</strong> B2 / C1 / C2 Certification</div>
+                    <div><strong>Key Focus:</strong> Advanced grammar precision, structural conversational speech, and systematic vocabulary expansion.</div>
+                    <div><strong>Course Duration:</strong> Flexible modular levels.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                <button type="button" class="inline-flex items-center justify-center rounded-full bg-ink px-5 py-2 text-xs font-semibold text-white transition hover:bg-rose">
+                  Enroll Course
+                </button>
+                <span class="flex items-center gap-1 text-[0.72rem] font-bold text-rose uppercase tracking-wider">
+                  Details <i class="fa-solid fa-chevron-down text-[0.6rem] transition-transform duration-300"></i>
+                </span>
+              </div>
+            </article>
+
+          </div>
+
+          <!-- Diagnostic Test Link -->
+          <div class="mt-12 text-center reveal">
+            <a href="#level-check" class="inline-flex items-center gap-2 text-sm font-semibold text-rose hover:text-ink transition duration-200 decoration-rose hover:underline">
+              <i class="fa-solid fa-circle-question"></i>
+              <span>Not sure which path to take? Take the Diagnostic Test first</span>
+            </a>
+          </div>
+
         </div>
       </section>
 
@@ -2111,6 +2260,26 @@
       updateTestCard("math");
       updateProgressNote();
       updateRecommendation();
+
+      // Interactive Exam Cards Logic
+      document.querySelectorAll(".exam-card").forEach((card) => {
+        card.addEventListener("click", (event) => {
+          // If the user clicked the enroll button, don't toggle the expansion
+          if (event.target.closest("button")) {
+            return;
+          }
+          const isExpanded = card.classList.contains("is-expanded");
+          
+          // Collapse all cards first for accordion behavior
+          document.querySelectorAll(".exam-card").forEach((c) => {
+            c.classList.remove("is-expanded");
+          });
+
+          if (!isExpanded) {
+            card.classList.add("is-expanded");
+          }
+        });
+      });
     </script>
   </body>
 </html>
