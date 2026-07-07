@@ -903,6 +903,42 @@
         background-color: rgba(162, 62, 72, 0.05);
         box-shadow: 0 4px 12px rgba(162, 62, 72, 0.04);
       }
+      .audio-player {
+        display: grid;
+        grid-template-columns: minmax(10rem, 0.35fr) minmax(0, 1fr);
+        gap: 1rem;
+        align-items: center;
+        padding: 1rem;
+        border: 1px solid rgba(30, 42, 68, 0.08);
+        border-radius: 1.2rem;
+        background: rgba(255, 255, 255, 0.82);
+        box-shadow: 0 12px 28px rgba(30, 42, 68, 0.08);
+      }
+      .audio-player__meta strong,
+      .audio-player__label {
+        display: block;
+      }
+      .audio-player__meta strong {
+        color: #1e2a44;
+        font-size: 0.95rem;
+        line-height: 1.35;
+      }
+      .audio-player__label {
+        margin-bottom: 0.3rem;
+        color: #a23e48;
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .audio-player__controls {
+        width: 100%;
+      }
+      @media (max-width: 640px) {
+        .audio-player {
+          grid-template-columns: 1fr;
+        }
+      }
       #exam-prep-menu-modal[hidden],
       #exam-selection-modal[hidden],
       #exam-assessment-modal[hidden] {
@@ -2195,69 +2231,117 @@
         selectExamPath(path);
       };
 
+      // Cambridge 21 listening audio map. Replace these placeholders with your Vercel Blob URLs.
+      const audioMap = {
+        ielts: {
+          cambridge21: {
+            test1: {
+              part1: {
+                title: "Cambridge IELTS 21 - Test 1 Listening Part 1",
+                url: "https://your-vercel-blob-url-here/cambridge-21-test-1-part-1.mp3"
+              },
+              part2: {
+                title: "Cambridge IELTS 21 - Test 1 Listening Part 2",
+                url: "https://your-vercel-blob-url-here/cambridge-21-test-1-part-2.mp3"
+              },
+              part3: {
+                title: "Cambridge IELTS 21 - Test 1 Listening Part 3",
+                url: "https://your-vercel-blob-url-here/cambridge-21-test-1-part-3.mp3"
+              },
+              part4: {
+                title: "Cambridge IELTS 21 - Test 1 Listening Part 4",
+                url: "https://your-vercel-blob-url-here/cambridge-21-test-1-part-4.mp3"
+              }
+            }
+          }
+        }
+      };
+
+      const ieltsListeningSections = ["part1", "part2", "part3", "part4"];
+
+      function getCurrentListeningAudio() {
+        return audioMap.ielts.cambridge21?.[currentTest]?.[currentSection] ?? null;
+      }
+
+      function renderAudioPlayer(audio) {
+        if (!audio?.url) return "";
+
+        return `
+          <div class="audio-player">
+            <div class="audio-player__meta">
+              <span class="audio-player__label">Listening audio</span>
+              <strong>${audio.title}</strong>
+            </div>
+            <audio class="audio-player__controls" controls preload="metadata">
+              <source src="${audio.url}" />
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+        `;
+      }
       // Multi-Step Exam Assessment Modal Logic
       const examQuestions = {
         ielts: {
-          title: "IELTS Prep Assessment",
-          kicker: "Language Diagnostics",
+          title: "IELTS Listening Assessment",
+          kicker: "Cambridge IELTS 21 Diagnostics",
           modules: [
             {
-              name: "Listening",
+              name: "Listening Part 1",
               questions: [
                 {
-                  text: "Listen to the clip (audio text representation): 'The academic lecture is scheduled for room 302 at 10:15 AM.' What room is the lecture in?",
-                  options: ["Room 202", "Room 302", "Room 101", "Room 312"],
-                  correct: 1
+                  text: "Listen to Cambridge IELTS 21 Test 1 Part 1. What is the main purpose of the conversation?",
+                  options: ["Arranging a service", "Giving a lecture", "Debating a policy", "Explaining exam rules"],
+                  correct: 0
                 },
                 {
-                  text: "A speaker says: 'I'd like to book a flight to Paris, leaving on the 14th and returning on the 21st.' How many days is the trip?",
-                  options: ["5 days", "7 days", "8 days", "10 days"],
-                  correct: 1
+                  text: "In Part 1, what type of detail should you listen for most carefully?",
+                  options: ["Personal details and numbers", "Abstract theories", "Essay structure", "Map directions only"],
+                  correct: 0
                 }
               ]
             },
             {
-              name: "Reading",
+              name: "Listening Part 2",
               questions: [
                 {
-                  text: "Read the passage: 'Although geothermal energy is clean, initial drilling costs are extremely high.' What is the main drawback mentioned?",
-                  options: ["Air pollution", "Lack of capacity", "Drilling expenses", "Environmental damage"],
-                  correct: 2
+                  text: "Listen to Cambridge IELTS 21 Test 1 Part 2. What is the speaker mainly describing?",
+                  options: ["A public place or service", "A university seminar", "A private interview", "A grammar rule"],
+                  correct: 0
                 },
                 {
-                  text: "Passage: 'Cognitive load refers to the amount of working memory resources used.' What memory does cognitive load refer to?",
-                  options: ["Long-term memory", "Working memory", "Sensory memory", "Emotional memory"],
-                  correct: 1
+                  text: "In Part 2, which skill is most useful for following the answer sequence?",
+                  options: ["Tracking signposting language", "Ignoring names", "Reading the transcript", "Choosing the longest option"],
+                  correct: 0
                 }
               ]
             },
             {
-              name: "Writing",
+              name: "Listening Part 3",
               questions: [
                 {
-                  text: "Identify the most academic way to rephrase: 'A lot of people think that...'",
-                  options: ["A bunch of folk assume...", "It is widely believed that...", "Many guys reckon...", "People generally say that..."],
-                  correct: 1
+                  text: "Listen to Cambridge IELTS 21 Test 1 Part 3. What kind of interaction is typical in this section?",
+                  options: ["An academic discussion", "A weather forecast", "A single-word spelling task", "A shop announcement"],
+                  correct: 0
                 },
                 {
-                  text: "In IELTS Writing Task 1, what should you avoid doing?",
-                  options: ["Reporting statistical data", "Grouping similar data trends", "Giving your personal opinion", "Comparing different categories"],
-                  correct: 2
+                  text: "In Part 3, what should you pay attention to when speakers disagree or change their minds?",
+                  options: ["Final decisions and corrected opinions", "Only the first opinion", "Background music", "Words you already know"],
+                  correct: 0
                 }
               ]
             },
             {
-              name: "Speaking",
+              name: "Listening Part 4",
               questions: [
                 {
-                  text: "Which response shows the best lexical resource for the question: 'Do you like reading?'",
-                  options: ["Yes, I like reading a lot.", "Yes, I am an avid reader and find historical fiction particularly engrossing.", "Reading is good.", "No, it is boring."],
-                  correct: 1
+                  text: "Listen to Cambridge IELTS 21 Test 1 Part 4. What format is most common in this section?",
+                  options: ["An academic monologue", "A casual phone call", "A job interview", "A two-person debate"],
+                  correct: 0
                 },
                 {
-                  text: "What is the best way to handle a question if you didn't understand the examiner's word?",
-                  options: ["Stay silent", "Make up an answer", "Politely ask for clarification (e.g., 'Could you please explain what you mean by X?')", "Cry"],
-                  correct: 2
+                  text: "In Part 4, which strategy helps most with note-completion questions?",
+                  options: ["Predicting word type before listening", "Waiting until the end to read questions", "Writing full sentences", "Ignoring headings"],
+                  correct: 0
                 }
               ]
             }
@@ -2400,6 +2484,8 @@
       window.activeAssessment = null;
       let currentExamType = null;
       let currentExamModuleIndex = 0;
+      let currentTest = "test1";
+      let currentSection = null;
       let examAnswers = {};
 
       let examModal = null;
@@ -2453,6 +2539,8 @@
         window.activeAssessment = type;
         currentExamType = type;
         currentExamModuleIndex = 0;
+        currentTest = "test1";
+        currentSection = type === "ielts" ? ieltsListeningSections[0] : null;
         examAnswers = {};
 
         const data = examQuestions[type];
@@ -2482,6 +2570,8 @@
         document.body.style.overflow = "";
         currentExamType = null;
         currentExamModuleIndex = 0;
+        currentTest = "test1";
+        currentSection = null;
         examAnswers = {};
       };
 
@@ -2491,6 +2581,8 @@
         if (!data) return;
 
         const currentModule = data.modules[currentExamModuleIndex];
+        currentSection = currentExamType === "ielts" ? ieltsListeningSections[currentExamModuleIndex] : null;
+        const currentAudio = getCurrentListeningAudio();
         examStepText.textContent = currentExamModuleIndex + 1;
 
         // Update Stepper circles & lines UI
@@ -2529,7 +2621,7 @@
         }
 
         // Render Questions
-        let html = `<div class="space-y-6">`;
+        let html = `<div class="space-y-6">${renderAudioPlayer(currentAudio)}`;
         currentModule.questions.forEach((q, qIdx) => {
           const answerKey = `${currentExamModuleIndex}-${qIdx}`;
           const currentSelected = examAnswers[answerKey];
@@ -2653,13 +2745,13 @@
         if (currentExamType === "ielts") {
           if (scorePercent >= 80) {
             feedbackTitle = "Outstanding Core Prep Candidate";
-            feedbackMsg = "You demonstrated strong English fundamentals across all skills. We recommend our IELTS Focus program targeting a 7.5 - 8.5+ band score.";
+            feedbackMsg = "You demonstrated strong listening accuracy across all four sections. We recommend our IELTS Focus program targeting a 7.5 - 8.5+ band score.";
           } else if (scorePercent >= 50) {
             feedbackTitle = "Ready for Intermediate Prep";
-            feedbackMsg = "You possess solid language skills but need strategy refinement, writing rubrics structure, and pacing practice. We recommend starting with our 8-12 week course.";
+            feedbackMsg = "You have solid listening skills but need more work with distractors, section pacing, and answer prediction. We recommend starting with our 8-12 week course.";
           } else {
             feedbackTitle = "Language Foundation Recommended";
-            feedbackMsg = "To achieve an IELTS band above 6.0, we recommend starting with a short review of General English to strengthen core grammar and speaking fluency.";
+            feedbackMsg = "To achieve an IELTS band above 6.0, we recommend focused listening practice with short review of core vocabulary and question types.";
           }
         } else if (currentExamType === "sat") {
           if (scorePercent >= 80) {

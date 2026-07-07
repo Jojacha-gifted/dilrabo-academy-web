@@ -384,7 +384,7 @@ function HomePage({ navigate, linkProps }) {
 }
 
 function CoursePage({ navigate, linkProps }) {
-  const test1Part1Audio = audioMap.ielts.test1.part1
+  const test1Part1Audio = audioMap.ielts.cambridge21.test1.part1
 
   return (
     <div className="page-shell page-shell--course">
