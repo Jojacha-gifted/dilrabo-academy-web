@@ -504,7 +504,12 @@ function CoursePage({ navigate, linkProps }) {
             <h2>Prepared space for guides, worksheets, and downloadable support.</h2>
           </div>
 
-          <AudioPlayer src={test1Part1Audio.url} title={test1Part1Audio.title} />
+          <AudioPlayer
+            src={test1Part1Audio.url}
+            title={test1Part1Audio.title}
+            startTime={test1Part1Audio.startTime}
+            endTime={test1Part1Audio.endTime}
+          />
 
           <div className="materials-grid">
             {materials.map((item) => (

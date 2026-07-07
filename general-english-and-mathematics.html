@@ -2231,26 +2231,51 @@
         selectExamPath(path);
       };
 
+      const IELTS_QUESTIONS_PER_PART = 10;
+      const IELTS_TOTAL_QUESTIONS = 40;
+
       // Cambridge 21 listening audio map. Replace these placeholders with your Vercel Blob URLs.
+      // If you use one full 40-question track, set fullTest.url and add each part's startTime/endTime.
+      // If you use separate tracks, keep the part-level urls and leave endTime as null.
       const audioMap = {
         ielts: {
           cambridge21: {
             test1: {
+              fullTest: {
+                title: "Cambridge IELTS 21 - Test 1 Full Listening Test",
+                url: ""
+              },
               part1: {
                 title: "Cambridge IELTS 21 - Test 1 Listening Part 1",
-                url: "https://your-vercel-blob-url-here/cambridge-21-test-1-part-1.mp3"
+                url: "https://your-vercel-blob-url-here/cambridge-21-test-1-part-1.mp3",
+                questionStart: 1,
+                questionEnd: 10,
+                startTime: 0,
+                endTime: null
               },
               part2: {
                 title: "Cambridge IELTS 21 - Test 1 Listening Part 2",
-                url: "https://your-vercel-blob-url-here/cambridge-21-test-1-part-2.mp3"
+                url: "https://your-vercel-blob-url-here/cambridge-21-test-1-part-2.mp3",
+                questionStart: 11,
+                questionEnd: 20,
+                startTime: null,
+                endTime: null
               },
               part3: {
                 title: "Cambridge IELTS 21 - Test 1 Listening Part 3",
-                url: "https://your-vercel-blob-url-here/cambridge-21-test-1-part-3.mp3"
+                url: "https://your-vercel-blob-url-here/cambridge-21-test-1-part-3.mp3",
+                questionStart: 21,
+                questionEnd: 30,
+                startTime: null,
+                endTime: null
               },
               part4: {
                 title: "Cambridge IELTS 21 - Test 1 Listening Part 4",
-                url: "https://your-vercel-blob-url-here/cambridge-21-test-1-part-4.mp3"
+                url: "https://your-vercel-blob-url-here/cambridge-21-test-1-part-4.mp3",
+                questionStart: 31,
+                questionEnd: 40,
+                startTime: null,
+                endTime: null
               }
             }
           }
@@ -2259,25 +2284,131 @@
 
       const ieltsListeningSections = ["part1", "part2", "part3", "part4"];
 
+      function getIeltsPartMeta(partIndex) {
+        const partNumber = partIndex + 1;
+        const questionStart = partIndex * IELTS_QUESTIONS_PER_PART + 1;
+        const questionEnd = Math.min(questionStart + IELTS_QUESTIONS_PER_PART - 1, IELTS_TOTAL_QUESTIONS);
+
+        return {
+          partNumber,
+          partKey: `part${partNumber}`,
+          questionStart,
+          questionEnd
+        };
+      }
+
       function getCurrentListeningAudio() {
-        return audioMap.ielts.cambridge21?.[currentTest]?.[currentSection] ?? null;
+        if (currentExamType !== "ielts" || currentSection === null) return null;
+
+        const testAudio = audioMap.ielts.cambridge21?.[currentTest];
+        const partAudio = testAudio?.[currentSection];
+        const fullTestAudio = testAudio?.fullTest;
+        const fallbackMeta = getIeltsPartMeta(currentExamModuleIndex);
+
+        if (!partAudio) return null;
+
+        const audio = partAudio.url
+          ? partAudio
+          : fullTestAudio?.url
+            ? { ...partAudio, url: fullTestAudio.url, title: partAudio.title || fullTestAudio.title }
+            : null;
+
+        if (!audio?.url) return null;
+
+        return {
+          ...audio,
+          partKey: currentSection,
+          partNumber: fallbackMeta.partNumber,
+          questionStart: partAudio.questionStart ?? fallbackMeta.questionStart,
+          questionEnd: partAudio.questionEnd ?? fallbackMeta.questionEnd,
+          startTime: Number.isFinite(partAudio.startTime) ? partAudio.startTime : 0,
+          endTime: Number.isFinite(partAudio.endTime) ? partAudio.endTime : null
+        };
       }
 
       function renderAudioPlayer(audio) {
         if (!audio?.url) return "";
 
+        const startTime = Number.isFinite(audio.startTime) ? audio.startTime : 0;
+        const endTime = Number.isFinite(audio.endTime) ? audio.endTime : "";
+        const questionRange = `Questions ${audio.questionStart}-${audio.questionEnd}`;
+
         return `
           <div class="audio-player">
             <div class="audio-player__meta">
-              <span class="audio-player__label">Listening audio</span>
+              <span class="audio-player__label">Listening audio - ${questionRange}</span>
               <strong>${audio.title}</strong>
             </div>
-            <audio class="audio-player__controls" controls preload="metadata">
+            <audio
+              class="audio-player__controls"
+              controls
+              preload="metadata"
+              data-segmented-audio="true"
+              data-part-key="${audio.partKey}"
+              data-start-time="${startTime}"
+              data-end-time="${endTime}"
+            >
               <source src="${audio.url}" />
               Your browser does not support the audio element.
             </audio>
           </div>
         `;
+      }
+
+      function getCurrentExamAudioState() {
+        const audio = examBody?.querySelector("audio[data-segmented-audio]");
+        if (!audio) return null;
+
+        return {
+          partKey: audio.dataset.partKey,
+          currentTime: audio.currentTime,
+          wasPlaying: !audio.paused
+        };
+      }
+
+      function setupSegmentedAudioPlayers(container, restoreState = null) {
+        container?.querySelectorAll("audio[data-segmented-audio]").forEach((audio) => {
+          const segmentStart = Number(audio.dataset.startTime || 0);
+          const parsedEnd = Number(audio.dataset.endTime);
+          const segmentEnd = Number.isFinite(parsedEnd) && audio.dataset.endTime !== "" ? parsedEnd : null;
+
+          const syncToSegmentStart = () => {
+            if (audio.currentTime < segmentStart || (segmentEnd && audio.currentTime >= segmentEnd)) {
+              audio.currentTime = segmentStart;
+            }
+          };
+
+          const stopAtSegmentEnd = () => {
+            if (segmentEnd && audio.currentTime >= segmentEnd) {
+              audio.pause();
+              audio.currentTime = segmentEnd;
+            }
+          };
+
+          audio.addEventListener("loadedmetadata", () => {
+            if (restoreState?.partKey === audio.dataset.partKey) {
+              const restoreTime = Math.max(segmentStart, restoreState.currentTime || segmentStart);
+              audio.currentTime = segmentEnd ? Math.min(restoreTime, segmentEnd) : restoreTime;
+
+              if (restoreState.wasPlaying) {
+                audio.play().catch(() => {});
+              }
+            } else {
+              syncToSegmentStart();
+            }
+          });
+          audio.addEventListener("play", syncToSegmentStart);
+          audio.addEventListener("timeupdate", stopAtSegmentEnd);
+        });
+      }
+
+      function pauseExamAudio() {
+        examBody?.querySelectorAll("audio").forEach((audio) => audio.pause());
+      }
+
+      function getExamModuleQuestions(module) {
+        const questions = Array.isArray(module?.questions) ? module.questions : [];
+        return currentExamType === "ielts" ? questions.slice(0, IELTS_QUESTIONS_PER_PART) : questions;
       }
       // Multi-Step Exam Assessment Modal Logic
       const examQuestions = {
@@ -2564,6 +2695,7 @@
 
       window.closeExamModal = function() {
         initExamModalElements();
+        pauseExamAudio();
         if (examModal) {
           examModal.hidden = true;
         }
@@ -2575,12 +2707,15 @@
         examAnswers = {};
       };
 
-      function renderExamModule() {
+      function renderExamModule(options = {}) {
         initExamModalElements();
         const data = examQuestions[currentExamType];
         if (!data) return;
 
+        const restoreAudioState = options.preserveAudio ? getCurrentExamAudioState() : null;
         const currentModule = data.modules[currentExamModuleIndex];
+        const currentQuestions = getExamModuleQuestions(currentModule);
+        const ieltsPartMeta = currentExamType === "ielts" ? getIeltsPartMeta(currentExamModuleIndex) : null;
         currentSection = currentExamType === "ielts" ? ieltsListeningSections[currentExamModuleIndex] : null;
         const currentAudio = getCurrentListeningAudio();
         examStepText.textContent = currentExamModuleIndex + 1;
@@ -2622,14 +2757,14 @@
 
         // Render Questions
         let html = `<div class="space-y-6">${renderAudioPlayer(currentAudio)}`;
-        currentModule.questions.forEach((q, qIdx) => {
+        currentQuestions.forEach((q, qIdx) => {
           const answerKey = `${currentExamModuleIndex}-${qIdx}`;
           const currentSelected = examAnswers[answerKey];
 
           html += `
             <div class="space-y-3">
               <p class="text-sm font-bold text-ink leading-relaxed">
-                Q${qIdx + 1}. ${q.text}
+                Q${ieltsPartMeta ? ieltsPartMeta.questionStart + qIdx : qIdx + 1}. ${q.text}
               </p>
               <div class="grid gap-3 sm:grid-cols-1">
           `;
@@ -2653,6 +2788,7 @@
         });
         html += `</div>`;
         examBody.innerHTML = html;
+        setupSegmentedAudioPlayers(examBody, restoreAudioState);
 
         // Button text configuration
         if (currentExamModuleIndex === 3) {
@@ -2667,9 +2803,7 @@
       window.selectExamOption = function(qIdx, optIdx) {
         const answerKey = `${currentExamModuleIndex}-${qIdx}`;
         examAnswers[answerKey] = optIdx;
-        
-        // Re-render questions within module to show selection immediately
-        renderExamModule();
+        renderExamModule({ preserveAudio: true });
       };
 
       function validateExamModuleInput() {
@@ -2678,9 +2812,10 @@
         if (!data) return;
 
         const currentModule = data.modules[currentExamModuleIndex];
+        const currentQuestions = getExamModuleQuestions(currentModule);
         let allAnswered = true;
 
-        for (let qIdx = 0; qIdx < currentModule.questions.length; qIdx++) {
+        for (let qIdx = 0; qIdx < currentQuestions.length; qIdx++) {
           const answerKey = `${currentExamModuleIndex}-${qIdx}`;
           if (examAnswers[answerKey] === undefined || examAnswers[answerKey] === null) {
             allAnswered = false;
@@ -2703,6 +2838,7 @@
 
       function showExamResults() {
         initExamModalElements();
+        pauseExamAudio();
         const data = examQuestions[currentExamType];
         if (!data) return;
 
@@ -2711,10 +2847,11 @@
         let breakdownHtml = `<div class="grid gap-3 sm:grid-cols-2 mt-4">`;
 
         data.modules.forEach((mod, modIdx) => {
-          let modTotal = mod.questions.length;
+          const moduleQuestions = getExamModuleQuestions(mod);
+          let modTotal = moduleQuestions.length;
           let modCorrect = 0;
 
-          mod.questions.forEach((q, qIdx) => {
+          moduleQuestions.forEach((q, qIdx) => {
             const answerKey = `${modIdx}-${qIdx}`;
             if (examAnswers[answerKey] === q.correct) {
               modCorrect++;
