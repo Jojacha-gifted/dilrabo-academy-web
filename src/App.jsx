@@ -6,6 +6,8 @@ import digitalImg from './assets/image3.jpeg'
 import founderImg from './assets/photo.jpg'
 import libraryImg from './assets/str.jpeg'
 import studentImg from './assets/student.jpeg'
+import AudioPlayer from './components/AudioPlayer.jsx'
+import { audioMap } from './data/audioMap.js'
 import './App.css'
 
 const HOME_PATH = '/'
@@ -342,6 +344,8 @@ function HomePage({ navigate, linkProps }) {
 }
 
 function CoursePage({ navigate, linkProps }) {
+  const test1Part1Audio = audioMap.ielts.test1.part1
+
   return (
     <div className="page-shell page-shell--course">
       <header className="site-header">
@@ -459,6 +463,8 @@ function CoursePage({ navigate, linkProps }) {
             <span className="eyebrow">Study materials</span>
             <h2>Prepared space for guides, worksheets, and downloadable support.</h2>
           </div>
+
+          <AudioPlayer src={test1Part1Audio.url} title={test1Part1Audio.title} />
 
           <div className="materials-grid">
             {materials.map((item) => (
