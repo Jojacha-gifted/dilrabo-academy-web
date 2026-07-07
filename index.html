@@ -133,6 +133,66 @@
       .admissions-details-modal[hidden] {
         display: none !important;
       }
+      .chess-bot-modal[hidden] {
+        display: none !important;
+      }
+
+      .chess-board {
+        display: grid;
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+        width: min(100%, 28rem);
+        aspect-ratio: 1;
+        overflow: hidden;
+        border: 1px solid rgba(30, 42, 68, 0.16);
+        border-radius: 1.25rem;
+        box-shadow: 0 18px 42px rgba(30, 42, 68, 0.14);
+      }
+
+      .chess-board-square {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 0;
+        color: #1e2a44;
+        cursor: pointer;
+        font-size: clamp(1.35rem, 7vw, 2.45rem);
+        line-height: 1;
+        transition:
+          box-shadow 160ms ease,
+          transform 160ms ease,
+          background-color 160ms ease;
+      }
+
+      .chess-board-square:nth-child(16n + 1),
+      .chess-board-square:nth-child(16n + 3),
+      .chess-board-square:nth-child(16n + 5),
+      .chess-board-square:nth-child(16n + 7),
+      .chess-board-square:nth-child(16n + 10),
+      .chess-board-square:nth-child(16n + 12),
+      .chess-board-square:nth-child(16n + 14),
+      .chess-board-square:nth-child(16n + 16) {
+        background: #f6f0e8;
+      }
+
+      .chess-board-square:nth-child(16n + 2),
+      .chess-board-square:nth-child(16n + 4),
+      .chess-board-square:nth-child(16n + 6),
+      .chess-board-square:nth-child(16n + 8),
+      .chess-board-square:nth-child(16n + 9),
+      .chess-board-square:nth-child(16n + 11),
+      .chess-board-square:nth-child(16n + 13),
+      .chess-board-square:nth-child(16n + 15) {
+        background: #d5b67a;
+      }
+
+      .chess-board-square:hover,
+      .chess-board-square.is-selected {
+        box-shadow: inset 0 0 0 3px rgba(162, 62, 72, 0.52);
+      }
+
+      .chess-board-square.is-bot-move {
+        box-shadow: inset 0 0 0 3px rgba(30, 42, 68, 0.34);
+      }
 
       html[lang="bn"] body {
         font-family: "Hind Siliguri", sans-serif;
@@ -573,15 +633,25 @@
               </div>
             </article>
 
-            <article class="reveal flex h-full flex-col rounded-[1.9rem] border border-white/70 bg-white/85 p-8 shadow-sm backdrop-blur">
+            <article class="reveal flex h-full flex-col rounded-[1.9rem] border border-white/70 bg-white/85 p-8 shadow-sm backdrop-blur transition duration-300 hover:-translate-y-1.5 hover:border-rose/35 hover:shadow-panel">
               <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-mist text-ink">
                 <i class="fa-solid fa-chess-knight text-xl"></i>
               </span>
-              <p class="mt-6 text-sm font-bold uppercase tracking-[0.28em] text-rose" data-i18n="programs.card4Label">Cognitive Development</p>
-              <h3 class="mt-3 text-2xl font-bold text-ink" data-i18n="programs.card4Title">Competitive Chess Coaching</h3>
-              <p class="mt-4 leading-7 text-slate-600" data-i18n="programs.card4Body">
-                Chess training sharpens concentration, strategic thinking, and disciplined decision-making that supports wider academic growth.
-              </p>
+              <div class="mt-6 flex flex-1 flex-col">
+                <p class="text-sm font-bold uppercase tracking-[0.28em] text-rose" data-i18n="programs.card4Label">Cognitive Development</p>
+                <h3 class="mt-3 text-2xl font-bold text-ink" data-i18n="programs.card4Title">Competitive Chess Coaching</h3>
+                <p class="mt-4 leading-7 text-slate-600" data-i18n="programs.card4Body">
+                  Chess training sharpens concentration, strategic thinking, and disciplined decision-making that supports wider academic growth.
+                </p>
+                <button
+                  type="button"
+                  class="mt-auto inline-flex w-full items-center justify-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-rose focus:outline-none focus:ring-2 focus:ring-rose/40"
+                  onclick="ChessBotModal.open()"
+                >
+                  <span data-i18n="programs.card4Cta">Play Against Bot</span>
+                  <i class="fa-solid fa-chess-board text-xs"></i>
+                </button>
+              </div>
             </article>
 
             <article class="reveal flex h-full flex-col rounded-[1.9rem] border border-white/70 bg-white/85 p-8 shadow-sm backdrop-blur">
@@ -913,6 +983,68 @@
         </div>
       </div>
     </div>
+
+    <div
+      id="chess-bot-modal"
+      class="chess-bot-modal fixed inset-0 z-[70] grid place-items-center bg-ink/55 px-4 py-8 backdrop-blur-md"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="chess-bot-modal-title"
+      data-modal-name="ChessBotModal"
+      hidden
+    >
+      <button
+        type="button"
+        class="absolute inset-0 cursor-default"
+        aria-label="Close chess bot"
+        onclick="ChessBotModal.close()"
+      ></button>
+
+      <div class="relative max-h-[92vh] w-full max-w-5xl overflow-y-auto rounded-[2rem] border border-white/80 bg-white/95 p-5 shadow-panel sm:p-8">
+        <button
+          type="button"
+          class="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-ink transition hover:border-rose/40 hover:text-rose focus:outline-none focus:ring-2 focus:ring-rose/30"
+          aria-label="Close chess bot"
+          data-chess-modal-close
+          onclick="ChessBotModal.close()"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="pr-12">
+          <p class="text-xs font-bold uppercase tracking-[0.28em] text-rose" data-i18n="chessBotModal.label">ChessBotModal</p>
+          <h3 id="chess-bot-modal-title" class="mt-3 font-display text-4xl font-semibold leading-tight text-ink" data-i18n="chessBotModal.title">
+            Practice a calm game against the academy bot
+          </h3>
+          <p class="mt-5 max-w-3xl text-base leading-8 text-slate-600" data-i18n="chessBotModal.body">
+            Select a piece, choose a target square, and use the board as a training space for focus, planning, and disciplined decisions.
+          </p>
+        </div>
+
+        <div class="mt-7 grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
+          <div class="flex justify-center rounded-[1.5rem] border border-slate-100 bg-sand/45 p-3 sm:p-5">
+            <div class="chess-board" data-chess-board aria-label="Interactive chess board"></div>
+          </div>
+
+          <aside class="rounded-[1.5rem] border border-slate-100 bg-white p-5 shadow-sm">
+            <p class="text-xs font-bold uppercase tracking-[0.22em] text-rose" data-i18n="chessBotModal.panelLabel">Training board</p>
+            <p class="mt-3 text-sm leading-6 text-slate-600" data-i18n="chessBotModal.panelBody">
+              This board is ready for the chess engine layer. The current scaffold supports square selection, student moves, and bot response feedback.
+            </p>
+
+            <div class="mt-5 rounded-[1.1rem] bg-mist/70 p-4">
+              <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500" data-i18n="chessBotModal.statusLabel">Status</p>
+              <p class="mt-2 text-sm font-semibold text-ink" data-chess-status data-i18n="chessBotModal.statusReady">White to move. Select a piece.</p>
+            </div>
+
+            <div class="mt-5 grid gap-3">
+              <button type="button" class="inline-flex items-center justify-center rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white transition hover:bg-rose" onclick="ChessBotModal.reset()" data-i18n="chessBotModal.resetCta">New game</button>
+              <button type="button" class="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-ink transition hover:border-rose/40 hover:text-rose" onclick="ChessBotModal.botMove()" data-i18n="chessBotModal.botCta">Let bot move</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
     <script>
       const supportedLanguages = ["en", "uz", "bn", "ru"];
@@ -1021,6 +1153,7 @@
             card4Title: "Competitive Chess Coaching",
             card4Body:
               "Chess training sharpens concentration, strategic thinking, and disciplined decision-making that supports wider academic growth.",
+            card4Cta: "Play Against Bot",
             card5Label: "Research Services",
             card5Title: "Independent Research Support and Academic Project Execution",
             card5Body:
@@ -1042,6 +1175,22 @@
               "Students practice thoughtful answers and calm presentation for high-stakes conversations.",
             footer: "Best for students preparing for competitive undergraduate pathways.",
             cta: "Contact admissions support",
+          },
+          chessBotModal: {
+            label: "ChessBotModal",
+            title: "Practice a calm game against the academy bot",
+            body:
+              "Select a piece, choose a target square, and use the board as a training space for focus, planning, and disciplined decisions.",
+            panelLabel: "Training board",
+            panelBody:
+              "This board is ready for the chess engine layer. The current scaffold supports square selection, student moves, and bot response feedback.",
+            statusLabel: "Status",
+            statusReady: "White to move. Select a piece.",
+            statusSelected: "Piece selected. Choose a target square.",
+            statusMoved: "Move recorded. Bot is thinking.",
+            statusBot: "Bot moved. White to move.",
+            resetCta: "New game",
+            botCta: "Let bot move",
           },
           gallery: {
             label: "Why Choose Us",
@@ -1709,6 +1858,126 @@
         document.querySelectorAll(".language-switcher").forEach((switcher) => closeLanguageMenu(switcher));
       };
       const admissionsDetailsModal = document.getElementById("admissions-details-modal");
+      const chessBotModal = document.getElementById("chess-bot-modal");
+      const chessBoardElement = document.querySelector("[data-chess-board]");
+      const chessStatusElement = document.querySelector("[data-chess-status]");
+      const chessPieces = {
+        blackRook: "\u265c",
+        blackKnight: "\u265e",
+        blackBishop: "\u265d",
+        blackQueen: "\u265b",
+        blackKing: "\u265a",
+        blackPawn: "\u265f",
+        whiteRook: "\u2656",
+        whiteKnight: "\u2658",
+        whiteBishop: "\u2657",
+        whiteQueen: "\u2655",
+        whiteKing: "\u2654",
+        whitePawn: "\u2659",
+      };
+      const chessWhitePieces = new Set([
+        chessPieces.whitePawn,
+        chessPieces.whiteRook,
+        chessPieces.whiteKnight,
+        chessPieces.whiteBishop,
+        chessPieces.whiteQueen,
+        chessPieces.whiteKing,
+      ]);
+      const chessBlackPieces = new Set([
+        chessPieces.blackPawn,
+        chessPieces.blackRook,
+        chessPieces.blackKnight,
+        chessPieces.blackBishop,
+        chessPieces.blackQueen,
+        chessPieces.blackKing,
+      ]);
+      const chessInitialBoard = [
+        chessPieces.blackRook, chessPieces.blackKnight, chessPieces.blackBishop, chessPieces.blackQueen, chessPieces.blackKing, chessPieces.blackBishop, chessPieces.blackKnight, chessPieces.blackRook,
+        chessPieces.blackPawn, chessPieces.blackPawn, chessPieces.blackPawn, chessPieces.blackPawn, chessPieces.blackPawn, chessPieces.blackPawn, chessPieces.blackPawn, chessPieces.blackPawn,
+        "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "",
+        chessPieces.whitePawn, chessPieces.whitePawn, chessPieces.whitePawn, chessPieces.whitePawn, chessPieces.whitePawn, chessPieces.whitePawn, chessPieces.whitePawn, chessPieces.whitePawn,
+        chessPieces.whiteRook, chessPieces.whiteKnight, chessPieces.whiteBishop, chessPieces.whiteQueen, chessPieces.whiteKing, chessPieces.whiteBishop, chessPieces.whiteKnight, chessPieces.whiteRook,
+      ];
+      let chessBoardState = [...chessInitialBoard];
+      let selectedChessSquare = null;
+
+      function getActiveLanguage() {
+        return document.documentElement.lang || "en";
+      }
+
+      function getChessText(key) {
+        return resolveTranslation(getActiveLanguage(), `chessBotModal.${key}`) ?? resolveTranslation("en", `chessBotModal.${key}`);
+      }
+
+      function setChessStatus(key) {
+        if (chessStatusElement) {
+          chessStatusElement.textContent = getChessText(key);
+        }
+      }
+
+      function renderChessBoard(botMoveIndex = null) {
+        if (!chessBoardElement) return;
+
+        chessBoardElement.innerHTML = "";
+        chessBoardState.forEach((piece, index) => {
+          const row = Math.floor(index / 8);
+          const col = index % 8;
+          const square = document.createElement("button");
+          square.type = "button";
+          square.className = "chess-board-square";
+          square.dataset.squareIndex = String(index);
+          square.setAttribute("aria-label", `${String.fromCharCode(97 + col)}${8 - row}${piece ? ` ${piece}` : " empty"}`);
+          square.textContent = piece;
+
+          if (selectedChessSquare === index) {
+            square.classList.add("is-selected");
+          }
+
+          if (botMoveIndex === index) {
+            square.classList.add("is-bot-move");
+          }
+
+          square.addEventListener("click", () => handleChessSquareClick(index));
+          chessBoardElement.appendChild(square);
+        });
+      }
+
+      function handleChessSquareClick(index) {
+        const piece = chessBoardState[index];
+        const isWhitePiece = chessWhitePieces.has(piece);
+
+        if (selectedChessSquare === null) {
+          if (!isWhitePiece) return;
+          selectedChessSquare = index;
+          setChessStatus("statusSelected");
+          renderChessBoard();
+          return;
+        }
+
+        if (selectedChessSquare === index) {
+          selectedChessSquare = null;
+          setChessStatus("statusReady");
+          renderChessBoard();
+          return;
+        }
+
+        if (chessWhitePieces.has(piece)) {
+          selectedChessSquare = index;
+          setChessStatus("statusSelected");
+          renderChessBoard();
+          return;
+        }
+
+        chessBoardState[index] = chessBoardState[selectedChessSquare];
+        chessBoardState[selectedChessSquare] = "";
+        selectedChessSquare = null;
+        setChessStatus("statusMoved");
+        renderChessBoard();
+        window.setTimeout(() => ChessBotModal.botMove(), 450);
+      }
 
       window.AdmissionsDetailsModal = {
         open() {
@@ -1721,6 +1990,46 @@
           if (!admissionsDetailsModal) return;
           admissionsDetailsModal.hidden = true;
           document.body.style.overflow = "";
+        },
+      };
+
+      window.ChessBotModal = {
+        open() {
+          if (!chessBotModal) return;
+          chessBotModal.hidden = false;
+          document.body.style.overflow = "hidden";
+          renderChessBoard();
+          setChessStatus("statusReady");
+          chessBotModal.querySelector("[data-chess-modal-close]")?.focus();
+        },
+        close() {
+          if (!chessBotModal) return;
+          chessBotModal.hidden = true;
+          document.body.style.overflow = "";
+          selectedChessSquare = null;
+        },
+        reset() {
+          chessBoardState = [...chessInitialBoard];
+          selectedChessSquare = null;
+          renderChessBoard();
+          setChessStatus("statusReady");
+        },
+        botMove() {
+          const candidates = chessBoardState
+            .map((piece, index) => ({ piece, index, target: index + 8 }))
+            .filter(({ piece, target }) => chessBlackPieces.has(piece) && target < 64 && !chessBlackPieces.has(chessBoardState[target]));
+
+          if (candidates.length === 0) {
+            setChessStatus("statusReady");
+            return;
+          }
+
+          const move = candidates[Math.floor(Math.random() * candidates.length)];
+          chessBoardState[move.target] = chessBoardState[move.index];
+          chessBoardState[move.index] = "";
+          selectedChessSquare = null;
+          renderChessBoard(move.target);
+          setChessStatus("statusBot");
         },
       };
 
@@ -1774,6 +2083,9 @@
 
       document.addEventListener("keydown", (event) => {
         if (event.key === "Escape") {
+          if (chessBotModal && !chessBotModal.hidden) {
+            ChessBotModal.close();
+          }
           if (admissionsDetailsModal && !admissionsDetailsModal.hidden) {
             AdmissionsDetailsModal.close();
           }
