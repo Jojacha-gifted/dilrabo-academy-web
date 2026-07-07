@@ -7,6 +7,7 @@ import founderImg from './assets/photo.jpg'
 import libraryImg from './assets/str.jpeg'
 import studentImg from './assets/student.jpeg'
 import AudioPlayer from './components/AudioPlayer.jsx'
+import ExamPrepMenu from './components/ExamPrepMenu.jsx'
 import { audioMap } from './data/audioMap.js'
 import './App.css'
 
@@ -145,6 +146,22 @@ function App() {
 }
 
 function HomePage({ navigate, linkProps }) {
+  const [isExamPrepMenuOpen, setIsExamPrepMenuOpen] = useState(false)
+
+  function closeExamPrepMenu() {
+    setIsExamPrepMenuOpen(false)
+  }
+
+  function showExamPrepDetails() {
+    closeExamPrepMenu()
+    navigate(COURSE_PATH)
+  }
+
+  function startExamPrepAssessment(path) {
+    closeExamPrepMenu()
+    window.location.href = `/diagnostic/${path}`
+  }
+
   return (
     <div className="page-shell">
       <header className="site-header">
@@ -258,6 +275,22 @@ function HomePage({ navigate, linkProps }) {
             </a>
 
             <article className="program-card">
+              <span className="program-tag program-tag--light">Exam prep</span>
+              <h3>International Exam Preparation</h3>
+              <p>
+                IELTS, SAT Digital, and CEFR preparation paths with focused
+                practice, feedback, and assessment support.
+              </p>
+              <button
+                type="button"
+                className="button button--ghost button--small"
+                onClick={() => setIsExamPrepMenuOpen(true)}
+              >
+                View exam prep paths
+              </button>
+            </article>
+
+            <article className="program-card">
               <h3>Focused Study Support</h3>
               <p>
                 Academic reinforcement sessions that help students stay organised and
@@ -274,6 +307,13 @@ function HomePage({ navigate, linkProps }) {
             </article>
           </div>
         </section>
+
+        <ExamPrepMenu
+          isOpen={isExamPrepMenuOpen}
+          onClose={closeExamPrepMenu}
+          onShowDetails={showExamPrepDetails}
+          onTakeAssessment={startExamPrepAssessment}
+        />
 
         <section id="why-us" className="section reveal">
           <div className="section-heading">

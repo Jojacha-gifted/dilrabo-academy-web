@@ -442,6 +442,11 @@
   text-transform: uppercase;
 }
 
+.program-tag--light {
+  background: rgba(26, 60, 107, 0.08);
+  color: var(--brand-navy);
+}
+
 .bullet-list {
   margin: 1rem 0 1.5rem;
   padding-left: 1.1rem;
@@ -569,6 +574,108 @@
   color: var(--text-main);
 }
 
+
+.exam-prep-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.exam-prep-menu__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(13, 35, 67, 0.58);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+}
+
+.exam-prep-menu__dialog {
+  position: relative;
+  z-index: 1;
+  width: min(56rem, 100%);
+  max-height: calc(100vh - 2rem);
+  overflow: auto;
+  padding: 1.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 1.75rem;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 32px 70px rgba(15, 27, 51, 0.22);
+}
+
+.exam-prep-menu__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  appearance: none;
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--brand-navy);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.45rem 0.75rem;
+}
+
+.exam-prep-menu__eyebrow {
+  color: var(--brand-navy);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.exam-prep-menu__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.exam-prep-menu__card {
+  padding: 1.25rem;
+  border: 1px solid var(--border-color);
+  border-radius: 1.25rem;
+  background: #fff;
+}
+
+.exam-prep-menu__card p {
+  color: var(--text-soft);
+}
+
+.exam-prep-menu__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.exam-prep-menu__actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.65rem;
+  padding: 0.7rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.exam-prep-menu__actions a:first-child {
+  border: 1px solid rgba(26, 60, 107, 0.16);
+  color: var(--brand-navy);
+}
+
+.exam-prep-menu__actions a:last-child {
+  background: var(--brand-navy);
+  color: #fff;
+}
 .reveal {
   animation: reveal-up 700ms ease both;
 }

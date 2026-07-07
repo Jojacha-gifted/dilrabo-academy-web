@@ -942,6 +942,7 @@
         background-color: rgba(162, 62, 72, 0.05);
         box-shadow: 0 4px 12px rgba(162, 62, 72, 0.04);
       }
+      #exam-prep-menu-modal[hidden],
       #exam-selection-modal[hidden],
       #exam-assessment-modal[hidden] {
         display: none !important;
@@ -2376,6 +2377,49 @@
         });
       });
 
+      // ExamPrepMenu modal logic
+      window.openExamPrepMenu = function() {
+        const prepMenuModal = document.getElementById("exam-prep-menu-modal");
+        if (prepMenuModal) {
+          prepMenuModal.hidden = false;
+        }
+        document.body.style.overflow = "hidden";
+      };
+
+      window.closeExamPrepMenu = function() {
+        const prepMenuModal = document.getElementById("exam-prep-menu-modal");
+        if (prepMenuModal) {
+          prepMenuModal.hidden = true;
+        }
+        document.body.style.overflow = "";
+      };
+
+      window.expandExamPrepDetails = function(path, event) {
+        event?.stopPropagation();
+        closeExamPrepMenu();
+
+        window.setTimeout(() => {
+          const section = document.getElementById("exam-prep");
+          const targetCard = document.querySelector(`.exam-card[data-exam="${path}"]`);
+
+          document.querySelectorAll(".exam-card").forEach((card) => {
+            card.classList.remove("is-expanded");
+          });
+
+          if (targetCard) {
+            targetCard.classList.add("is-expanded");
+          }
+
+          section?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 0);
+      };
+
+      window.openExamPrepAssessment = function(path, event) {
+        event?.stopPropagation();
+        closeExamPrepMenu();
+        selectExamPath(path);
+      };
+
       // Multi-Step Exam Assessment Modal Logic
       const examQuestions = {
         ielts: {
@@ -2905,9 +2949,13 @@
         examNextBtn.onclick = closeExamModal;
       }
 
-      // Check URL query parameters to launch selection modal on page load
+      // Check URL query parameters to launch exam menu or assessment selection modal on page load
       const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get("action") === "select-exam") {
+      if (urlParams.get("action") === "exam-prep-menu") {
+        window.setTimeout(() => {
+          openExamPrepMenu();
+        }, 150);
+      } else if (urlParams.get("action") === "select-exam") {
         window.setTimeout(() => {
           openExamSelectionModal();
         }, 150);
@@ -2916,7 +2964,10 @@
       // Escape close listener for the exam modals
       document.addEventListener("keydown", (event) => {
         if (event.key === "Escape") {
-          if (selectionModal && !selectionModal.hidden) {
+          const prepMenuModal = document.getElementById("exam-prep-menu-modal");
+          if (prepMenuModal && !prepMenuModal.hidden) {
+            closeExamPrepMenu();
+          } else if (selectionModal && !selectionModal.hidden) {
             closeExamSelectionModal();
           } else if (examModal && !examModal.hidden) {
             closeExamModal();
@@ -2986,6 +3037,60 @@
       </div>
     </div>
 
+    <!-- ExamPrepMenu Modal -->
+    <div id="exam-prep-menu-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-md transition-all duration-300" hidden>
+      <div class="absolute inset-0 cursor-default" onclick="closeExamPrepMenu()"></div>
+
+      <div class="relative bg-white/95 rounded-[2rem] border border-white/80 max-w-4xl w-full p-8 shadow-panel transform transition-all z-10">
+        <button type="button" onclick="closeExamPrepMenu()" class="absolute top-6 right-6 text-slate-400 hover:text-rose transition focus:outline-none" aria-label="Close exam preparation menu">
+          <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+
+        <div class="mb-7 max-w-2xl">
+          <p class="text-xs font-bold uppercase tracking-[0.25em] text-rose">ExamPrepMenu</p>
+          <h3 class="mt-2 text-3xl font-bold text-ink">Choose an exam preparation path</h3>
+          <p class="mt-3 text-sm leading-6 text-slate-500">Review the preparation details first, or start the assessment to help place the student in the right track.</p>
+        </div>
+
+        <div class="grid gap-4 md:grid-cols-3">
+          <article class="rounded-[1.35rem] border border-slate-100 bg-white p-5 shadow-sm">
+            <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-sand text-rose">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </span>
+            <h4 class="mt-4 text-lg font-bold text-ink">IELTS Preparation</h4>
+            <p class="mt-2 min-h-[4rem] text-xs leading-5 text-slate-500">Academic listening, reading, writing, and speaking practice for target band growth.</p>
+            <div class="mt-5 flex flex-wrap gap-2">
+              <button type="button" onclick="expandExamPrepDetails('ielts', event)" class="inline-flex items-center justify-center rounded-full border border-rose/30 bg-white px-4 py-2 text-xs font-semibold text-rose transition hover:bg-rose hover:text-white">Details</button>
+              <button type="button" onclick="openExamPrepAssessment('ielts', event)" class="inline-flex items-center justify-center rounded-full bg-ink px-4 py-2 text-xs font-semibold text-white transition hover:bg-rose">Take Assessment</button>
+            </div>
+          </article>
+
+          <article class="rounded-[1.35rem] border border-slate-100 bg-white p-5 shadow-sm">
+            <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-mist text-ink">
+              <i class="fa-solid fa-calculator"></i>
+            </span>
+            <h4 class="mt-4 text-lg font-bold text-ink">SAT Digital Prep</h4>
+            <p class="mt-2 min-h-[4rem] text-xs leading-5 text-slate-500">Digital SAT math, evidence-based reading, pacing, and adaptive test strategy.</p>
+            <div class="mt-5 flex flex-wrap gap-2">
+              <button type="button" onclick="expandExamPrepDetails('sat', event)" class="inline-flex items-center justify-center rounded-full border border-rose/30 bg-white px-4 py-2 text-xs font-semibold text-rose transition hover:bg-rose hover:text-white">Details</button>
+              <button type="button" onclick="openExamPrepAssessment('sat', event)" class="inline-flex items-center justify-center rounded-full bg-ink px-4 py-2 text-xs font-semibold text-white transition hover:bg-rose">Take Assessment</button>
+            </div>
+          </article>
+
+          <article class="rounded-[1.35rem] border border-slate-100 bg-white p-5 shadow-sm">
+            <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-sand text-rose">
+              <i class="fa-solid fa-globe"></i>
+            </span>
+            <h4 class="mt-4 text-lg font-bold text-ink">CEFR Level Prep</h4>
+            <p class="mt-2 min-h-[4rem] text-xs leading-5 text-slate-500">Structured English progress from foundation levels toward confident certification readiness.</p>
+            <div class="mt-5 flex flex-wrap gap-2">
+              <button type="button" onclick="expandExamPrepDetails('cefr', event)" class="inline-flex items-center justify-center rounded-full border border-rose/30 bg-white px-4 py-2 text-xs font-semibold text-rose transition hover:bg-rose hover:text-white">Details</button>
+              <button type="button" onclick="openExamPrepAssessment('cefr', event)" class="inline-flex items-center justify-center rounded-full bg-ink px-4 py-2 text-xs font-semibold text-white transition hover:bg-rose">Take Assessment</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
     <!-- Exam Selection Modal -->
     <div id="exam-selection-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-md transition-all duration-300" hidden>
       <!-- Backdrop -->
