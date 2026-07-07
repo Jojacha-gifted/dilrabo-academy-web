@@ -108,6 +108,31 @@
       .gallery-pagination .swiper-pagination-bullet-active {
         background: #a23e48;
       }
+      .admissions-support-card {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+        border: 1px solid rgba(213, 182, 122, 0.34);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(246, 240, 232, 0.78)),
+          rgba(255, 255, 255, 0.88);
+        box-shadow:
+          0 18px 46px rgba(30, 42, 68, 0.09),
+          inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      }
+
+      .admissions-support-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        border-radius: inherit;
+        background: linear-gradient(135deg, rgba(213, 182, 122, 0.18), transparent 42%, rgba(162, 62, 72, 0.08));
+      }
+
+      .admissions-details-modal[hidden] {
+        display: none !important;
+      }
 
       html[lang="bn"] body {
         font-family: "Hind Siliguri", sans-serif;
@@ -524,15 +549,28 @@
               </span>
             </a>
 
-            <article class="reveal flex h-full flex-col rounded-[1.9rem] border border-white/70 bg-white/85 p-8 shadow-sm backdrop-blur">
-              <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-sand text-rose">
-                <i class="fa-solid fa-building-columns text-xl"></i>
-              </span>
-              <p class="mt-6 text-sm font-bold uppercase tracking-[0.28em] text-rose" data-i18n="programs.card3Label">Strategic Growth</p>
-              <h3 class="mt-3 text-2xl font-bold text-ink" data-i18n="programs.card3Title">Top-Tier University Admissions Support</h3>
-              <p class="mt-4 leading-7 text-slate-600" data-i18n="programs.card3Body">
-                We help ambitious applicants build strong academic profiles and navigate competitive admissions with polish and intention.
-              </p>
+            <article class="admissions-support-card reveal flex h-full flex-col rounded-[1.9rem] p-8 backdrop-blur transition duration-300 hover:-translate-y-1.5 hover:border-rose/35 hover:shadow-panel">
+              <div class="flex items-start justify-between gap-4">
+                <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-ink text-gold shadow-soft">
+                  <i class="fa-solid fa-building-columns text-xl"></i>
+                </span>
+                <span class="rounded-full border border-gold/30 bg-white/70 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.22em] text-rose">Selective</span>
+              </div>
+              <div class="mt-7 flex flex-1 flex-col">
+                <p class="text-sm font-bold uppercase tracking-[0.28em] text-rose" data-i18n="programs.card3Label">Strategic Growth</p>
+                <h3 class="mt-3 text-2xl font-bold leading-tight text-ink" data-i18n="programs.card3Title">Top-Tier University Admissions Support</h3>
+                <p class="mt-5 leading-8 text-slate-600" data-i18n="programs.card3Body">
+                  We help ambitious applicants build strong academic profiles and navigate competitive admissions with polish and intention.
+                </p>
+                <button
+                  type="button"
+                  class="mt-auto inline-flex w-full items-center justify-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-rose focus:outline-none focus:ring-2 focus:ring-rose/40"
+                  onclick="AdmissionsDetailsModal.open()"
+                >
+                  <span data-i18n="programs.card3Cta">Explore Admissions Path</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+              </div>
             </article>
 
             <article class="reveal flex h-full flex-col rounded-[1.9rem] border border-white/70 bg-white/85 p-8 shadow-sm backdrop-blur">
@@ -816,6 +854,65 @@
       </div>
     </nav>
 
+
+    <div
+      id="admissions-details-modal"
+      class="admissions-details-modal fixed inset-0 z-[70] grid place-items-center bg-ink/55 px-4 py-8 backdrop-blur-md"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="admissions-details-modal-title"
+      data-modal-name="AdmissionsDetailsModal"
+      hidden
+    >
+      <button
+        type="button"
+        class="absolute inset-0 cursor-default"
+        aria-label="Close admissions details"
+        onclick="AdmissionsDetailsModal.close()"
+      ></button>
+
+      <div class="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-[2rem] border border-white/80 bg-white/95 p-6 shadow-panel sm:p-8">
+        <button
+          type="button"
+          class="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-ink transition hover:border-rose/40 hover:text-rose focus:outline-none focus:ring-2 focus:ring-rose/30"
+          aria-label="Close admissions details"
+          data-admissions-modal-close
+          onclick="AdmissionsDetailsModal.close()"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="pr-12">
+          <p class="text-xs font-bold uppercase tracking-[0.28em] text-rose" data-i18n="admissionsModal.label">Admissions Support</p>
+          <h3 id="admissions-details-modal-title" class="mt-3 font-display text-4xl font-semibold leading-tight text-ink" data-i18n="admissionsModal.title">
+            A polished path for selective university applications
+          </h3>
+          <p class="mt-5 text-base leading-8 text-slate-600" data-i18n="admissionsModal.body">
+            Dilrabo Academy helps applicants clarify their academic direction, strengthen profile evidence, and prepare each admissions step with calm, strategic guidance.
+          </p>
+        </div>
+
+        <div class="mt-7 grid gap-4 sm:grid-cols-3">
+          <div class="rounded-[1.25rem] border border-slate-100 bg-sand/60 p-4">
+            <p class="text-sm font-bold text-ink" data-i18n="admissionsModal.point1Title">Profile strategy</p>
+            <p class="mt-2 text-sm leading-6 text-slate-600" data-i18n="admissionsModal.point1Body">Academic strengths, goals, and gaps are organized into a clear preparation roadmap.</p>
+          </div>
+          <div class="rounded-[1.25rem] border border-slate-100 bg-mist/70 p-4">
+            <p class="text-sm font-bold text-ink" data-i18n="admissionsModal.point2Title">Application polish</p>
+            <p class="mt-2 text-sm leading-6 text-slate-600" data-i18n="admissionsModal.point2Body">Materials are reviewed for clarity, structure, and a confident academic voice.</p>
+          </div>
+          <div class="rounded-[1.25rem] border border-slate-100 bg-white p-4 shadow-sm">
+            <p class="text-sm font-bold text-ink" data-i18n="admissionsModal.point3Title">Interview readiness</p>
+            <p class="mt-2 text-sm leading-6 text-slate-600" data-i18n="admissionsModal.point3Body">Students practice thoughtful answers and calm presentation for high-stakes conversations.</p>
+          </div>
+        </div>
+
+        <div class="mt-8 flex flex-col gap-3 border-t border-slate-100 pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p class="text-sm leading-6 text-slate-500" data-i18n="admissionsModal.footer">Best for students preparing for competitive undergraduate pathways.</p>
+          <a href="#contact" class="inline-flex items-center justify-center rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white transition hover:bg-rose" onclick="AdmissionsDetailsModal.close()" data-i18n="admissionsModal.cta">Contact admissions support</a>
+        </div>
+      </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
     <script>
       const supportedLanguages = ["en", "uz", "bn", "ru"];
@@ -919,6 +1016,7 @@
             card3Title: "Top-Tier University Admissions Support",
             card3Body:
               "We help ambitious applicants build strong academic profiles and navigate competitive admissions with polish and intention.",
+            card3Cta: "Explore Admissions Path",
             card4Label: "Cognitive Development",
             card4Title: "Competitive Chess Coaching",
             card4Body:
@@ -927,6 +1025,23 @@
             card5Title: "Independent Research Support and Academic Project Execution",
             card5Body:
               "We provide discreet, professional research assistance and carefully managed academic project execution for clients who need polished support.",
+          },
+          admissionsModal: {
+            label: "Admissions Support",
+            title: "A polished path for selective university applications",
+            body:
+              "Dilrabo Academy helps applicants clarify their academic direction, strengthen profile evidence, and prepare each admissions step with calm, strategic guidance.",
+            point1Title: "Profile strategy",
+            point1Body:
+              "Academic strengths, goals, and gaps are organized into a clear preparation roadmap.",
+            point2Title: "Application polish",
+            point2Body:
+              "Materials are reviewed for clarity, structure, and a confident academic voice.",
+            point3Title: "Interview readiness",
+            point3Body:
+              "Students practice thoughtful answers and calm presentation for high-stakes conversations.",
+            footer: "Best for students preparing for competitive undergraduate pathways.",
+            cta: "Contact admissions support",
           },
           gallery: {
             label: "Why Choose Us",
@@ -1593,6 +1708,21 @@
       const closeAllLanguageMenus = () => {
         document.querySelectorAll(".language-switcher").forEach((switcher) => closeLanguageMenu(switcher));
       };
+      const admissionsDetailsModal = document.getElementById("admissions-details-modal");
+
+      window.AdmissionsDetailsModal = {
+        open() {
+          if (!admissionsDetailsModal) return;
+          admissionsDetailsModal.hidden = false;
+          document.body.style.overflow = "hidden";
+          admissionsDetailsModal.querySelector("[data-admissions-modal-close]")?.focus();
+        },
+        close() {
+          if (!admissionsDetailsModal) return;
+          admissionsDetailsModal.hidden = true;
+          document.body.style.overflow = "";
+        },
+      };
 
       menuToggle.addEventListener("click", () => {
         const isOpen = !mobileMenu.classList.contains("hidden");
@@ -1644,6 +1774,9 @@
 
       document.addEventListener("keydown", (event) => {
         if (event.key === "Escape") {
+          if (admissionsDetailsModal && !admissionsDetailsModal.hidden) {
+            AdmissionsDetailsModal.close();
+          }
           closeAllLanguageMenus();
         }
       });
