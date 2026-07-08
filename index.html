@@ -130,6 +130,10 @@
         background: linear-gradient(135deg, rgba(213, 182, 122, 0.18), transparent 42%, rgba(162, 62, 72, 0.08));
       }
 
+      [data-modal-name][hidden] {
+        display: none !important;
+      }
+
       .admissions-details-modal[hidden] {
         display: none !important;
       }
@@ -2061,6 +2065,11 @@
       const chessBotModal = document.getElementById("chess-bot-modal");
       const chessBoardElement = document.querySelector("[data-chess-board]");
       const chessStatusElement = document.querySelector("[data-chess-status]");
+      [admissionsDetailsModal, researchServicesModal, consultationFormModal, chessBotModal].forEach((modal) => {
+        if (modal) {
+          modal.hidden = true;
+        }
+      });
       const chessPieces = {
         blackRook: "\u265c",
         blackKnight: "\u265e",
