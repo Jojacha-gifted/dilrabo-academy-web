@@ -40,3 +40,5 @@ export const part1Data = {
     }
   ]
 };
+
+export const ieltsExamParts = [part1Data];

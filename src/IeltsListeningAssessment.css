@@ -618,3 +618,13 @@
     width: 100%;
   }
 }
+.result-screen__band {
+  margin: 0.65rem 0 0.65rem !important;
+  color: #1e2a44 !important;
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  font-weight: 900;
+}
+
+.result-screen__actions {
+  margin-top: 1.25rem;
+}
