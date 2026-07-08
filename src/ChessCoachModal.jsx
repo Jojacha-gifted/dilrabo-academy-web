@@ -303,7 +303,7 @@ function CoachChessModal() {
                 position: game.fen(),
                 boardOrientation: 'white',
                 allowDragging: !isThinking && !game.isGameOver() && game.turn() === 'w',
-                canDragPiece: ({ square }) => square ? game.get(square)?.color === 'w' : false,
+                canDragPiece: ({ piece }) => game.turn() === 'w' && piece?.pieceType?.startsWith('w'),
                 onPieceDrop: onDrop,
                 squareStyles,
                 lightSquareStyle: { backgroundColor: '#f6f0e8' },
