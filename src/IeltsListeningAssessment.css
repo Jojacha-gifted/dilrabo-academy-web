@@ -455,7 +455,9 @@
 }
 
 .listening-part-one__audio audio {
+  display: block;
   width: 100%;
+  min-height: 2.75rem;
 }
 
 .listening-part-one__audio-actions {
@@ -484,6 +486,39 @@
   background: #1e2a44;
   color: #fff;
   outline: none;
+}
+
+.listening-part-one__sections {
+  display: grid;
+  gap: 1.35rem;
+}
+
+.listening-part-one__section {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.listening-part-one__instructions {
+  display: grid;
+  gap: 0.35rem;
+  border: 1px solid rgba(30, 42, 68, 0.1);
+  border-radius: 1rem;
+  background: rgba(237, 243, 248, 0.65);
+  padding: 0.9rem 1rem;
+}
+
+.listening-part-one__instructions p {
+  margin: 0;
+  color: #1e2a44;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.listening-part-one__instructions p:first-child {
+  color: #a23e48;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .listening-part-one__questions {

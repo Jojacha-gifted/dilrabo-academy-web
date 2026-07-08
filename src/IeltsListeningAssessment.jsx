@@ -3,10 +3,14 @@ import { createRoot } from 'react-dom/client'
 import { part1Data } from './ieltsTestData.js'
 import './IeltsListeningAssessment.css'
 
-const PART_ONE_QUESTION_COUNT = 10
+function getPartOneQuestions() {
+  return (part1Data.sections ?? []).flatMap((section) => section.questions ?? [])
+}
+
+const PART_ONE_QUESTION_COUNT = getPartOneQuestions().length
 
 function createPartOneAnswers() {
-  return part1Data.questions.slice(0, PART_ONE_QUESTION_COUNT).reduce((answers, question) => {
+  return getPartOneQuestions().reduce((answers, question) => {
     answers[question.id] = ''
     return answers
   }, {})
@@ -17,7 +21,7 @@ function countAnswered(answers) {
 }
 
 export function ListeningPart1({ onSubmit }) {
-  const questions = useMemo(() => part1Data.questions.slice(0, PART_ONE_QUESTION_COUNT), [])
+  const sections = useMemo(() => part1Data.sections ?? [], [])
   const audioUrls = useMemo(() => (part1Data.audioUrls?.length ? part1Data.audioUrls : [part1Data.audioUrl]).filter(Boolean), [])
   const [answers, setAnswers] = useState(() => createPartOneAnswers())
   const [currentAudioIndex, setCurrentAudioIndex] = useState(0)
@@ -63,21 +67,20 @@ export function ListeningPart1({ onSubmit }) {
           <span>Part 1 audio</span>
           <strong>{part1Data.title ?? 'Listening Part 1 Audio'} - Segment {currentAudioIndex + 1} of {audioUrls.length}</strong>
         </div>
+        {console.log('Audio URL:', currentAudioUrl)}
         <audio
           ref={audioRef}
           src={currentAudioUrl}
           controls
           autoPlay
+          crossOrigin="anonymous"
           preload="metadata"
           onEnded={() => {
             if (currentAudioIndex < audioUrls.length - 1) {
               setCurrentAudioIndex((index) => index + 1)
             }
           }}
-          onError={() => {
-            console.error(`IELTS Listening Part 1 audio failed to load: ${currentAudioUrl}`)
-            alert(`IELTS Listening Part 1 audio failed to load: ${currentAudioUrl}`)
-          }}
+          onError={(e) => console.error('Audio Error:', e.target.error)}
         >
           Your browser does not support the audio element.
         </audio>
@@ -95,18 +98,30 @@ export function ListeningPart1({ onSubmit }) {
         </div>
       </div>
 
-      <div className="listening-part-one__questions">
-        {questions.map((question, index) => (
-          <label className="listening-part-one__question" key={question.id}>
-            <span>Q{index + 1}</span>
-            <p>{question.text}</p>
-            <input
-              type="text"
-              value={answers[question.id] ?? ''}
-              onChange={(event) => updateAnswer(question.id, event.target.value)}
-              placeholder="Type your answer"
-            />
-          </label>
+      <div className="listening-part-one__sections">
+        {sections.map((section) => (
+          <section className="listening-part-one__section" key={section.id}>
+            <div className="listening-part-one__instructions">
+              {(section.instructions ?? []).map((instruction) => (
+                <p key={instruction}>{instruction}</p>
+              ))}
+            </div>
+
+            <div className="listening-part-one__questions">
+              {(section.questions ?? []).map((question) => (
+                <label className="listening-part-one__question" key={question.id}>
+                  <span>Q{question.id}</span>
+                  <p>{question.text}</p>
+                  <input
+                    type="text"
+                    value={answers[question.id] ?? ''}
+                    onChange={(event) => updateAnswer(question.id, event.target.value)}
+                    placeholder="Type your answer"
+                  />
+                </label>
+              ))}
+            </div>
+          </section>
         ))}
       </div>
 
