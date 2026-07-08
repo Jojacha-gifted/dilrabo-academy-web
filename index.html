@@ -650,9 +650,9 @@
                 <button
                   type="button"
                   class="mt-auto inline-flex w-full items-center justify-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-rose focus:outline-none focus:ring-2 focus:ring-rose/40"
-                  onclick="ChessBotModal.open()"
+                  onclick="CoachChessModal.open()"
                 >
-                  <span data-i18n="programs.card4Cta">Play Against Bot</span>
+                  <span data-i18n="programs.card4Cta">Play Against Coach Dilrabo</span>
                   <i class="fa-solid fa-chess-board text-xs"></i>
                 </button>
               </div>
@@ -1212,6 +1212,8 @@
         </div>
       </div>
     </div>
+    <div id="coach-chess-root"></div>
+    <script type="module" src="/src/ChessCoachModal.jsx"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
     <script>
       const supportedLanguages = ["en", "uz", "bn", "ru"];
@@ -1320,7 +1322,7 @@
             card4Title: "Competitive Chess Coaching",
             card4Body:
               "Chess training sharpens concentration, strategic thinking, and disciplined decision-making that supports wider academic growth.",
-            card4Cta: "Play Against Bot",
+            card4Cta: "Play Against Coach Dilrabo",
             card5Label: "Research Services",
             card5Title: "Independent Research Support and Academic Project Execution",
             card5Body:
