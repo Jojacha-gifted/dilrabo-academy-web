@@ -1,4 +1,5 @@
-.program-details-modal {
+.program-details-modal,
+.assessment-flow-modal {
   position: fixed;
   inset: 0;
   z-index: 88;
@@ -8,7 +9,12 @@
   color: #1e2a44;
 }
 
-.program-details-modal__backdrop {
+.assessment-flow-modal {
+  z-index: 89;
+}
+
+.program-details-modal__backdrop,
+.assessment-flow-modal__backdrop {
   position: absolute;
   inset: 0;
   border: 0;
@@ -17,7 +23,8 @@
   cursor: default;
 }
 
-.program-details-modal__panel {
+.program-details-modal__panel,
+.assessment-flow-modal__panel {
   position: relative;
   width: min(100%, 56rem);
   max-height: min(92vh, 46rem);
@@ -29,7 +36,12 @@
   padding: clamp(1.4rem, 4vw, 2.25rem);
 }
 
-.program-details-modal__close {
+.assessment-flow-modal__panel {
+  width: min(100%, 60rem);
+}
+
+.program-details-modal__close,
+.assessment-flow-modal__close {
   position: absolute;
   right: 1.25rem;
   top: 1.25rem;
@@ -47,20 +59,26 @@
 }
 
 .program-details-modal__close:hover,
-.program-details-modal__close:focus-visible {
+.program-details-modal__close:focus-visible,
+.assessment-flow-modal__close:hover,
+.assessment-flow-modal__close:focus-visible {
   border-color: rgba(162, 62, 72, 0.45);
   color: #a23e48;
   transform: translateY(-1px);
   outline: none;
 }
 
-.program-details-modal__header {
+.program-details-modal__header,
+.assessment-flow-modal__header {
   max-width: 42rem;
   padding-right: 3.25rem;
 }
 
 .program-details-modal__header span,
-.program-details-modal__card span {
+.program-details-modal__card span,
+.assessment-flow-modal__header span,
+.assessment-results-view > span,
+.academic-independence-results > span {
   display: block;
   color: #a23e48;
   font-size: 0.74rem;
@@ -69,7 +87,9 @@
   text-transform: uppercase;
 }
 
-.program-details-modal__header h2 {
+.program-details-modal__header h2,
+.assessment-flow-modal__header h2,
+.assessment-results-view h2 {
   margin: 0.65rem 0 0.75rem;
   color: #1e2a44;
   font-family: Georgia, 'Times New Roman', serif;
@@ -78,7 +98,10 @@
 }
 
 .program-details-modal__header p,
-.program-details-modal__card p {
+.program-details-modal__card p,
+.assessment-flow-modal__header p,
+.assessment-results-view p,
+.academic-independence-results p {
   margin: 0;
   color: #64748b;
   line-height: 1.75;
@@ -110,49 +133,213 @@
   line-height: 1.1;
 }
 
-.program-details-modal__cta {
+.program-details-modal__cta,
+.assessment-flow-modal__footer button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: 3.1rem;
-  margin-top: auto;
+  border: 0;
   border-radius: 999px;
   background: #1e2a44;
   color: #fff;
+  cursor: pointer;
+  font: inherit;
   font-size: 0.95rem;
   font-weight: 800;
   text-decoration: none;
-  transition: background-color 180ms ease, transform 180ms ease;
+  transition: background-color 180ms ease, transform 180ms ease, opacity 180ms ease;
 }
 
 .program-details-modal__card p + .program-details-modal__cta {
   margin-top: 1.35rem;
 }
 
+.program-details-modal__cta {
+  margin-top: auto;
+}
+
 .program-details-modal__cta:hover,
-.program-details-modal__cta:focus-visible {
+.program-details-modal__cta:focus-visible,
+.assessment-flow-modal__footer button:hover:not(:disabled),
+.assessment-flow-modal__footer button:focus-visible:not(:disabled) {
   background: #a23e48;
   transform: translateY(-1px);
   outline: none;
 }
 
+.assessment-flow-modal__progressbar {
+  height: 0.65rem;
+  margin-top: 1rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(30, 42, 68, 0.1);
+}
+
+.assessment-flow-modal__progressbar div {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #d5b67a, #a23e48);
+  transition: width 180ms ease;
+}
+
+.assessment-flow-modal__question {
+  margin-top: 1.5rem;
+  border: 1px solid rgba(30, 42, 68, 0.1);
+  border-radius: 1.45rem;
+  background: #fff;
+  padding: clamp(1rem, 3vw, 1.35rem);
+  box-shadow: 0 14px 36px rgba(30, 42, 68, 0.07);
+}
+
+.assessment-flow-modal__question > p {
+  color: #1e2a44;
+  font-size: clamp(1.05rem, 2.6vw, 1.35rem);
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.assessment-flow-modal__options {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.2rem;
+}
+
+.assessment-flow-modal__options button {
+  width: 100%;
+  border: 1px solid rgba(30, 42, 68, 0.12);
+  border-radius: 1rem;
+  background: rgba(246, 240, 232, 0.38);
+  color: #1e2a44;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.5;
+  padding: 1rem;
+  text-align: left;
+  transition: border-color 180ms ease, background-color 180ms ease, transform 180ms ease;
+}
+
+.assessment-flow-modal__options button:hover,
+.assessment-flow-modal__options button:focus-visible,
+.assessment-flow-modal__options button.is-selected {
+  border-color: rgba(162, 62, 72, 0.45);
+  background: rgba(162, 62, 72, 0.08);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.assessment-flow-modal__footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.assessment-flow-modal__footer button {
+  min-width: 10rem;
+  padding: 0.75rem 1.35rem;
+}
+
+.assessment-flow-modal__footer button:first-child {
+  border: 1px solid rgba(30, 42, 68, 0.14);
+  background: #fff;
+  color: #1e2a44;
+}
+
+.assessment-flow-modal__footer button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+.assessment-results-view__score {
+  margin-top: 1rem !important;
+  color: #1e2a44 !important;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(3rem, 12vw, 5rem);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.assessment-results-view__level {
+  margin-top: 0.75rem !important;
+  color: #1e2a44 !important;
+  font-weight: 800;
+}
+
+.assessment-results-view__note {
+  max-width: 42rem;
+  margin-top: 0.5rem !important;
+}
+
+.academic-independence-results {
+  margin-top: 1.75rem;
+  border-top: 1px solid rgba(30, 42, 68, 0.1);
+  padding-top: 1.5rem;
+}
+
+.academic-independence-results h3 {
+  margin: 0.65rem 0 0.65rem;
+  color: #1e2a44;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.academic-independence-results__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.academic-independence-results__grid article {
+  border: 1px solid rgba(30, 42, 68, 0.1);
+  border-radius: 1.1rem;
+  background: linear-gradient(180deg, #fff, rgba(237, 243, 248, 0.7));
+  padding: 1rem;
+}
+
+.academic-independence-results__grid strong {
+  display: block;
+  color: #1e2a44;
+}
+
+.academic-independence-results__grid p {
+  margin-top: 0.45rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.assessment-flow-modal__footer--results {
+  justify-content: flex-start;
+}
+
 @media (max-width: 720px) {
-  .program-details-modal {
+  .program-details-modal,
+  .assessment-flow-modal {
     align-items: start;
     padding: 0.75rem;
   }
 
-  .program-details-modal__panel {
+  .program-details-modal__panel,
+  .assessment-flow-modal__panel {
     max-height: calc(100vh - 1.5rem);
     border-radius: 1.45rem;
     padding: 1rem;
   }
 
-  .program-details-modal__header {
+  .program-details-modal__header,
+  .assessment-flow-modal__header {
     padding-right: 3rem;
   }
 
-  .program-details-modal__grid {
+  .program-details-modal__grid,
+  .academic-independence-results__grid {
     grid-template-columns: 1fr;
+  }
+
+  .assessment-flow-modal__footer button {
+    width: 100%;
   }
 }
