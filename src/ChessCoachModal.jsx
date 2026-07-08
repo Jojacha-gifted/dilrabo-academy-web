@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Chess } from 'chess.js'
 import { Chessboard } from 'react-chessboard'
@@ -6,6 +6,7 @@ import avatarImg from './assets/avatar.jpg'
 import './ChessCoachModal.css'
 
 const MOVE_DELAY_MS = 500
+const SEARCH_DEPTH = 2
 const PIECE_VALUES = {
   p: 100,
   n: 320,
@@ -15,59 +16,142 @@ const PIECE_VALUES = {
   k: 0,
 }
 const DEVELOPMENT_SQUARES = new Set(['c3', 'd3', 'e3', 'f3', 'c6', 'd6', 'e6', 'f6', 'd4', 'e4', 'd5', 'e5'])
+const CENTER_SQUARES = new Set(['d4', 'e4', 'd5', 'e5'])
 
 function createGame() {
   return new Chess()
 }
 
-function evaluateForBlack(game) {
-  const board = game.board()
-  let score = 0
+function getOppositeColor(color) {
+  return color === 'w' ? 'b' : 'w'
+}
 
-  board.forEach((row) => {
-    row.forEach((piece) => {
+function findKingSquare(game, color) {
+  const board = game.board()
+
+  for (let row = 0; row < board.length; row += 1) {
+    for (let col = 0; col < board[row].length; col += 1) {
+      const piece = board[row][col]
+      if (piece?.type === 'k' && piece.color === color) {
+        return `${String.fromCharCode(97 + col)}${8 - row}`
+      }
+    }
+  }
+
+  return null
+}
+
+function getKingSafetyScore(game, color) {
+  const kingSquare = findKingSquare(game, color)
+  if (!kingSquare) return 0
+
+  const attackers = game.attackers(kingSquare, getOppositeColor(color))
+  if (!attackers.length) return 0
+
+  return -260 - attackers.length * 70
+}
+
+function evaluateForBlack(game) {
+  if (game.isCheckmate()) return game.turn() === 'w' ? 100000 : -100000
+  if (game.isDraw()) return 0
+
+  let score = 0
+  const board = game.board()
+
+  board.forEach((row, rowIndex) => {
+    row.forEach((piece, colIndex) => {
       if (!piece) return
+
+      const square = `${String.fromCharCode(97 + colIndex)}${8 - rowIndex}`
       const value = PIECE_VALUES[piece.type] ?? 0
-      score += piece.color === 'b' ? value : -value
+      const colorMultiplier = piece.color === 'b' ? 1 : -1
+
+      score += value * colorMultiplier
+
+      if (CENTER_SQUARES.has(square)) score += 18 * colorMultiplier
+      if (DEVELOPMENT_SQUARES.has(square) && piece.type !== 'p') score += 10 * colorMultiplier
     })
   })
 
-  if (game.isCheckmate()) {
-    score += game.turn() === 'w' ? 100000 : -100000
-  } else if (game.inCheck()) {
-    score += game.turn() === 'w' ? 35 : -35
+  score += getKingSafetyScore(game, 'b')
+  score -= getKingSafetyScore(game, 'w')
+
+  if (game.inCheck()) {
+    score += game.turn() === 'w' ? 90 : -140
   }
 
   return score
 }
 
-function scoreCoachMove(game, move) {
-  const candidate = new Chess(game.fen())
-  candidate.move(move)
-  let score = evaluateForBlack(candidate)
+function getMoveOrderingScore(move) {
+  let score = 0
 
-  if (move.captured) score += (PIECE_VALUES[move.captured] ?? 0) * 0.35
-  if (move.promotion) score += 160
-  if (DEVELOPMENT_SQUARES.has(move.to)) score += 14
-  if (move.san.includes('+')) score += 22
+  if (move.captured) score += (PIECE_VALUES[move.captured] ?? 0) * 10 - (PIECE_VALUES[move.piece] ?? 0)
+  if (move.promotion) score += PIECE_VALUES[move.promotion] ?? 0
+  if (move.san.includes('+')) score += 80
   if (move.san.includes('#')) score += 100000
+  if (CENTER_SQUARES.has(move.to)) score += 20
+  if (DEVELOPMENT_SQUARES.has(move.to)) score += 8
 
-  score += Math.random() * 28
   return score
 }
 
-function chooseCoachMove(game) {
-  const moves = game.moves({ verbose: true })
-  if (!moves.length) return null
+function getOrderedMoves(game) {
+  return game.moves({ verbose: true }).sort((a, b) => getMoveOrderingScore(b) - getMoveOrderingScore(a))
+}
 
-  const rankedMoves = moves
-    .map((move) => ({ move, score: scoreCoachMove(game, move) }))
-    .sort((a, b) => b.score - a.score)
+function minimax(game, depth, alpha, beta) {
+  if (depth === 0 || game.isGameOver()) return evaluateForBlack(game)
 
-  const roll = Math.random()
-  if (roll < 0.64) return rankedMoves[Math.floor(Math.random() * Math.min(3, rankedMoves.length))].move
-  if (roll < 0.9) return rankedMoves[Math.floor(Math.random() * Math.min(7, rankedMoves.length))].move
-  return moves[Math.floor(Math.random() * moves.length)]
+  const moves = getOrderedMoves(game)
+  const isBlackToMove = game.turn() === 'b'
+
+  if (isBlackToMove) {
+    let bestScore = -Infinity
+
+    for (const move of moves) {
+      const nextGame = new Chess(game.fen())
+      nextGame.move(move)
+      bestScore = Math.max(bestScore, minimax(nextGame, depth - 1, alpha, beta))
+      alpha = Math.max(alpha, bestScore)
+      if (beta <= alpha) break
+    }
+
+    return bestScore
+  }
+
+  let bestScore = Infinity
+
+  for (const move of moves) {
+    const nextGame = new Chess(game.fen())
+    nextGame.move(move)
+    bestScore = Math.min(bestScore, minimax(nextGame, depth - 1, alpha, beta))
+    beta = Math.min(beta, bestScore)
+    if (beta <= alpha) break
+  }
+
+  return bestScore
+}
+
+function chooseBestBotMove(game) {
+  const legalMoves = getOrderedMoves(game)
+  if (!legalMoves.length) return null
+
+  let bestMove = legalMoves[0]
+  let bestScore = -Infinity
+
+  for (const move of legalMoves) {
+    const nextGame = new Chess(game.fen())
+    nextGame.move(move)
+    const score = minimax(nextGame, SEARCH_DEPTH - 1, -Infinity, Infinity)
+
+    if (score > bestScore) {
+      bestScore = score
+      bestMove = move
+    }
+  }
+
+  return bestMove
 }
 
 function getGameStatus(game, isThinking) {
@@ -83,7 +167,8 @@ function CoachChessModal() {
   const [game, setGame] = useState(() => createGame())
   const [isThinking, setIsThinking] = useState(false)
   const [lastMove, setLastMove] = useState(null)
-  const [coachNote, setCoachNote] = useState('I will challenge you, but I will not play perfectly. Use every move as practice.')
+  const [coachNote, setCoachNote] = useState('I will challenge you with legal, tactical moves. Use every move as practice.')
+  const botMoveTimeoutRef = useRef(null)
 
   useEffect(() => {
     window.CoachChessModal = {
@@ -93,6 +178,7 @@ function CoachChessModal() {
     }
 
     return () => {
+      window.clearTimeout(botMoveTimeoutRef.current)
       delete window.CoachChessModal
     }
   }, [])
@@ -116,43 +202,56 @@ function CoachChessModal() {
   }, [isOpen])
 
   function resetGame() {
+    window.clearTimeout(botMoveTimeoutRef.current)
     setGame(createGame())
     setIsThinking(false)
     setLastMove(null)
     setCoachNote('Fresh board. Control the center and develop your pieces with purpose.')
   }
 
-  function makeCoachMove(currentGame) {
-    window.setTimeout(() => {
-      const coachMove = chooseCoachMove(currentGame)
-      if (!coachMove) {
+  function makeBotMove(currentGame) {
+    if (currentGame.isGameOver() || currentGame.turn() !== 'b') {
+      setIsThinking(false)
+      return
+    }
+
+    window.clearTimeout(botMoveTimeoutRef.current)
+    botMoveTimeoutRef.current = window.setTimeout(() => {
+      const botMove = chooseBestBotMove(currentGame)
+      if (!botMove) {
         setIsThinking(false)
         return
       }
 
       const updatedGame = new Chess(currentGame.fen())
-      updatedGame.move(coachMove)
+      updatedGame.move(botMove)
       setGame(updatedGame)
-      setLastMove({ from: coachMove.from, to: coachMove.to })
-      setCoachNote(coachMove.captured
-        ? `Coach Dilrabo captured on ${coachMove.to}. What changed in the position?`
-        : `Coach Dilrabo played ${coachMove.san}. Notice the new pressure before moving.`)
+      setLastMove({ from: botMove.from, to: botMove.to })
+      setCoachNote(botMove.captured
+        ? `Coach Dilrabo chose ${botMove.san}, winning material on ${botMove.to}.`
+        : `Coach Dilrabo played ${botMove.san}. Check the new threats before moving.`)
       setIsThinking(false)
     }, MOVE_DELAY_MS)
   }
 
-  function onPieceDrop({ sourceSquare, targetSquare }) {
-    if (!targetSquare || isThinking || game.isGameOver() || game.turn() !== 'w') return false
+  function onDrop({ sourceSquare, targetSquare }) {
+    if (!sourceSquare || !targetSquare || isThinking || game.isGameOver() || game.turn() !== 'w') return false
 
     const movingPiece = game.get(sourceSquare)
     if (!movingPiece || movingPiece.color !== 'w') return false
 
     const nextGame = new Chess(game.fen())
-    const move = nextGame.move({
-      from: sourceSquare,
-      to: targetSquare,
-      promotion: 'q',
-    })
+    let move
+
+    try {
+      move = nextGame.move({
+        from: sourceSquare,
+        to: targetSquare,
+        promotion: 'q',
+      })
+    } catch {
+      return false
+    }
 
     if (!move) return false
 
@@ -164,7 +263,7 @@ function CoachChessModal() {
 
     if (!nextGame.isGameOver()) {
       setIsThinking(true)
-      makeCoachMove(nextGame)
+      makeBotMove(nextGame)
     }
 
     return true
@@ -205,7 +304,7 @@ function CoachChessModal() {
                 boardOrientation: 'white',
                 allowDragging: !isThinking && !game.isGameOver() && game.turn() === 'w',
                 canDragPiece: ({ square }) => square ? game.get(square)?.color === 'w' : false,
-                onPieceDrop,
+                onPieceDrop: onDrop,
                 squareStyles,
                 lightSquareStyle: { backgroundColor: '#f6f0e8' },
                 darkSquareStyle: { backgroundColor: '#1e2a44' },
@@ -226,7 +325,7 @@ function CoachChessModal() {
             <div className="coach-modal__settings">
               <span>Difficulty</span>
               <strong>Student Challenge</strong>
-              <p>Strong material awareness with occasional human mistakes.</p>
+              <p>Legal move search with material scoring, check awareness, and shallow tactical planning.</p>
             </div>
             <div className="coach-modal__actions">
               <button type="button" onClick={resetGame}>New game</button>
@@ -244,4 +343,5 @@ const rootElement = document.getElementById('coach-chess-root')
 if (rootElement) {
   createRoot(rootElement).render(<CoachChessModal />)
 }
+
 export default CoachChessModal
