@@ -51,7 +51,8 @@
 .coach-modal__eyebrow,
 .coach-modal__status span,
 .coach-modal__note span,
-.coach-modal__settings span {
+.coach-modal__settings span,
+.coach-modal__difficulty span {
   display: block;
   color: #a23e48;
   font-size: 0.74rem;
@@ -120,7 +121,8 @@
 
 .coach-modal__status,
 .coach-modal__note,
-.coach-modal__settings {
+.coach-modal__settings,
+.coach-modal__difficulty {
   border: 1px solid rgba(30, 42, 68, 0.1);
   border-radius: 1.15rem;
   background: #fff;
@@ -140,6 +142,55 @@
 .coach-modal__settings p {
   margin-top: 0.45rem;
   font-size: 0.94rem;
+}
+
+.coach-modal__difficulty {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.coach-modal__difficulty select {
+  width: 100%;
+  min-height: 2.9rem;
+  border: 1px solid rgba(30, 42, 68, 0.16);
+  border-radius: 0.9rem;
+  background: #f8fafc;
+  color: #1e2a44;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+  padding: 0 0.85rem;
+}
+
+.coach-modal__difficulty select:focus-visible {
+  border-color: rgba(162, 62, 72, 0.45);
+  outline: 3px solid rgba(162, 62, 72, 0.12);
+}
+
+.coach-modal__settings dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 0.85rem 0 0;
+}
+
+.coach-modal__settings dl div {
+  border-radius: 0.85rem;
+  background: rgba(246, 240, 232, 0.62);
+  padding: 0.7rem;
+}
+
+.coach-modal__settings dt {
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.coach-modal__settings dd {
+  margin: 0.2rem 0 0;
+  color: #1e2a44;
+  font-weight: 900;
 }
 
 .coach-modal__actions {
@@ -207,5 +258,9 @@
 
   .coach-modal__board-wrap {
     max-width: min(100%, 24rem);
+  }
+
+  .coach-modal__settings dl {
+    grid-template-columns: 1fr;
   }
 }
