@@ -156,6 +156,7 @@ function IeltsListeningAssessment() {
                 title={activePart.audio.title}
                 startTime={activePart.audio.startTime ?? 0}
                 endTime={activePart.audio.endTime}
+                onError={() => console.error(`IELTS Listening audio failed to load for ${activePart.label}: ${activePart.audio.url}`)}
               />
 
               <div className="ielts-assessment__questions">

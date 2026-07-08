@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-function AudioPlayer({ src, title = 'Audio lesson', startTime = 0, endTime = null }) {
+function AudioPlayer({ src, title = 'Audio lesson', startTime = 0, endTime = null, onError = null }) {
   const audioRef = useRef(null)
 
   useEffect(() => {
@@ -37,6 +37,15 @@ function AudioPlayer({ src, title = 'Audio lesson', startTime = 0, endTime = nul
     }
   }, [src, startTime, endTime])
 
+  function handleAudioError(event) {
+    if (onError) {
+      onError(event)
+      return
+    }
+
+    console.error(`Audio failed to load: ${src}`)
+  }
+
   if (!src) {
     return null
   }
@@ -50,9 +59,11 @@ function AudioPlayer({ src, title = 'Audio lesson', startTime = 0, endTime = nul
       <audio
         ref={audioRef}
         className="audio-player__controls"
+        src={src}
         controls
         preload="metadata"
         key={`${src}-${startTime}-${endTime ?? 'end'}`}
+        onError={handleAudioError}
       >
         <source src={src} />
         Your browser does not support the audio element.
