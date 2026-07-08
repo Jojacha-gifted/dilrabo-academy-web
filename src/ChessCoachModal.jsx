@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Chess } from 'chess.js'
 import { Chessboard } from 'react-chessboard'
+import avatarImg from './assets/avatar.jpg'
 import './ChessCoachModal.css'
 
 const MOVE_DELAY_MS = 500
@@ -185,7 +186,7 @@ function CoachChessModal() {
       <button className="coach-modal__backdrop" type="button" aria-label="Close coach chess modal" onClick={() => setIsOpen(false)} />
       <div className="coach-modal__panel">
         <header className="coach-modal__header">
-          <img className="coach-modal__avatar" src="/avatar.jpg" alt="Coach Dilrabo" />
+          <img className="coach-modal__avatar" src={avatarImg} alt="Coach Dilrabo" />
           <div>
             <span className="coach-modal__eyebrow">Personal chess coach</span>
             <h2 id="coach-modal-title">Play Against Coach Dilrabo</h2>
