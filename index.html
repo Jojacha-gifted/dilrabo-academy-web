@@ -654,15 +654,25 @@
               </div>
             </article>
 
-            <article class="reveal flex h-full flex-col rounded-[1.9rem] border border-white/70 bg-white/85 p-8 shadow-sm backdrop-blur">
+            <article class="reveal flex h-full flex-col rounded-[1.9rem] border border-white/70 bg-white/85 p-8 shadow-sm backdrop-blur transition duration-300 hover:-translate-y-1.5 hover:border-rose/35 hover:shadow-panel">
               <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-ink text-gold">
                 <i class="fa-solid fa-microscope text-xl"></i>
               </span>
-              <p class="mt-6 text-sm font-bold uppercase tracking-[0.28em] text-rose" data-i18n="programs.card5Label">Research Services</p>
-              <h3 class="mt-3 text-2xl font-bold text-ink" data-i18n="programs.card5Title">Independent Research Support and Academic Project Execution</h3>
-              <p class="mt-4 leading-7 text-slate-600" data-i18n="programs.card5Body">
-                We provide discreet, professional research assistance and carefully managed academic project execution for clients who need polished support.
-              </p>
+              <div class="mt-6 flex flex-1 flex-col">
+                <p class="text-sm font-bold uppercase tracking-[0.28em] text-rose" data-i18n="programs.card5Label">Research Services</p>
+                <h3 class="mt-3 text-2xl font-bold text-ink" data-i18n="programs.card5Title">Independent Research Support and Academic Project Execution</h3>
+                <p class="mt-4 leading-7 text-slate-600" data-i18n="programs.card5Body">
+                  We provide discreet, professional research assistance and carefully managed academic project execution for clients who need polished support.
+                </p>
+                <button
+                  type="button"
+                  class="mt-auto inline-flex w-full items-center justify-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-rose focus:outline-none focus:ring-2 focus:ring-rose/40"
+                  onclick="ResearchServicesModal.open()"
+                >
+                  <span data-i18n="programs.card5Cta">View Research Services</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+              </div>
             </article>
           </div>
         </div>
@@ -984,6 +994,78 @@
       </div>
     </div>
 
+
+    <div
+      id="research-services-modal"
+      class="research-services-modal fixed inset-0 z-[70] grid place-items-center bg-ink/55 px-4 py-8 backdrop-blur-md"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="research-services-modal-title"
+      data-modal-name="ResearchServicesModal"
+      hidden
+    >
+      <button
+        type="button"
+        class="absolute inset-0 cursor-default"
+        aria-label="Close research services"
+        onclick="ResearchServicesModal.close()"
+      ></button>
+
+      <div class="relative max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-[2rem] border border-white/80 bg-white/95 p-6 shadow-panel sm:p-8">
+        <button
+          type="button"
+          class="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-ink transition hover:border-rose/40 hover:text-rose focus:outline-none focus:ring-2 focus:ring-rose/30"
+          aria-label="Close research services"
+          data-research-modal-close
+          onclick="ResearchServicesModal.close()"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="pr-12">
+          <p class="text-xs font-bold uppercase tracking-[0.28em] text-rose" data-i18n="researchModal.label">Research Services</p>
+          <h3 id="research-services-modal-title" class="mt-3 font-display text-4xl font-semibold leading-tight text-ink sm:text-5xl" data-i18n="researchModal.title">
+            Professional research support menu
+          </h3>
+          <p class="mt-5 text-base leading-8 text-slate-600" data-i18n="researchModal.body">
+            Choose focused academic research support with careful planning, clean deliverables, and discreet communication from consultation to completion.
+          </p>
+        </div>
+
+        <div class="mt-7 grid gap-4 sm:grid-cols-3">
+          <div class="rounded-[1.25rem] border border-slate-100 bg-sand/60 p-5">
+            <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-rose shadow-sm">
+              <i class="fa-solid fa-book-open text-sm"></i>
+            </span>
+            <p class="mt-4 text-sm font-bold text-ink" data-i18n="researchModal.service1Title">Literature Review</p>
+            <p class="mt-2 text-sm leading-6 text-slate-600" data-i18n="researchModal.service1Body">Source mapping, annotated reading, research gap framing, and clear synthesis for a stronger academic foundation.</p>
+          </div>
+          <div class="rounded-[1.25rem] border border-slate-100 bg-mist/70 p-5">
+            <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-ink shadow-sm">
+              <i class="fa-solid fa-chart-line text-sm"></i>
+            </span>
+            <p class="mt-4 text-sm font-bold text-ink" data-i18n="researchModal.service2Title">Data Analysis</p>
+            <p class="mt-2 text-sm leading-6 text-slate-600" data-i18n="researchModal.service2Body">Survey cleaning, statistical summaries, visual interpretation, and polished findings prepared for presentation.</p>
+          </div>
+          <div class="rounded-[1.25rem] border border-slate-100 bg-white p-5 shadow-sm">
+            <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-ink text-gold shadow-sm">
+              <i class="fa-solid fa-list-check text-sm"></i>
+            </span>
+            <p class="mt-4 text-sm font-bold text-ink" data-i18n="researchModal.service3Title">Project Management</p>
+            <p class="mt-2 text-sm leading-6 text-slate-600" data-i18n="researchModal.service3Body">Timeline design, milestone tracking, document coordination, and calm execution support for complex projects.</p>
+          </div>
+        </div>
+
+        <div class="mt-8 border-t border-slate-100 pt-6 text-center">
+          <a href="#contact" class="inline-flex w-full items-center justify-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white transition hover:bg-rose sm:w-auto" onclick="ResearchServicesModal.close()">
+            <span data-i18n="researchModal.cta">Schedule a Research Consultation</span>
+            <i class="fa-solid fa-calendar-check text-xs"></i>
+          </a>
+          <p class="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500" data-i18n="researchModal.footer">Confidentiality and Academic Integrity Guaranteed.</p>
+        </div>
+      </div>
+    </div>
+
     <div
       id="chess-bot-modal"
       class="chess-bot-modal fixed inset-0 z-[70] grid place-items-center bg-ink/55 px-4 py-8 backdrop-blur-md"
@@ -1158,6 +1240,7 @@
             card5Title: "Independent Research Support and Academic Project Execution",
             card5Body:
               "We provide discreet, professional research assistance and carefully managed academic project execution for clients who need polished support.",
+            card5Cta: "View Research Services",
           },
           admissionsModal: {
             label: "Admissions Support",
@@ -1175,6 +1258,23 @@
               "Students practice thoughtful answers and calm presentation for high-stakes conversations.",
             footer: "Best for students preparing for competitive undergraduate pathways.",
             cta: "Contact admissions support",
+          },
+          researchModal: {
+            label: "Research Services",
+            title: "Professional research support menu",
+            body:
+              "Choose focused academic research support with careful planning, clean deliverables, and discreet communication from consultation to completion.",
+            service1Title: "Literature Review",
+            service1Body:
+              "Source mapping, annotated reading, research gap framing, and clear synthesis for a stronger academic foundation.",
+            service2Title: "Data Analysis",
+            service2Body:
+              "Survey cleaning, statistical summaries, visual interpretation, and polished findings prepared for presentation.",
+            service3Title: "Project Management",
+            service3Body:
+              "Timeline design, milestone tracking, document coordination, and calm execution support for complex projects.",
+            cta: "Schedule a Research Consultation",
+            footer: "Confidentiality and Academic Integrity Guaranteed.",
           },
           chessBotModal: {
             label: "ChessBotModal",
@@ -1858,6 +1958,7 @@
         document.querySelectorAll(".language-switcher").forEach((switcher) => closeLanguageMenu(switcher));
       };
       const admissionsDetailsModal = document.getElementById("admissions-details-modal");
+      const researchServicesModal = document.getElementById("research-services-modal");
       const chessBotModal = document.getElementById("chess-bot-modal");
       const chessBoardElement = document.querySelector("[data-chess-board]");
       const chessStatusElement = document.querySelector("[data-chess-status]");
@@ -1993,6 +2094,19 @@
         },
       };
 
+      window.ResearchServicesModal = {
+        open() {
+          if (!researchServicesModal) return;
+          researchServicesModal.hidden = false;
+          document.body.style.overflow = "hidden";
+          researchServicesModal.querySelector("[data-research-modal-close]")?.focus();
+        },
+        close() {
+          if (!researchServicesModal) return;
+          researchServicesModal.hidden = true;
+          document.body.style.overflow = "";
+        },
+      };
       window.ChessBotModal = {
         open() {
           if (!chessBotModal) return;
@@ -2088,6 +2202,9 @@
           }
           if (admissionsDetailsModal && !admissionsDetailsModal.hidden) {
             AdmissionsDetailsModal.close();
+          }
+          if (researchServicesModal && !researchServicesModal.hidden) {
+            ResearchServicesModal.close();
           }
           closeAllLanguageMenus();
         }
