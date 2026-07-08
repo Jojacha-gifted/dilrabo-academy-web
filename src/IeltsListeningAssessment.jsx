@@ -1,99 +1,84 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import AudioPlayer from './components/AudioPlayer.jsx'
-import { ieltsTest1 } from './ieltsTestData'
+import { part1Data } from './ieltsTestData.js'
 import './IeltsListeningAssessment.css'
 
-const MODULE_TITLE = 'IELTS Listening Assessment'
-const MODULE_KICKER = 'Cambridge IELTS 21 Diagnostics'
-const NEXT_MODULES = ['Reading', 'Writing', 'Speaking']
+const PART_ONE_QUESTION_COUNT = 10
 
-const listeningParts = ieltsTest1.map((part, index) => ({
-  id: `part-${part.part ?? index + 1}`,
-  partNumber: part.part ?? index + 1,
-  label: part.label ?? `Listening Part ${part.part ?? index + 1}`,
-  audioUrl: part.audioUrl,
-  audioTitle: part.audioTitle ?? `Cambridge IELTS 21 - Test 1 Listening Part ${part.part ?? index + 1}`,
-  startTime: part.startTime ?? 0,
-  endTime: part.endTime ?? null,
-  questions: Array.isArray(part.questions) ? part.questions : [],
-}))
-
-const TOTAL_PARTS = listeningParts.length
-const TOTAL_QUESTIONS = listeningParts.reduce((total, part) => total + part.questions.length, 0)
-
-function getQuestionKey(part, question) {
-  return `${part.id}-${question.id}`
-}
-
-function createInitialAnswers() {
-  return listeningParts.reduce((answers, part) => {
-    part.questions.forEach((question) => {
-      answers[getQuestionKey(part, question)] = ''
-    })
-
+function createPartOneAnswers() {
+  return part1Data.questions.slice(0, PART_ONE_QUESTION_COUNT).reduce((answers, question) => {
+    answers[question.id] = ''
     return answers
   }, {})
 }
 
-function normalizeAnswer(value) {
-  return String(value ?? '').trim().toLowerCase()
-}
-
-function isAnswered(value) {
-  return normalizeAnswer(value).length > 0
-}
-
-function getAnsweredInPart(part, answers) {
-  return part.questions.filter((question) => isAnswered(answers[getQuestionKey(part, question)])).length
-}
-
-function isPartAnswered(part, answers) {
-  return part.questions.length > 0 && getAnsweredInPart(part, answers) === part.questions.length
-}
-
 function countAnswered(answers) {
-  return Object.values(answers).filter(isAnswered).length
+  return Object.values(answers).filter((answer) => answer.trim().length > 0).length
 }
 
-function scoreAnswers(answers) {
-  return listeningParts.reduce((score, part) => {
-    return score + part.questions.reduce((partScore, question) => {
-      if (question.answer === undefined || question.answer === null) return partScore
+export function ListeningPart1({ onSubmit }) {
+  const questions = useMemo(() => part1Data.questions.slice(0, PART_ONE_QUESTION_COUNT), [])
+  const [answers, setAnswers] = useState(() => createPartOneAnswers())
+  const answeredCount = countAnswered(answers)
+  const isComplete = answeredCount === PART_ONE_QUESTION_COUNT
 
-      const studentAnswer = answers[getQuestionKey(part, question)]
-      if (!isAnswered(studentAnswer)) return partScore
+  function updateAnswer(questionId, value) {
+    setAnswers((currentAnswers) => ({
+      ...currentAnswers,
+      [questionId]: value,
+    }))
+  }
 
-      const expectedAnswer = Array.isArray(question.answer) ? question.answer : [question.answer]
-      const isCorrect = expectedAnswer.some((answer) => normalizeAnswer(answer) === normalizeAnswer(studentAnswer))
-      return partScore + Number(isCorrect)
-    }, 0)
-  }, 0)
-}
+  function submitPartOne(event) {
+    event.preventDefault()
+    if (!isComplete) return
 
-function getQuestionRangeLabel(part) {
-  const firstQuestion = part.questions[0]
-  const lastQuestion = part.questions.at(-1)
+    console.log('IELTS Listening Part 1 answers:', answers)
+    onSubmit?.(answers)
+  }
 
-  if (!firstQuestion || !lastQuestion) return 'Questions pending'
-  return `Questions ${firstQuestion.id}-${lastQuestion.id}`
+  return (
+    <form className="listening-part-one" onSubmit={submitPartOne}>
+      <div className="listening-part-one__topline">
+        <h3>Listening Part 1</h3>
+        <strong>{answeredCount}/{PART_ONE_QUESTION_COUNT} answered</strong>
+      </div>
+
+      <AudioPlayer
+        src={part1Data.audioUrl}
+        title={part1Data.title ?? 'Listening Part 1 Audio'}
+        onError={() => console.error(`IELTS Listening Part 1 audio failed to load: ${part1Data.audioUrl}`)}
+      />
+
+      <div className="listening-part-one__questions">
+        {questions.map((question, index) => (
+          <label className="listening-part-one__question" key={question.id}>
+            <span>Q{index + 1}</span>
+            <p>{question.text}</p>
+            <input
+              type="text"
+              value={answers[question.id] ?? ''}
+              onChange={(event) => updateAnswer(question.id, event.target.value)}
+              placeholder="Type your answer"
+            />
+          </label>
+        ))}
+      </div>
+
+      <div className="listening-part-one__actions">
+        <button type="submit" disabled={!isComplete}>Submit Part 1</button>
+      </div>
+    </form>
+  )
 }
 
 function IeltsListeningAssessment() {
   const [isOpen, setIsOpen] = useState(false)
-  const [partIndex, setPartIndex] = useState(0)
-  const [answers, setAnswers] = useState(() => createInitialAnswers())
-  const [isComplete, setIsComplete] = useState(false)
-  const activePart = listeningParts[partIndex] ?? null
-  const isCurrentPartComplete = activePart ? isPartAnswered(activePart, answers) : false
-  const answeredTotal = useMemo(() => countAnswered(answers), [answers])
-  const score = useMemo(() => scoreAnswers(answers), [answers])
-  const progressPercent = TOTAL_QUESTIONS ? Math.round((answeredTotal / TOTAL_QUESTIONS) * 100) : 0
+  const [partOneResult, setPartOneResult] = useState(null)
 
   const resetAssessment = useCallback(() => {
-    setPartIndex(0)
-    setAnswers(createInitialAnswers())
-    setIsComplete(false)
+    setPartOneResult(null)
   }, [])
 
   useEffect(() => {
@@ -130,67 +115,6 @@ function IeltsListeningAssessment() {
     setIsOpen(false)
   }
 
-  function updateAnswer(part, renderedPartIndex, question, value) {
-    setAnswers((currentAnswers) => {
-      const nextAnswers = {
-        ...currentAnswers,
-        [getQuestionKey(part, question)]: value,
-      }
-
-      const isFinalPart = renderedPartIndex === TOTAL_PARTS - 1
-      if (isFinalPart && isPartAnswered(part, nextAnswers)) {
-        window.setTimeout(() => setIsComplete(true), 250)
-      }
-
-      return nextAnswers
-    })
-  }
-
-  function goToNextPart() {
-    if (!isCurrentPartComplete) return
-
-    if (partIndex < TOTAL_PARTS - 1) {
-      setPartIndex((currentIndex) => currentIndex + 1)
-      return
-    }
-
-    setIsComplete(true)
-  }
-
-  function renderQuestionInput(part, renderedPartIndex, question) {
-    const questionKey = getQuestionKey(part, question)
-    const selectedAnswer = answers[questionKey] ?? ''
-
-    if (question.type === 'multiple-choice' && Array.isArray(question.options)) {
-      return (
-        <div className="ielts-assessment__options">
-          {question.options.map((option) => (
-            <button
-              className={selectedAnswer === option ? 'is-selected' : ''}
-              type="button"
-              key={option}
-              onClick={() => updateAnswer(part, renderedPartIndex, question, option)}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
-      )
-    }
-
-    return (
-      <label className="ielts-assessment__text-answer">
-        <span>{question.type ?? 'answer'}</span>
-        <input
-          type="text"
-          value={selectedAnswer}
-          onChange={(event) => updateAnswer(part, renderedPartIndex, question, event.target.value)}
-          placeholder="Type your answer"
-        />
-      </label>
-    )
-  }
-
   if (!isOpen) return null
 
   return (
@@ -202,95 +126,27 @@ function IeltsListeningAssessment() {
         </button>
 
         <header className="ielts-assessment__header">
-          <span>{MODULE_KICKER}</span>
-          <h2 id="ielts-assessment-title">{MODULE_TITLE}</h2>
-          <p>
-            Complete each listening part in order. The next part unlocks only after every answer in the current part is filled.
-          </p>
+          <span>Cambridge IELTS 21 Diagnostics</span>
+          <h2 id="ielts-assessment-title">IELTS Listening Assessment</h2>
+          <p>Complete Listening Part 1. The submit button unlocks only after all ten answers are filled.</p>
         </header>
 
-        <div className="ielts-assessment__steps" aria-label="IELTS Listening progress">
-          {listeningParts.map((part, index) => (
-            <div className="ielts-assessment__step" key={part.id}>
-              <span className={index < partIndex || isComplete ? 'is-complete' : index === partIndex ? 'is-active' : ''}>{index + 1}</span>
-              <strong>{part.label}</strong>
-            </div>
-          ))}
-        </div>
-
-        <div className="ielts-assessment__progress" aria-hidden="true">
-          <div style={{ width: `${progressPercent}%` }} />
-        </div>
-
-        {!isComplete ? (
-          <div className="ielts-assessment__body">
-            {listeningParts.map((part, renderedPartIndex) => {
-              const answeredInPart = getAnsweredInPart(part, answers)
-              const isActive = renderedPartIndex === partIndex
-
-              return (
-                <section className="ielts-assessment__part-card" key={part.id} hidden={!isActive}>
-                  <div className="ielts-assessment__part-heading">
-                    <div>
-                      <span>{getQuestionRangeLabel(part)}</span>
-                      <h3>{part.label}</h3>
-                    </div>
-                    <strong>{answeredInPart}/{part.questions.length} answered</strong>
-                  </div>
-
-                  {isActive ? (
-                    <AudioPlayer
-                      src={part.audioUrl}
-                      title={part.audioTitle}
-                      startTime={part.startTime}
-                      endTime={part.endTime}
-                      onError={() => console.error(`IELTS Listening audio failed to load for ${part.label}: ${part.audioUrl}`)}
-                    />
-                  ) : null}
-
-                  <div className="ielts-assessment__questions">
-                    {part.questions.map((question) => (
-                      <article className="ielts-assessment__question" key={question.id}>
-                        <p><strong>Q{question.id}.</strong> {question.text}</p>
-                        {renderQuestionInput(part, renderedPartIndex, question)}
-                      </article>
-                    ))}
-                  </div>
-                </section>
-              )
-            })}
-          </div>
-        ) : (
+        {partOneResult ? (
           <section className="ielts-assessment__complete">
-            <span>Listening complete</span>
-            <h3>{score}/{TOTAL_QUESTIONS}</h3>
-            <p>
-              The listening assessment is complete. Continue into the next IELTS preparation modules without leaving this workflow.
-            </p>
-            <div className="ielts-assessment__module-grid">
-              {NEXT_MODULES.map((moduleName) => (
-                <article key={moduleName}>
-                  <strong>{moduleName}</strong>
-                  <p>{moduleName} preparation module ready to connect next.</p>
-                </article>
-              ))}
+            <span>Part 1 submitted</span>
+            <h3>10/10</h3>
+            <p>Your Part 1 responses have been saved in React state and logged to the console.</p>
+            <div className="ielts-assessment__footer">
+              <span>Listening Part 1</span>
+              <div>
+                <button type="button" onClick={resetAssessment}>Retake Part 1</button>
+                <button type="button" onClick={closeAssessment}>Close</button>
+              </div>
             </div>
           </section>
+        ) : (
+          <ListeningPart1 onSubmit={setPartOneResult} />
         )}
-
-        <footer className="ielts-assessment__footer">
-          <span>{isComplete ? 'IELTS preparation pathway' : `Part ${Math.min(partIndex + 1, TOTAL_PARTS)} of ${TOTAL_PARTS}`}</span>
-          <div>
-            <button type="button" onClick={resetAssessment}>Reset</button>
-            {!isComplete ? (
-              <button type="button" onClick={goToNextPart} disabled={!isCurrentPartComplete}>
-                {partIndex === TOTAL_PARTS - 1 ? 'Finish Now' : 'Next Part'}
-              </button>
-            ) : (
-              <button type="button" onClick={closeAssessment}>Close</button>
-            )}
-          </div>
-        </footer>
       </div>
     </div>
   )
