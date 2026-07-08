@@ -2228,6 +2228,13 @@
       window.openExamPrepAssessment = function(path, event) {
         event?.stopPropagation();
         closeExamPrepMenu();
+
+        if (path === "ielts" && window.IeltsListeningAssessment) {
+          window.history.pushState({ path: "/diagnostic/ielts" }, "", "/diagnostic/ielts");
+          window.IeltsListeningAssessment.open();
+          return;
+        }
+
         selectExamPath(path);
       };
 
@@ -3121,7 +3128,7 @@
         <!-- Options Container -->
         <div class="space-y-4">
           <!-- IELTS Card -->
-          <button type="button" onclick="selectExamPath('ielts')" class="w-full text-left exam-option-card flex items-start p-5 border border-slate-100 hover:border-rose/30 bg-white hover:bg-rose/5 rounded-2xl transition duration-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-rose/30">
+          <button type="button" onclick="openExamPrepAssessment('ielts', event)" class="w-full text-left exam-option-card flex items-start p-5 border border-slate-100 hover:border-rose/30 bg-white hover:bg-rose/5 rounded-2xl transition duration-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-rose/30">
             <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-sand text-rose mr-4">
               <i class="fa-solid fa-graduation-cap text-lg"></i>
             </span>
@@ -3155,5 +3162,7 @@
         </div>
       </div>
     </div>
+    <div id="ielts-listening-assessment-root"></div>
+    <script type="module" src="/src/IeltsListeningAssessment.jsx"></script>
   </body>
 </html>

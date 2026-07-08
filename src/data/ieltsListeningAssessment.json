@@ -1,0 +1,101 @@
+{
+  "testId": "cambridge-21-test-1-listening",
+  "title": "IELTS Listening Assessment",
+  "kicker": "Cambridge IELTS 21 Diagnostics",
+  "questionsPerPart": 10,
+  "nextModules": ["Reading", "Writing", "Speaking"],
+  "parts": [
+    {
+      "id": "part1",
+      "label": "Listening Part 1",
+      "questionRange": "Questions 1-10",
+      "audio": {
+        "title": "Cambridge IELTS 21 - Test 1 Listening Part 1",
+        "url": "https://your-vercel-blob-url-here/cambridge-21-test-1-part-1.mp3",
+        "startTime": 0,
+        "endTime": null
+      },
+      "questions": [
+        { "id": "q1", "number": 1, "prompt": "Part 1 focuses on a practical conversation. What should the student identify first?", "options": ["The situation and speaker roles", "The writer's thesis", "A graph trend", "A formal debate position"], "correct": 0 },
+        { "id": "q2", "number": 2, "prompt": "Which detail type is commonly tested in IELTS Listening Part 1?", "options": ["Names, dates, numbers, and addresses", "Only academic definitions", "Only map directions", "Only essay conclusions"], "correct": 0 },
+        { "id": "q3", "number": 3, "prompt": "When a speaker corrects information, what answer should the student choose?", "options": ["The final corrected information", "The first detail mentioned", "The loudest word", "The longest option"], "correct": 0 },
+        { "id": "q4", "number": 4, "prompt": "What is the best strategy before the Part 1 audio begins?", "options": ["Read the form and predict the type of missing information", "Ignore the question numbers", "Write full sentences only", "Wait until the audio ends"], "correct": 0 },
+        { "id": "q5", "number": 5, "prompt": "If a blank follows a currency symbol, what should the student listen for?", "options": ["A price or amount", "A building name", "An opinion adjective", "A paragraph heading"], "correct": 0 },
+        { "id": "q6", "number": 6, "prompt": "What can distract students in Part 1?", "options": ["Distractor details that are later changed", "Page numbers only", "Speaker accents being identical", "No personal information"], "correct": 0 },
+        { "id": "q7", "number": 7, "prompt": "Which spelling habit is important for form-completion questions?", "options": ["Write names and places carefully", "Use only capital letters for verbs", "Avoid checking plural forms", "Write answers in full paragraphs"], "correct": 0 },
+        { "id": "q8", "number": 8, "prompt": "If the question asks for NO MORE THAN TWO WORDS, which answer format is valid?", "options": ["A two-word answer", "A three-word phrase", "A full sentence", "A paragraph"], "correct": 0 },
+        { "id": "q9", "number": 9, "prompt": "Which cue often signals that an answer is coming?", "options": ["A direct question or confirmation phrase", "A page footer", "A silent pause only", "A title from another section"], "correct": 0 },
+        { "id": "q10", "number": 10, "prompt": "What should the student do immediately after Part 1 ends?", "options": ["Check spelling and transfer attention to Part 2", "Replay the audio", "Change all answers", "Skip the next instructions"], "correct": 0 }
+      ]
+    },
+    {
+      "id": "part2",
+      "label": "Listening Part 2",
+      "questionRange": "Questions 11-20",
+      "audio": {
+        "title": "Cambridge IELTS 21 - Test 1 Listening Part 2",
+        "url": "https://your-vercel-blob-url-here/cambridge-21-test-1-part-2.mp3",
+        "startTime": 0,
+        "endTime": null
+      },
+      "questions": [
+        { "id": "q11", "number": 11, "prompt": "Part 2 usually contains what kind of listening text?", "options": ["A monologue in an everyday social context", "A four-person academic seminar", "A written essay", "A grammar drill"], "correct": 0 },
+        { "id": "q12", "number": 12, "prompt": "Which skill helps students follow the order of Part 2?", "options": ["Tracking signposting language", "Ignoring headings", "Choosing familiar words only", "Reading the transcript first"], "correct": 0 },
+        { "id": "q13", "number": 13, "prompt": "For map or plan questions, what should students identify first?", "options": ["Starting point and direction words", "The speaker's age", "The final answer only", "The number of paragraphs"], "correct": 0 },
+        { "id": "q14", "number": 14, "prompt": "Which phrase may introduce contrast in Part 2?", "options": ["However", "Because of", "For example only", "Once upon a time"], "correct": 0 },
+        { "id": "q15", "number": 15, "prompt": "When options use synonyms, students should listen for what?", "options": ["Meaning rather than identical wording", "Only repeated words", "Only numbers", "Only names"], "correct": 0 },
+        { "id": "q16", "number": 16, "prompt": "What should a student do if they miss one answer?", "options": ["Move on and stay with the audio", "Stop listening completely", "Return to Part 1", "Guess every remaining answer immediately"], "correct": 0 },
+        { "id": "q17", "number": 17, "prompt": "Which detail can be important in a public announcement?", "options": ["Opening times or facilities", "Essay thesis length", "Mathematical proof", "Interview score"], "correct": 0 },
+        { "id": "q18", "number": 18, "prompt": "Why should students underline keywords before listening?", "options": ["To predict the topic and answer type", "To decorate the page", "To avoid listening", "To choose answers before audio"], "correct": 0 },
+        { "id": "q19", "number": 19, "prompt": "What type of wrong option is common in multiple choice?", "options": ["A detail mentioned but rejected", "A word never shown", "A grammar correction", "A drawing instruction"], "correct": 0 },
+        { "id": "q20", "number": 20, "prompt": "At the end of Part 2, the student should be ready for which section?", "options": ["Part 3 academic discussion", "Writing Task 2", "Speaking Part 1", "Reading Passage 3"], "correct": 0 }
+      ]
+    },
+    {
+      "id": "part3",
+      "label": "Listening Part 3",
+      "questionRange": "Questions 21-30",
+      "audio": {
+        "title": "Cambridge IELTS 21 - Test 1 Listening Part 3",
+        "url": "https://your-vercel-blob-url-here/cambridge-21-test-1-part-3.mp3",
+        "startTime": 0,
+        "endTime": null
+      },
+      "questions": [
+        { "id": "q21", "number": 21, "prompt": "Part 3 usually features which kind of speakers?", "options": ["Students or tutors discussing an academic topic", "A single tourist guide", "A recorded spelling list", "A news headline only"], "correct": 0 },
+        { "id": "q22", "number": 22, "prompt": "What makes Part 3 more challenging than earlier parts?", "options": ["Opinions, agreement, disagreement, and changes of mind", "Only shorter answers", "No distractors", "No academic vocabulary"], "correct": 0 },
+        { "id": "q23", "number": 23, "prompt": "If one speaker says, 'Actually, I think...', what may follow?", "options": ["A correction or changed opinion", "A spelling answer", "A map direction", "A repeated introduction"], "correct": 0 },
+        { "id": "q24", "number": 24, "prompt": "Which answer should students choose when two opinions are discussed?", "options": ["The opinion matching the question focus", "The first word heard", "The option with the most letters", "The topic from Part 2"], "correct": 0 },
+        { "id": "q25", "number": 25, "prompt": "What is a useful approach for matching questions?", "options": ["Follow each speaker's final view", "Ignore speaker names", "Choose the same letter repeatedly", "Wait until the audio ends"], "correct": 0 },
+        { "id": "q26", "number": 26, "prompt": "Which words may signal agreement?", "options": ["Exactly, that's true, I agree", "Never, impossible, no", "Left, right, opposite", "January, February, March"], "correct": 0 },
+        { "id": "q27", "number": 27, "prompt": "Which words may signal disagreement?", "options": ["I'm not sure, but, however", "Definitely, exactly, yes", "First name, surname", "Open, close, entrance"], "correct": 0 },
+        { "id": "q28", "number": 28, "prompt": "In Part 3, why is paraphrase important?", "options": ["Questions often use different wording from the audio", "The audio gives the exact option every time", "Only numbers are tested", "No opinions are included"], "correct": 0 },
+        { "id": "q29", "number": 29, "prompt": "What should students avoid in Part 3?", "options": ["Locking onto the first possible answer too early", "Reading question stems", "Listening for speaker attitude", "Checking instructions"], "correct": 0 },
+        { "id": "q30", "number": 30, "prompt": "Part 3 prepares students for Part 4 by increasing focus on what?", "options": ["Academic language and structured ideas", "Only personal details", "Only spelling", "Only maps"], "correct": 0 }
+      ]
+    },
+    {
+      "id": "part4",
+      "label": "Listening Part 4",
+      "questionRange": "Questions 31-40",
+      "audio": {
+        "title": "Cambridge IELTS 21 - Test 1 Listening Part 4",
+        "url": "https://your-vercel-blob-url-here/cambridge-21-test-1-part-4.mp3",
+        "startTime": 0,
+        "endTime": null
+      },
+      "questions": [
+        { "id": "q31", "number": 31, "prompt": "Part 4 is usually what type of listening text?", "options": ["An academic monologue or lecture", "A phone booking", "A map tour only", "A grammar interview"], "correct": 0 },
+        { "id": "q32", "number": 32, "prompt": "Before listening to Part 4, what should students predict?", "options": ["Word type and topic development", "Speaker clothing", "The exact accent", "The score result"], "correct": 0 },
+        { "id": "q33", "number": 33, "prompt": "Which answer format is common in Part 4?", "options": ["Note completion", "Long essay", "Oral interview", "Mathematics proof"], "correct": 0 },
+        { "id": "q34", "number": 34, "prompt": "If a blank sits after an adjective, what word type may be needed?", "options": ["A noun", "A full sentence", "A punctuation mark", "A paragraph"], "correct": 0 },
+        { "id": "q35", "number": 35, "prompt": "What helps students follow a lecture structure?", "options": ["Headings and transition phrases", "Ignoring section titles", "Choosing answers randomly", "Listening only for names"], "correct": 0 },
+        { "id": "q36", "number": 36, "prompt": "Which phrase may signal a cause?", "options": ["As a result of", "On the left", "My surname is", "Can I book"], "correct": 0 },
+        { "id": "q37", "number": 37, "prompt": "Which phrase may signal an example?", "options": ["For instance", "In contrast only", "Never mind", "At the reception desk"], "correct": 0 },
+        { "id": "q38", "number": 38, "prompt": "What should students do with technical vocabulary in Part 4?", "options": ["Use context and grammar to predict meaning", "Ignore the whole sentence", "Stop answering", "Change previous parts"], "correct": 0 },
+        { "id": "q39", "number": 39, "prompt": "If the answer must be ONE WORD ONLY, which response is valid?", "options": ["research", "new research", "a research project", "research project result"], "correct": 0 },
+        { "id": "q40", "number": 40, "prompt": "After completing Question 40, what should the module do?", "options": ["Move to the next IELTS preparation modules", "Restart Part 1 automatically", "Delete all answers", "Open a chess practice modal"], "correct": 0 }
+      ]
+    }
+  ]
+}
