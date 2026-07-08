@@ -2963,6 +2963,13 @@
         window.setTimeout(() => {
           openExamSelectionModal();
         }, 150);
+      } else if (urlParams.get("action") === "general-assessment") {
+        const requestedSubject = urlParams.get("subject") === "math" ? "math" : "english";
+        window.setTimeout(() => {
+          unlockAssessment();
+          highlightAssessmentPanel();
+          openModal(requestedSubject);
+        }, 150);
       }
 
       // Escape close listener for the exam modals
