@@ -233,6 +233,42 @@
   outline: none;
 }
 
+.ielts-assessment__text-answer {
+  display: grid;
+  gap: 0.45rem;
+  margin-top: 0.75rem;
+}
+
+.ielts-assessment__text-answer span {
+  width: fit-content;
+  border-radius: 999px;
+  background: rgba(30, 42, 68, 0.08);
+  color: #1e2a44;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  padding: 0.25rem 0.55rem;
+  text-transform: uppercase;
+}
+
+.ielts-assessment__text-answer input {
+  width: 100%;
+  min-height: 3rem;
+  border: 1px solid rgba(30, 42, 68, 0.14);
+  border-radius: 0.95rem;
+  background: rgba(246, 240, 232, 0.45);
+  color: #1e2a44;
+  font: inherit;
+  font-weight: 750;
+  padding: 0.75rem 0.9rem;
+}
+
+.ielts-assessment__text-answer input:focus {
+  border-color: rgba(162, 62, 72, 0.45);
+  background: #fff;
+  outline: 3px solid rgba(162, 62, 72, 0.12);
+}
+
 .ielts-assessment__complete h3 {
   font-size: clamp(3rem, 8vw, 5rem);
   line-height: 1;

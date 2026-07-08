@@ -1,30 +1,62 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import AudioPlayer from './components/AudioPlayer.jsx'
-import assessmentConfig from './data/ieltsListeningAssessment.json'
+import { ieltsTest1 } from './ieltsTestData'
 import './IeltsListeningAssessment.css'
 
-const TOTAL_PARTS = assessmentConfig.parts.length
-const TOTAL_QUESTIONS = assessmentConfig.parts.reduce((total, part) => total + part.questions.length, 0)
+const MODULE_TITLE = 'IELTS Listening Assessment'
+const MODULE_KICKER = 'Cambridge IELTS 21 Diagnostics'
+const NEXT_MODULES = ['Reading', 'Writing', 'Speaking']
+
+const listeningParts = ieltsTest1.map((part, index) => ({
+  id: `part-${part.part ?? index + 1}`,
+  partNumber: part.part ?? index + 1,
+  label: part.label ?? `Listening Part ${part.part ?? index + 1}`,
+  audioUrl: part.audioUrl,
+  audioTitle: part.audioTitle ?? `Cambridge IELTS 21 - Test 1 Listening Part ${part.part ?? index + 1}`,
+  questions: Array.isArray(part.questions) ? part.questions : [],
+}))
+
+const TOTAL_PARTS = listeningParts.length
+const TOTAL_QUESTIONS = listeningParts.reduce((total, part) => total + part.questions.length, 0)
+
+function getQuestionKey(part, question) {
+  return `${part.id}-${question.id}`
+}
 
 function createInitialAnswers() {
-  return assessmentConfig.parts.reduce((answers, part) => {
-    answers[part.id] = Array(part.questions.length).fill(null)
+  return listeningParts.reduce((answers, part) => {
+    part.questions.forEach((question) => {
+      answers[getQuestionKey(part, question)] = ''
+    })
+
     return answers
   }, {})
 }
 
+function normalizeAnswer(value) {
+  return String(value ?? '').trim().toLowerCase()
+}
+
+function isAnswered(value) {
+  return normalizeAnswer(value).length > 0
+}
+
 function countAnswered(answers) {
-  return assessmentConfig.parts.reduce(
-    (total, part) => total + (answers[part.id] ?? []).filter((answer) => answer !== null && answer !== undefined).length,
-    0,
-  )
+  return Object.values(answers).filter(isAnswered).length
 }
 
 function scoreAnswers(answers) {
-  return assessmentConfig.parts.reduce((score, part) => {
-    return score + part.questions.reduce((partScore, question, index) => {
-      return partScore + Number((answers[part.id] ?? [])[index] === question.correct)
+  return listeningParts.reduce((score, part) => {
+    return score + part.questions.reduce((partScore, question) => {
+      if (question.answer === undefined || question.answer === null) return partScore
+
+      const studentAnswer = answers[getQuestionKey(part, question)]
+      if (!isAnswered(studentAnswer)) return partScore
+
+      const expectedAnswer = Array.isArray(question.answer) ? question.answer : [question.answer]
+      const isCorrect = expectedAnswer.some((answer) => normalizeAnswer(answer) === normalizeAnswer(studentAnswer))
+      return partScore + Number(isCorrect)
     }, 0)
   }, 0)
 }
@@ -34,13 +66,18 @@ function IeltsListeningAssessment() {
   const [partIndex, setPartIndex] = useState(0)
   const [answers, setAnswers] = useState(() => createInitialAnswers())
   const [isComplete, setIsComplete] = useState(false)
-  const activePart = assessmentConfig.parts[partIndex]
-  const activeAnswers = answers[activePart.id] ?? []
-  const answeredInPart = activeAnswers.filter((answer) => answer !== null && answer !== undefined).length
-  const isPartComplete = answeredInPart === activePart.questions.length
+  const activePart = listeningParts[partIndex] ?? listeningParts[0]
+  const answeredInPart = activePart.questions.filter((question) => isAnswered(answers[getQuestionKey(activePart, question)])).length
+  const isPartComplete = activePart.questions.length > 0 && answeredInPart === activePart.questions.length
   const answeredTotal = useMemo(() => countAnswered(answers), [answers])
   const score = useMemo(() => scoreAnswers(answers), [answers])
-  const progressPercent = Math.round((answeredTotal / TOTAL_QUESTIONS) * 100)
+  const progressPercent = TOTAL_QUESTIONS ? Math.round((answeredTotal / TOTAL_QUESTIONS) * 100) : 0
+
+  const resetAssessment = useCallback(() => {
+    setPartIndex(0)
+    setAnswers(createInitialAnswers())
+    setIsComplete(false)
+  }, [])
 
   useEffect(() => {
     window.IeltsListeningAssessment = {
@@ -52,7 +89,7 @@ function IeltsListeningAssessment() {
     return () => {
       delete window.IeltsListeningAssessment
     }
-  }, [])
+  }, [resetAssessment])
 
   useEffect(() => {
     if (!isOpen) return undefined
@@ -72,29 +109,25 @@ function IeltsListeningAssessment() {
     }
   }, [isOpen])
 
-  function resetAssessment() {
-    setPartIndex(0)
-    setAnswers(createInitialAnswers())
-    setIsComplete(false)
-  }
-
   function closeAssessment() {
     setIsOpen(false)
   }
 
-  function selectAnswer(questionIndex, optionIndex) {
+  function updateAnswer(part, question, value) {
     setAnswers((currentAnswers) => {
-      const nextPartAnswers = [...(currentAnswers[activePart.id] ?? [])]
-      nextPartAnswers[questionIndex] = optionIndex
+      const nextAnswers = {
+        ...currentAnswers,
+        [getQuestionKey(part, question)]: value,
+      }
 
-      if (partIndex === TOTAL_PARTS - 1 && nextPartAnswers.every((answer) => answer !== null && answer !== undefined)) {
+      const isFinalPart = partIndex === TOTAL_PARTS - 1
+      const nextPartComplete = part.questions.every((partQuestion) => isAnswered(nextAnswers[getQuestionKey(part, partQuestion)]))
+
+      if (isFinalPart && nextPartComplete) {
         window.setTimeout(() => setIsComplete(true), 250)
       }
 
-      return {
-        ...currentAnswers,
-        [activePart.id]: nextPartAnswers,
-      }
+      return nextAnswers
     })
   }
 
@@ -109,7 +142,41 @@ function IeltsListeningAssessment() {
     setIsComplete(true)
   }
 
-  if (!isOpen) return null
+  function renderQuestionInput(question) {
+    const questionKey = getQuestionKey(activePart, question)
+    const selectedAnswer = answers[questionKey] ?? ''
+
+    if (question.type === 'multiple-choice' && Array.isArray(question.options)) {
+      return (
+        <div className="ielts-assessment__options">
+          {question.options.map((option) => (
+            <button
+              className={selectedAnswer === option ? 'is-selected' : ''}
+              type="button"
+              key={option}
+              onClick={() => updateAnswer(activePart, question, option)}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+      )
+    }
+
+    return (
+      <label className="ielts-assessment__text-answer">
+        <span>{question.type}</span>
+        <input
+          type="text"
+          value={selectedAnswer}
+          onChange={(event) => updateAnswer(activePart, question, event.target.value)}
+          placeholder="Type your answer"
+        />
+      </label>
+    )
+  }
+
+  if (!isOpen || !activePart) return null
 
   return (
     <div className="ielts-assessment" role="dialog" aria-modal="true" aria-labelledby="ielts-assessment-title">
@@ -120,15 +187,15 @@ function IeltsListeningAssessment() {
         </button>
 
         <header className="ielts-assessment__header">
-          <span>{assessmentConfig.kicker}</span>
-          <h2 id="ielts-assessment-title">{assessmentConfig.title}</h2>
+          <span>{MODULE_KICKER}</span>
+          <h2 id="ielts-assessment-title">{MODULE_TITLE}</h2>
           <p>
-            Complete four listening parts. Each part has 10 questions and unlocks the next section only after all answers are selected.
+            Complete each listening part in order. The next part unlocks only after every answer in the current part is filled.
           </p>
         </header>
 
         <div className="ielts-assessment__steps" aria-label="IELTS Listening progress">
-          {assessmentConfig.parts.map((part, index) => (
+          {listeningParts.map((part, index) => (
             <div className="ielts-assessment__step" key={part.id}>
               <span className={index < partIndex || isComplete ? 'is-complete' : index === partIndex ? 'is-active' : ''}>{index + 1}</span>
               <strong>{part.label}</strong>
@@ -145,36 +212,25 @@ function IeltsListeningAssessment() {
             <section className="ielts-assessment__part-card">
               <div className="ielts-assessment__part-heading">
                 <div>
-                  <span>{activePart.questionRange}</span>
+                  <span>Questions {activePart.questions[0]?.id ?? 1}-{activePart.questions.at(-1)?.id ?? activePart.questions.length}</span>
                   <h3>{activePart.label}</h3>
                 </div>
                 <strong>{answeredInPart}/{activePart.questions.length} answered</strong>
               </div>
 
               <AudioPlayer
-                src={activePart.audio.url}
-                title={activePart.audio.title}
-                startTime={activePart.audio.startTime ?? 0}
-                endTime={activePart.audio.endTime}
-                onError={() => console.error(`IELTS Listening audio failed to load for ${activePart.label}: ${activePart.audio.url}`)}
+                src={activePart.audioUrl}
+                title={activePart.audioTitle}
+                startTime={activePart.startTime ?? 0}
+                endTime={activePart.endTime}
+                onError={() => console.error(`IELTS Listening audio failed to load for ${activePart.label}: ${activePart.audioUrl}`)}
               />
 
               <div className="ielts-assessment__questions">
-                {activePart.questions.map((question, questionIndex) => (
+                {activePart.questions.map((question) => (
                   <article className="ielts-assessment__question" key={question.id}>
-                    <p><strong>Q{question.number}.</strong> {question.prompt}</p>
-                    <div className="ielts-assessment__options">
-                      {question.options.map((option, optionIndex) => (
-                        <button
-                          className={activeAnswers[questionIndex] === optionIndex ? 'is-selected' : ''}
-                          type="button"
-                          key={option}
-                          onClick={() => selectAnswer(questionIndex, optionIndex)}
-                        >
-                          {option}
-                        </button>
-                      ))}
-                    </div>
+                    <p><strong>Q{question.id}.</strong> {question.text}</p>
+                    {renderQuestionInput(question)}
                   </article>
                 ))}
               </div>
@@ -188,7 +244,7 @@ function IeltsListeningAssessment() {
               The listening assessment is complete. Continue into the next IELTS preparation modules without leaving this workflow.
             </p>
             <div className="ielts-assessment__module-grid">
-              {assessmentConfig.nextModules.map((moduleName) => (
+              {NEXT_MODULES.map((moduleName) => (
                 <article key={moduleName}>
                   <strong>{moduleName}</strong>
                   <p>{moduleName} preparation module ready to connect next.</p>
