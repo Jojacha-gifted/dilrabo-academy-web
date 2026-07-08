@@ -1,7 +1,11 @@
+/ src/ieltsTestData.js
 export const part1Data = {
   part: 1,
   title: "Listening Part 1",
-  audioUrl: "/audio/cambridge21_test1_part1.mp3",
+  audioUrls: [
+    "https://jufawgkygh9xq4ka.public.blob.vercel-storage.com/IELTS%2021%20AUDIO/C21T1P1.1.mp3",
+    "https://jufawgkygh9xq4ka.public.blob.vercel-storage.com/IELTS%2021%20AUDIO/C21T1P1.2.mp3"
+  ],
   questions: [
     { id: 1, type: "text", text: "Small groups (max __ people)" },
     { id: 2, type: "text", text: "Basic theory e.g. understanding the __ and tides" },

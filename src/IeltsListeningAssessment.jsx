@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import AudioPlayer from './components/AudioPlayer.jsx'
 import { part1Data } from './ieltsTestData.js'
 import './IeltsListeningAssessment.css'
 
@@ -19,9 +18,23 @@ function countAnswered(answers) {
 
 export function ListeningPart1({ onSubmit }) {
   const questions = useMemo(() => part1Data.questions.slice(0, PART_ONE_QUESTION_COUNT), [])
+  const audioUrls = useMemo(() => (part1Data.audioUrls?.length ? part1Data.audioUrls : [part1Data.audioUrl]).filter(Boolean), [])
   const [answers, setAnswers] = useState(() => createPartOneAnswers())
+  const [currentAudioIndex, setCurrentAudioIndex] = useState(0)
+  const audioRef = useRef(null)
   const answeredCount = countAnswered(answers)
   const isComplete = answeredCount === PART_ONE_QUESTION_COUNT
+  const currentAudioUrl = audioUrls[currentAudioIndex] ?? ''
+
+  useEffect(() => {
+    const audio = audioRef.current
+    if (!audio || !currentAudioUrl) return
+
+    audio.load()
+    audio.play().catch(() => {
+      console.info('Browser blocked automatic IELTS audio playback until the user interacts with the player.')
+    })
+  }, [currentAudioUrl])
 
   function updateAnswer(questionId, value) {
     setAnswers((currentAnswers) => ({
@@ -45,11 +58,42 @@ export function ListeningPart1({ onSubmit }) {
         <strong>{answeredCount}/{PART_ONE_QUESTION_COUNT} answered</strong>
       </div>
 
-      <AudioPlayer
-        src={part1Data.audioUrl}
-        title={part1Data.title ?? 'Listening Part 1 Audio'}
-        onError={() => console.error(`IELTS Listening Part 1 audio failed to load: ${part1Data.audioUrl}`)}
-      />
+      <div className="listening-part-one__audio">
+        <div className="listening-part-one__audio-meta">
+          <span>Part 1 audio</span>
+          <strong>{part1Data.title ?? 'Listening Part 1 Audio'} - Segment {currentAudioIndex + 1} of {audioUrls.length}</strong>
+        </div>
+        <audio
+          ref={audioRef}
+          src={currentAudioUrl}
+          controls
+          autoPlay
+          preload="metadata"
+          onEnded={() => {
+            if (currentAudioIndex < audioUrls.length - 1) {
+              setCurrentAudioIndex((index) => index + 1)
+            }
+          }}
+          onError={() => {
+            console.error(`IELTS Listening Part 1 audio failed to load: ${currentAudioUrl}`)
+            alert(`IELTS Listening Part 1 audio failed to load: ${currentAudioUrl}`)
+          }}
+        >
+          Your browser does not support the audio element.
+        </audio>
+        <div className="listening-part-one__audio-actions" aria-label="Listening Part 1 audio segments">
+          {audioUrls.map((audioUrl, index) => (
+            <button
+              className={index === currentAudioIndex ? 'is-active' : ''}
+              type="button"
+              key={audioUrl}
+              onClick={() => setCurrentAudioIndex(index)}
+            >
+              Segment {index + 1}
+            </button>
+          ))}
+        </div>
+      </div>
 
       <div className="listening-part-one__questions">
         {questions.map((question, index) => (
