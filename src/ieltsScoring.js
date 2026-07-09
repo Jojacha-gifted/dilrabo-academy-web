@@ -13,13 +13,37 @@ export function calculateListeningBand(correctCount) {
   return 0
 }
 
+function extractChoiceLetter(value) {
+  const text = String(value ?? '').trim()
+  const match = text.match(/^([a-z])(?:[\s.)\-:]+|$)/i)
+  return match ? match[1].toLowerCase() : ''
+}
+
 export function normalizeAnswer(value) {
   return String(value ?? '').trim().toLowerCase()
+}
+
+function getComparableAnswers(value) {
+  const values = Array.isArray(value) ? value : [value]
+  return values.reduce((answers, item) => {
+    const normalized = normalizeAnswer(item)
+    const letter = extractChoiceLetter(item)
+
+    if (normalized) answers.add(normalized)
+    if (letter) answers.add(letter)
+
+    return answers
+  }, new Set())
 }
 
 export function isAnswerCorrect(studentAnswer, expectedAnswer) {
   if (expectedAnswer === undefined || expectedAnswer === null) return false
 
+  const studentAnswers = getComparableAnswers(studentAnswer)
   const acceptedAnswers = Array.isArray(expectedAnswer) ? expectedAnswer : [expectedAnswer]
-  return acceptedAnswers.some((answer) => normalizeAnswer(answer) === normalizeAnswer(studentAnswer))
+
+  return acceptedAnswers.some((answer) => {
+    const comparableAnswers = getComparableAnswers(answer)
+    return [...comparableAnswers].some((comparableAnswer) => studentAnswers.has(comparableAnswer))
+  })
 }

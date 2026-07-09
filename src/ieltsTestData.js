@@ -37,24 +37,25 @@ export const part2Data = {
   sections: [
     {
       id: 1,
-      instructions: ["Questions 11-14", "Choose the correct letter, A, B or C."],
+      instructions: ["Questions 11-16", "Choose the correct letter, A, B or C."],
       questions: [
-        { id: 11, type: "text", text: "Why did the speaker decide to start a cycle tour company?" },
-        { id: 12, type: "text", text: "What is special about the 'cycle tour' experience offered?" },
-        { id: 13, type: "text", text: "How does the speaker ensure the safety of the tour participants?" },
-        { id: 14, type: "text", text: "What is the main advantage of the tour routes?" }
+        { id: 11, type: "multiple-choice", text: "What should trainees always expect to get when working on low budget short films?", options: ["A. travel expenses", "B. a minimum wage", "C. meals"] },
+        { id: 12, type: "multiple-choice", text: "According to the speaker, on big budget films trainees may get experience of", options: ["A. makeup for special effects.", "B. working with different ethnicities.", "C. creating a variety of hair styles."] },
+        { id: 13, type: "multiple-choice", text: "The speaker says a problem for makeup artists is", options: ["A. dealing with difficult directors.", "B. being shouted at by their supervisor.", "C. waiting around for hours doing nothing."] },
+        { id: 14, type: "multiple-choice", text: "How did the speaker feel when she met famous actors for the first time?", options: ["A. very shy", "B. very proud", "C. very disappointed"] },
+        { id: 15, type: "multiple-choice", text: "What advice does the speaker give about makeup kits?", options: ["A. Always carry a basic kit with you.", "B. Only buy the best products for a makeup kit.", "C. Ask other makeup artists to check your kit."] },
+        { id: 16, type: "multiple-choice", text: "What advice does the speaker give about creating a portfolio?", options: ["A. Keep print and digital photos.", "B. Only include a small selection of photos.", "C. Get permission to use photos."] }
       ]
     },
     {
       id: 2,
-      instructions: ["Questions 15-20", "Choose TWO letters, A-E."],
+      instructions: ["Questions 17-20", "What ability is required for each of the following duties?", "Write the correct letter, A, B or C, next to Questions 17-20."],
+      note: "A: being well-organised, B: being flexible, C: working quickly",
       questions: [
-        { id: 15, type: "text", text: "Which TWO things must participants bring?" },
-        { id: 16, type: "text", text: "Which TWO aspects are included in the price?" },
-        { id: 17, type: "text", text: "Which TWO services are available at the base camp?" },
-        { id: 18, type: "text", text: "Which TWO rules are strictly enforced?" },
-        { id: 19, type: "text", text: "Which TWO areas are visited during the trip?" },
-        { id: 20, type: "text", text: "Which TWO activities are optional?" }
+        { id: 17, type: "text", text: "17. Prepping an actor" },
+        { id: 18, type: "text", text: "18. Continuity" },
+        { id: 19, type: "text", text: "19. General" },
+        { id: 20, type: "text", text: "20. Applying makeup" }
       ]
     }
   ]
@@ -67,24 +68,54 @@ export const part3Data = {
   sections: [
     {
       id: 1,
-      instructions: ["Questions 21-26", "Choose the correct letter, A, B or C."],
+      instructions: ["Questions 21 and 22", "Choose TWO letters, A-E.", "Which TWO features of the lecture on ocean biodiversity had the greatest impact on the students?"],
+      options: [
+        "A. the references to local problems",
+        "B. the broad focus of the examples",
+        "C. the practical suggestions for solutions",
+        "D. the type of issues discussed",
+        "E. the implications for government policy"
+      ],
       questions: [
-        { id: 21, type: "text", text: "What does the research focus on?" },
-        { id: 22, type: "text", text: "What was the initial hypothesis?" },
-        { id: 23, type: "text", text: "How was the data collected?" },
-        { id: 24, type: "text", text: "What were the unexpected results?" },
-        { id: 25, type: "text", text: "How did the participants react?" },
-        { id: 26, type: "text", text: "What does the speaker conclude?" }
+        { id: 21, type: "checkbox", text: "21" },
+        { id: 22, type: "checkbox", text: "22" }
       ]
     },
     {
       id: 2,
-      instructions: ["Questions 27-30", "Match the researchers with the findings."],
+      instructions: ["Questions 23 and 24", "Choose TWO letters, A-E.", "Which TWO details about the research project particularly impressed the students?"],
+      options: [
+        "A. the team's previous successes",
+        "B. its wide geographical scale",
+        "C. the use of new technology",
+        "D. the extensive statistical evidence",
+        "E. the large range of specialists involved"
+      ],
       questions: [
-        { id: 27, type: "text", text: "Dr. Smith: __" },
-        { id: 28, type: "text", text: "Prof. Jones: __" },
-        { id: 29, type: "text", text: "Dr. Lee: __" },
-        { id: 30, type: "text", text: "Prof. Brown: __" }
+        { id: 23, type: "checkbox", text: "23" },
+        { id: 24, type: "checkbox", text: "24" }
+      ]
+    },
+    {
+      id: 3,
+      instructions: ["Questions 25-30", "What is the students' opinion of each of the following resources related to ocean biodiversity?", "Choose SIX answers from the box and write the correct letter, A-H, next to Questions 25-30."],
+      box: [
+        "A. This is aimed at a very specialist audience.",
+        "B. This is now rather outdated.",
+        "C. This was an effective description of a new danger.",
+        "D. This suggests possible ways to improve the situation.",
+        "E. This does not give a balanced account.",
+        "F. This is too predictable to be useful.",
+        "G. This gives insufficient evidence for its claims.",
+        "H. This gives a clear explanation of the problems."
+      ],
+      questions: [
+        { id: 25, type: "text", text: "25. Article on invasive lionfish" },
+        { id: 26, type: "text", text: "26. Documentary on microplastics" },
+        { id: 27, type: "text", text: "27. Podcast on ocean pollution" },
+        { id: 28, type: "text", text: "28. Book on coastal ecosystems" },
+        { id: 29, type: "text", text: "29. Article on metal toxicity" },
+        { id: 30, type: "text", text: "30. Podcast on floating marine cities" }
       ]
     }
   ]
@@ -96,18 +127,18 @@ export const part4Data = {
   sections: [
     {
       id: 1,
-      instructions: ["Questions 31-40", "Complete the notes below.", "Write ONE WORD ONLY."],
+      instructions: ["Questions 31-40", "Complete the notes below.", "Write ONE WORD ONLY for each answer."],
       questions: [
-        { id: 31, type: "text", text: "Early methods of __ were inefficient." },
-        { id: 32, type: "text", text: "The impact of __ was underestimated." },
-        { id: 33, type: "text", text: "New technology allows for better __." },
-        { id: 34, type: "text", text: "The cost of __ has decreased significantly." },
-        { id: 35, type: "text", text: "Future developments will focus on __." },
-        { id: 36, type: "text", text: "Problems with the current __ must be addressed." },
-        { id: 37, type: "text", text: "Experts suggest using a different __." },
-        { id: 38, type: "text", text: "The role of __ is critical in the process." },
-        { id: 39, type: "text", text: "Public __ is essential for success." },
-        { id: 40, type: "text", text: "The final __ will be published next year." }
+        { id: 31, type: "text", text: "31. Three resources which are essential for industrial civilisation: __" },
+        { id: 32, type: "text", text: "32. The supply of natural rubber is limited because the growth of the tree is __" },
+        { id: 33, type: "text", text: "33. Production cannot easily be adjusted because of increasing or decreasing __" },
+        { id: 34, type: "text", text: "34. The tree only grows near the __" },
+        { id: 35, type: "text", text: "35. It is very difficult to __ rubber after production." },
+        { id: 36, type: "text", text: "36. New threats include lack of genetic diversity, leading to danger of disease caused by a __" },
+        { id: 37, type: "text", text: "37. extreme __ events." },
+        { id: 38, type: "text", text: "38. Synthetic rubber is less __ than natural rubber" },
+        { id: 39, type: "text", text: "39. A wild flower (a type of dandelion) has rubber in its __" },
+        { id: 40, type: "text", text: "40. It can be grown in many locations and does not require good __" }
       ]
     }
   ]

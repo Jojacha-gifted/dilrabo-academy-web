@@ -44,34 +44,153 @@ function countAnsweredInPart(part, userAnswers) {
   return getPartQuestions(part).filter((question) => normalizeAnswer(userAnswers[question.id]).length > 0).length
 }
 
+function getSectionAnswerKey(section) {
+  const answerKey = section.answers ?? section.answer ?? section.correctAnswers
+  return Array.isArray(answerKey) ? answerKey : null
+}
+
+function countCorrectAnswerSet(questions, userAnswers, expectedAnswers) {
+  const countedAnswers = new Set()
+
+  return questions.reduce((total, question) => {
+    const studentAnswer = userAnswers[question.id]
+    const normalizedAnswer = normalizeAnswer(studentAnswer)
+
+    if (!normalizedAnswer || countedAnswers.has(normalizedAnswer)) return total
+    countedAnswers.add(normalizedAnswer)
+
+    return total + Number(isAnswerCorrect(studentAnswer, expectedAnswers))
+  }, 0)
+}
+
 function countCorrectAnswers(parts, userAnswers) {
   return parts.reduce((total, part) => {
-    return total + getPartQuestions(part).reduce((partTotal, question) => {
-      return partTotal + Number(isAnswerCorrect(userAnswers[question.id], question.answer))
+    return total + (part.sections ?? []).reduce((partTotal, section) => {
+      const sectionQuestions = section.questions ?? []
+      const sectionAnswerKey = getSectionAnswerKey(section)
+
+      if (sectionAnswerKey && section.questions?.every((question) => question.type === 'checkbox')) {
+        return partTotal + countCorrectAnswerSet(sectionQuestions, userAnswers, sectionAnswerKey)
+      }
+
+      return partTotal + sectionQuestions.reduce((sectionTotal, question) => {
+        return sectionTotal + Number(isAnswerCorrect(userAnswers[question.id], question.answer))
+      }, 0)
     }, 0)
   }, 0)
 }
 
-function QuestionInput({ part, question, value, onChange }) {
-  if (question.type === 'multiple-choice' && Array.isArray(question.options)) {
-    return (
-      <div className="ielts-assessment__options">
-        {question.options.map((option) => (
-          <button
-            className={value === option ? 'is-selected' : ''}
-            type="button"
-            key={option}
-            onClick={() => onChange(question.id, option)}
-          >
-            {option}
-          </button>
+function getChoiceLabel(option) {
+  if (typeof option === 'object' && option !== null) return option.label ?? option.text ?? option.value ?? ''
+  return String(option ?? '')
+}
+
+function getChoiceValue(option) {
+  if (typeof option === 'object' && option !== null) return String(option.value ?? option.letter ?? option.label ?? option.text ?? '')
+
+  const label = getChoiceLabel(option)
+  const letterMatch = label.match(/^([A-Z])(?:[\s.)\-:]+|$)/i)
+  return letterMatch ? letterMatch[1].toUpperCase() : label
+}
+
+function parseNoteChoices(note) {
+  if (!note) return []
+
+  return [...String(note).matchAll(/([A-Z])\s*:\s*([^,]+)/g)].map((match) => `${match[1]}. ${match[2].trim()}`)
+}
+
+function getSectionChoices(section) {
+  if (Array.isArray(section.box)) return section.box
+  if (Array.isArray(section.options)) return section.options
+  return parseNoteChoices(section.note)
+}
+
+function shouldUseSectionChoices(question, section) {
+  const sectionText = [...(section.instructions ?? []), section.note ?? ''].join(' ')
+  return question.type === 'checkbox' || /choose|write the correct letter/i.test(sectionText)
+}
+
+function getQuestionChoices(question, section) {
+  if (Array.isArray(question.options)) return question.options
+
+  const sectionChoices = getSectionChoices(section)
+  if (sectionChoices.length > 0 && shouldUseSectionChoices(question, section)) return sectionChoices
+
+  return []
+}
+
+function SectionReference({ section }) {
+  const choices = getSectionChoices(section)
+  if (!choices.length) return null
+
+  const title = section.box ? 'Opinion box' : 'Answer choices'
+
+  return (
+    <div className="listening-part-one__reference">
+      <strong>{title}</strong>
+      <ul>
+        {choices.map((choice) => (
+          <li key={getChoiceLabel(choice)}>{getChoiceLabel(choice)}</li>
         ))}
+      </ul>
+    </div>
+  )
+}
+
+function QuestionInput({ part, section, question, value, onChange }) {
+  const choices = getQuestionChoices(question, section)
+  const usesSectionChoices = choices.length > 0 && !Array.isArray(question.options) && question.type !== 'checkbox'
+
+  if (usesSectionChoices) {
+    return (
+      <select
+        aria-label={`Question ${question.id} answer`}
+        className="listening-part-one__select"
+        value={value ?? ''}
+        onChange={(event) => onChange(question.id, event.target.value)}
+      >
+        <option value="">Choose a letter</option>
+        {choices.map((choice) => {
+          const choiceValue = getChoiceValue(choice)
+          const choiceLabel = getChoiceLabel(choice)
+
+          return (
+            <option value={choiceValue} key={choiceLabel}>
+              {choiceLabel}
+            </option>
+          )
+        })}
+      </select>
+    )
+  }
+
+  if (choices.length > 0) {
+    return (
+      <div className="ielts-assessment__options" role="group" aria-label={`Question ${question.id} options`}>
+        {choices.map((choice) => {
+          const choiceValue = getChoiceValue(choice)
+          const choiceLabel = getChoiceLabel(choice)
+          const isSelected = value === choiceValue || value === choiceLabel
+
+          return (
+            <button
+              aria-pressed={isSelected}
+              className={isSelected ? 'is-selected' : ''}
+              type="button"
+              key={choiceLabel}
+              onClick={() => onChange(question.id, choiceValue)}
+            >
+              {choiceLabel}
+            </button>
+          )
+        })}
       </div>
     )
   }
 
   return (
     <input
+      aria-label={`Question ${question.id} answer`}
       type="text"
       value={value ?? ''}
       onChange={(event) => onChange(question.id, event.target.value)}
@@ -84,7 +203,6 @@ function PartAudioPlayer({ part }) {
   const [currentAudioIndex, setCurrentAudioIndex] = useState(0)
   const audioRef = useRef(null)
   const currentAudioUrl = part.audioUrls[currentAudioIndex] ?? ''
-
 
   useEffect(() => {
     const audio = audioRef.current
@@ -253,19 +371,29 @@ function IeltsExamContainer({ onClose }) {
               ))}
             </div>
 
+            <SectionReference section={section} />
+
             <div className="listening-part-one__questions">
-              {(section.questions ?? []).map((question) => (
-                <label className="listening-part-one__question" key={question.id}>
-                  <span>Q{question.id}</span>
-                  <p>{question.text}</p>
-                  <QuestionInput
-                    part={activePart}
-                    question={question}
-                    value={userAnswers[question.id]}
-                    onChange={updateAnswer}
-                  />
-                </label>
-              ))}
+              {(section.questions ?? []).map((question) => {
+                const hasChoices = getQuestionChoices(question, section).length > 0
+
+                return (
+                  <div
+                    className={`listening-part-one__question${hasChoices ? ' listening-part-one__question--choices' : ''}`}
+                    key={question.id}
+                  >
+                    <span>Q{question.id}</span>
+                    <p>{question.text}</p>
+                    <QuestionInput
+                      part={activePart}
+                      section={section}
+                      question={question}
+                      value={userAnswers[question.id]}
+                      onChange={updateAnswer}
+                    />
+                  </div>
+                )
+              })}
             </div>
           </section>
         ))}
