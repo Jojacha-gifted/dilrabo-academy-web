@@ -9,25 +9,29 @@ export const part1Data = {
       id: 1,
       instructions: ["Complete the table below.", "Write ONE WORD AND/OR A NUMBER."],
       questions: [
-        { id: 1, type: "text", text: "Small groups (max __ people)" },
-        { id: 2, type: "text", text: "Basic theory e.g. understanding the __ and tides" },
-        { id: 3, type: "text", text: "Basic sailing skills including __ information" },
-        { id: 4, type: "text", text: "£__ available for club members" },
-        { id: 5, type: "text", text: "All inclusive (plus a useful __)" },
-        { id: 6, type: "text", text: "A __ at the end of the course for all participants" }
+        { id: 1, type: "text", text: "Small groups (max people)" },
+        { id: 2, type: "text", text: "Basic theory e.g. understanding the and tides" },
+        { id: 3, type: "text", text: "Basic sailing skills including information" },
+        { id: 4, type: "text", text: "£ available for club members" },
+        { id: 5, type: "text", text: "All inclusive (plus a useful )" },
+        { id: 6, type: "text", text: "A at the end of the course for all participants" }
       ]
     },
     {
       id: 2,
       instructions: ["Complete the notes below.", "Write ONE WORD ONLY."],
       questions: [
-        { id: 7, type: "text", text: "Bring suitable clothing, a __ and toiletries" },
-        { id: 8, type: "text", text: "There is a __ at the club" },
-        { id: 9, type: "text", text: "Online training __ are recommended" },
-        { id: 10, type: "text", text: "__ are available for course participants" }
+        { id: 7, type: "text", text: "Bring suitable clothing, a and toiletries" },
+        { id: 8, type: "text", text: "There is a at the club" },
+        { id: 9, type: "text", text: "Online training are recommended" },
+        { id: 10, type: "text", text: " are available for course participants" }
       ]
     }
-  ]
+  ],
+  answers: {
+    1: "10", 2: "weather", 3: "safety", 4: "discount", 5: "dictionary",
+    6: "certificate", 7: "towel", 8: "café", 9: "videos", 10: "lockers"
+  }
 };
 
 export const part2Data = {
@@ -58,9 +62,12 @@ export const part2Data = {
         { id: 20, type: "text", text: "20. Applying makeup" }
       ]
     }
-  ]
-};
-
+  ],
+  answers: {
+    11: "A", 12: "B", 13: "A", 14: "A", 15: "A",
+    16: "C", 17: "C", 18: "A", 19: "B", 20: "C"
+  }
+}; 
 export const part3Data = {
   part: 3,
   title: "Listening Part 3",
@@ -69,13 +76,7 @@ export const part3Data = {
     {
       id: 1,
       instructions: ["Questions 21 and 22", "Choose TWO letters, A-E.", "Which TWO features of the lecture on ocean biodiversity had the greatest impact on the students?"],
-      options: [
-        "A. the references to local problems",
-        "B. the broad focus of the examples",
-        "C. the practical suggestions for solutions",
-        "D. the type of issues discussed",
-        "E. the implications for government policy"
-      ],
+      options: ["A. the references to local problems", "B. the broad focus of the examples", "C. the practical suggestions for solutions", "D. the type of issues discussed", "E. the implications for government policy"],
       questions: [
         { id: 21, type: "checkbox", text: "21" },
         { id: 22, type: "checkbox", text: "22" }
@@ -84,13 +85,7 @@ export const part3Data = {
     {
       id: 2,
       instructions: ["Questions 23 and 24", "Choose TWO letters, A-E.", "Which TWO details about the research project particularly impressed the students?"],
-      options: [
-        "A. the team's previous successes",
-        "B. its wide geographical scale",
-        "C. the use of new technology",
-        "D. the extensive statistical evidence",
-        "E. the large range of specialists involved"
-      ],
+      options: ["A. the team's previous successes", "B. its wide geographical scale", "C. the use of new technology", "D. the extensive statistical evidence", "E. the large range of specialists involved"],
       questions: [
         { id: 23, type: "checkbox", text: "23" },
         { id: 24, type: "checkbox", text: "24" }
@@ -99,16 +94,7 @@ export const part3Data = {
     {
       id: 3,
       instructions: ["Questions 25-30", "What is the students' opinion of each of the following resources related to ocean biodiversity?", "Choose SIX answers from the box and write the correct letter, A-H, next to Questions 25-30."],
-      box: [
-        "A. This is aimed at a very specialist audience.",
-        "B. This is now rather outdated.",
-        "C. This was an effective description of a new danger.",
-        "D. This suggests possible ways to improve the situation.",
-        "E. This does not give a balanced account.",
-        "F. This is too predictable to be useful.",
-        "G. This gives insufficient evidence for its claims.",
-        "H. This gives a clear explanation of the problems."
-      ],
+      box: ["A. This is aimed at a very specialist audience.", "B. This is now rather outdated.", "C. This was an effective description of a new danger.", "D. This suggests possible ways to improve the situation.", "E. This does not give a balanced account.", "F. This is too predictable to be useful.", "G. This gives insufficient evidence for its claims.", "H. This gives a clear explanation of the problems."],
       questions: [
         { id: 25, type: "text", text: "25. Article on invasive lionfish" },
         { id: 26, type: "text", text: "26. Documentary on microplastics" },
@@ -118,8 +104,13 @@ export const part3Data = {
         { id: 30, type: "text", text: "30. Podcast on floating marine cities" }
       ]
     }
-  ]
+  ],
+  answers: {
+    21: ["B", "D"], 22: ["B", "D"], 23: ["C", "E"], 24: ["C", "E"],
+    25: "G", 26: "B", 27: "F", 28: "H", 29: "A", 30: "E"
+  }
 };
+
 export const part4Data = {
   part: 4,
   title: "Listening Part 4",
@@ -129,19 +120,23 @@ export const part4Data = {
       id: 1,
       instructions: ["Questions 31-40", "Complete the notes below.", "Write ONE WORD ONLY for each answer."],
       questions: [
-        { id: 31, type: "text", text: "31. Three resources which are essential for industrial civilisation: __" },
-        { id: 32, type: "text", text: "32. The supply of natural rubber is limited because the growth of the tree is __" },
-        { id: 33, type: "text", text: "33. Production cannot easily be adjusted because of increasing or decreasing __" },
-        { id: 34, type: "text", text: "34. The tree only grows near the __" },
-        { id: 35, type: "text", text: "35. It is very difficult to __ rubber after production." },
-        { id: 36, type: "text", text: "36. New threats include lack of genetic diversity, leading to danger of disease caused by a __" },
-        { id: 37, type: "text", text: "37. extreme __ events." },
-        { id: 38, type: "text", text: "38. Synthetic rubber is less __ than natural rubber" },
-        { id: 39, type: "text", text: "39. A wild flower (a type of dandelion) has rubber in its __" },
-        { id: 40, type: "text", text: "40. It can be grown in many locations and does not require good __" }
+        { id: 31, type: "text", text: "31. Three resources which are essential for industrial civilisation: " },
+        { id: 32, type: "text", text: "32. The supply of natural rubber is limited because the growth of the tree is " },
+        { id: 33, type: "text", text: "33. Production cannot easily be adjusted because of increasing or decreasing " },
+        { id: 34, type: "text", text: "34. The tree only grows near the " },
+        { id: 35, type: "text", text: "35. It is very difficult to rubber after production." },
+        { id: 36, type: "text", text: "36. New threats include lack of genetic diversity, leading to danger of disease caused by a " },
+        { id: 37, type: "text", text: "37. extreme events." },
+        { id: 38, type: "text", text: "38. Synthetic rubber is less than natural rubber" },
+        { id: 39, type: "text", text: "39. A wild flower (a type of dandelion) has rubber in its " },
+        { id: 40, type: "text", text: "40. It can be grown in many locations and does not require good " }
       ]
     }
-  ]
+  ],
+  answers: {
+    31: "metal", 32: "slow", 33: "demand", 34: "equator", 35: "recycle",
+    36: "fungus", 37: "weather", 38: "strong", 39: "roots", 40: "soil"
+  }
 };
 
 export const ieltsExamParts = [part1Data, part2Data, part3Data, part4Data];

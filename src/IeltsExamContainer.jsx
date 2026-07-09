@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { ieltsExamParts } from './ieltsTestData.js'
 import ResultScreen from './ResultScreen.jsx'
-import { isAnswerCorrect, normalizeAnswer } from './ieltsScoring.js'
+import { calculateCorrectCount, calculateListeningBand, getBandDescription, normalizeAnswer } from './ieltsScoring.js'
 
 function normalizePart(part, index) {
   if (!part) return null
@@ -42,42 +42,6 @@ function createInitialAnswers(parts) {
 
 function countAnsweredInPart(part, userAnswers) {
   return getPartQuestions(part).filter((question) => normalizeAnswer(userAnswers[question.id]).length > 0).length
-}
-
-function getSectionAnswerKey(section) {
-  const answerKey = section.answers ?? section.answer ?? section.correctAnswers
-  return Array.isArray(answerKey) ? answerKey : null
-}
-
-function countCorrectAnswerSet(questions, userAnswers, expectedAnswers) {
-  const countedAnswers = new Set()
-
-  return questions.reduce((total, question) => {
-    const studentAnswer = userAnswers[question.id]
-    const normalizedAnswer = normalizeAnswer(studentAnswer)
-
-    if (!normalizedAnswer || countedAnswers.has(normalizedAnswer)) return total
-    countedAnswers.add(normalizedAnswer)
-
-    return total + Number(isAnswerCorrect(studentAnswer, expectedAnswers))
-  }, 0)
-}
-
-function countCorrectAnswers(parts, userAnswers) {
-  return parts.reduce((total, part) => {
-    return total + (part.sections ?? []).reduce((partTotal, section) => {
-      const sectionQuestions = section.questions ?? []
-      const sectionAnswerKey = getSectionAnswerKey(section)
-
-      if (sectionAnswerKey && section.questions?.every((question) => question.type === 'checkbox')) {
-        return partTotal + countCorrectAnswerSet(sectionQuestions, userAnswers, sectionAnswerKey)
-      }
-
-      return partTotal + sectionQuestions.reduce((sectionTotal, question) => {
-        return sectionTotal + Number(isAnswerCorrect(userAnswers[question.id], question.answer))
-      }, 0)
-    }, 0)
-  }, 0)
 }
 
 function getChoiceLabel(option) {
@@ -309,6 +273,16 @@ function IeltsExamContainer({ onClose }) {
     setResult(null)
   }
 
+  function submitExam() {
+    const submittedAnswers = { ...userAnswers }
+    const correctCount = calculateCorrectCount(submittedAnswers)
+    const bandScore = calculateListeningBand(correctCount)
+    const bandDescription = getBandDescription(bandScore)
+
+    setTransitionNotice('')
+    setResult({ correctCount, bandScore, bandDescription })
+  }
+
   function submitCurrentPart(event) {
     event.preventDefault()
     if (!activePart || !isPartComplete) return
@@ -319,9 +293,7 @@ function IeltsExamContainer({ onClose }) {
       return
     }
 
-    const correctCount = countCorrectAnswers(examParts, userAnswers)
-    setTransitionNotice('')
-    setResult({ correctCount })
+    submitExam()
   }
 
   if (result) {
@@ -329,6 +301,8 @@ function IeltsExamContainer({ onClose }) {
       <ResultScreen
         correctCount={result.correctCount}
         totalQuestions={totalQuestionCount}
+        bandScore={result.bandScore}
+        bandDescription={result.bandDescription}
         onRestart={resetExam}
         onClose={onClose}
       />
