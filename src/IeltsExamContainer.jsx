@@ -3,9 +3,6 @@ import { ieltsExamParts } from './ieltsTestData.js'
 import ResultScreen from './ResultScreen.jsx'
 import { calculateListeningBand, isAnswerCorrect, normalizeAnswer } from './ieltsScoring.js'
 
-const TOTAL_EXAM_PARTS = 4
-const TOTAL_EXAM_QUESTIONS = 40
-
 function normalizePart(part, index) {
   if (!part) return null
 
@@ -27,6 +24,10 @@ function getExamParts() {
 
 function getPartQuestions(part) {
   return (part?.sections ?? []).flatMap((section) => section.questions ?? [])
+}
+
+function getTotalQuestionCount(parts) {
+  return parts.reduce((total, part) => total + getPartQuestions(part).length, 0)
 }
 
 function createInitialAnswers(parts) {
@@ -89,7 +90,6 @@ function PartAudioPlayer({ part }) {
     const audio = audioRef.current
     if (!audio || !currentAudioUrl) return
 
-    console.log('Audio URL:', currentAudioUrl)
     audio.load()
     audio.play().catch(() => {
       console.info('Browser blocked automatic IELTS audio playback until the user interacts with the player.')
@@ -149,13 +149,24 @@ function PartAudioPlayer({ part }) {
 
 function IeltsExamContainer({ onClose }) {
   const examParts = useMemo(() => getExamParts(), [])
-  const [currentPart, setCurrentPart] = useState(1)
+  const totalQuestionCount = useMemo(() => getTotalQuestionCount(examParts), [examParts])
+  const [currentPart, setCurrentPart] = useState(() => examParts[0]?.part ?? 1)
   const [userAnswers, setUserAnswers] = useState(() => createInitialAnswers(examParts))
+  const [transitionNotice, setTransitionNotice] = useState('')
   const [result, setResult] = useState(null)
-  const activePart = examParts.find((part) => part.part === currentPart)
+  const formRef = useRef(null)
+  const currentPartIndex = examParts.findIndex((part) => part.part === currentPart)
+  const activePart = currentPartIndex >= 0 ? examParts[currentPartIndex] : null
+  const nextPart = currentPartIndex >= 0 ? examParts[currentPartIndex + 1] : null
   const answeredInPart = activePart ? countAnsweredInPart(activePart, userAnswers) : 0
   const activePartQuestionCount = activePart ? getPartQuestions(activePart).length : 0
   const isPartComplete = activePartQuestionCount > 0 && answeredInPart === activePartQuestionCount
+
+  useEffect(() => {
+    if (!activePart) return
+
+    formRef.current?.scrollIntoView({ block: 'start', behavior: 'smooth' })
+  }, [activePart])
 
   function updateAnswer(questionId, value) {
     setUserAnswers((answers) => ({
@@ -165,8 +176,9 @@ function IeltsExamContainer({ onClose }) {
   }
 
   function resetExam() {
-    setCurrentPart(1)
+    setCurrentPart(examParts[0]?.part ?? 1)
     setUserAnswers(createInitialAnswers(examParts))
+    setTransitionNotice('')
     setResult(null)
   }
 
@@ -174,12 +186,14 @@ function IeltsExamContainer({ onClose }) {
     event.preventDefault()
     if (!activePart || !isPartComplete) return
 
-    if (currentPart < TOTAL_EXAM_PARTS) {
-      setCurrentPart((part) => part + 1)
+    if (nextPart) {
+      setCurrentPart(nextPart.part)
+      setTransitionNotice(`Part ${activePart.part} submitted. Part ${nextPart.part} is ready.`)
       return
     }
 
     const correctCount = countCorrectAnswers(examParts, userAnswers)
+    setTransitionNotice('')
     setResult({
       correctCount,
       bandScore: calculateListeningBand(correctCount),
@@ -190,7 +204,7 @@ function IeltsExamContainer({ onClose }) {
     return (
       <ResultScreen
         correctCount={result.correctCount}
-        totalQuestions={TOTAL_EXAM_QUESTIONS}
+        totalQuestions={totalQuestionCount}
         bandScore={result.bandScore}
         onRestart={resetExam}
         onClose={onClose}
@@ -207,7 +221,7 @@ function IeltsExamContainer({ onClose }) {
         <div className="ielts-assessment__footer">
           <span>IELTS Listening</span>
           <div>
-            <button type="button" onClick={() => setCurrentPart(1)}>Back to Part 1</button>
+            <button type="button" onClick={() => setCurrentPart(examParts[0]?.part ?? 1)}>Back to Part 1</button>
             <button type="button" onClick={onClose}>Close</button>
           </div>
         </div>
@@ -216,11 +230,17 @@ function IeltsExamContainer({ onClose }) {
   }
 
   return (
-    <form className="listening-part-one" onSubmit={submitCurrentPart}>
+    <form className="listening-part-one" ref={formRef} onSubmit={submitCurrentPart}>
       <div className="listening-part-one__topline">
         <h3>{activePart.title}</h3>
-        <strong>{answeredInPart}/{activePartQuestionCount} answered</strong>
+        <strong>Part {currentPartIndex + 1} of {examParts.length} | {answeredInPart}/{activePartQuestionCount} answered</strong>
       </div>
+
+      {transitionNotice ? (
+        <div className="listening-part-one__notice" role="status" aria-live="polite">
+          {transitionNotice}
+        </div>
+      ) : null}
 
       <PartAudioPlayer key={activePart.id} part={activePart} />
 
@@ -253,7 +273,7 @@ function IeltsExamContainer({ onClose }) {
 
       <div className="listening-part-one__actions">
         <button type="submit" disabled={!isPartComplete}>
-          {currentPart < TOTAL_EXAM_PARTS ? `Submit Part ${currentPart} and Continue` : 'Submit Final Part'}
+          {nextPart ? `Submit Part ${activePart.part} and Continue to Part ${nextPart.part}` : 'Submit Final Part'}
         </button>
       </div>
     </form>
