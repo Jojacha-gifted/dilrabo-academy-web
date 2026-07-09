@@ -233,6 +233,19 @@
   outline: none;
 }
 
+.ielts-assessment__options--letters {
+  grid-template-columns: repeat(auto-fit, minmax(2.75rem, 1fr));
+  gap: 0.45rem;
+}
+
+.ielts-assessment__options--letters button {
+  display: inline-grid;
+  place-items: center;
+  min-height: 2.65rem;
+  padding: 0.55rem;
+  text-align: center;
+}
+
 .ielts-assessment__text-answer {
   display: grid;
   gap: 0.45rem;
@@ -584,6 +597,10 @@
 
 .listening-part-one__question--choices {
   grid-template-columns: auto minmax(12rem, 0.9fr) minmax(18rem, 1.1fr);
+}
+
+.listening-part-one__question--letter-choice {
+  grid-template-columns: auto minmax(12rem, 1fr) minmax(8rem, 0.35fr);
 }
 
 .listening-part-one__question > span {

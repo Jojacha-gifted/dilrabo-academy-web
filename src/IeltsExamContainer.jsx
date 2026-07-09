@@ -93,6 +93,10 @@ function getChoiceValue(option) {
   return letterMatch ? letterMatch[1].toUpperCase() : label
 }
 
+function isSectionChoiceQuestion(question, section) {
+  return getQuestionChoices(question, section).length > 0 && !Array.isArray(question.options)
+}
+
 function parseNoteChoices(note) {
   if (!note) return []
 
@@ -139,9 +143,9 @@ function SectionReference({ section }) {
 
 function QuestionInput({ part, section, question, value, onChange }) {
   const choices = getQuestionChoices(question, section)
-  const usesSectionChoices = choices.length > 0 && !Array.isArray(question.options) && question.type !== 'checkbox'
+  const usesSectionChoices = isSectionChoiceQuestion(question, section)
 
-  if (usesSectionChoices) {
+  if (usesSectionChoices && question.type !== 'checkbox') {
     return (
       <select
         aria-label={`Question ${question.id} answer`}
@@ -156,7 +160,7 @@ function QuestionInput({ part, section, question, value, onChange }) {
 
           return (
             <option value={choiceValue} key={choiceLabel}>
-              {choiceLabel}
+              {choiceValue}
             </option>
           )
         })}
@@ -165,11 +169,16 @@ function QuestionInput({ part, section, question, value, onChange }) {
   }
 
   if (choices.length > 0) {
+    const optionsClassName = usesSectionChoices
+      ? 'ielts-assessment__options ielts-assessment__options--letters'
+      : 'ielts-assessment__options'
+
     return (
-      <div className="ielts-assessment__options" role="group" aria-label={`Question ${question.id} options`}>
+      <div className={optionsClassName} role="group" aria-label={`Question ${question.id} options`}>
         {choices.map((choice) => {
           const choiceValue = getChoiceValue(choice)
           const choiceLabel = getChoiceLabel(choice)
+          const displayLabel = usesSectionChoices ? choiceValue : choiceLabel
           const isSelected = value === choiceValue || value === choiceLabel
 
           return (
@@ -180,7 +189,7 @@ function QuestionInput({ part, section, question, value, onChange }) {
               key={choiceLabel}
               onClick={() => onChange(question.id, choiceValue)}
             >
-              {choiceLabel}
+              {displayLabel}
             </button>
           )
         })}
@@ -376,10 +385,11 @@ function IeltsExamContainer({ onClose }) {
             <div className="listening-part-one__questions">
               {(section.questions ?? []).map((question) => {
                 const hasChoices = getQuestionChoices(question, section).length > 0
+                const usesSectionChoices = isSectionChoiceQuestion(question, section)
 
                 return (
                   <div
-                    className={`listening-part-one__question${hasChoices ? ' listening-part-one__question--choices' : ''}`}
+                    className={`listening-part-one__question${hasChoices ? ' listening-part-one__question--choices' : ''}${usesSectionChoices ? ' listening-part-one__question--letter-choice' : ''}`}
                     key={question.id}
                   >
                     <span>Q{question.id}</span>
