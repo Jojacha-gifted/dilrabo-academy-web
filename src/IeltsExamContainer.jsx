@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { ieltsExamParts } from './ieltsTestData.js'
 import ResultScreen from './ResultScreen.jsx'
-import { calculateListeningBand, isAnswerCorrect, normalizeAnswer } from './ieltsScoring.js'
+import { isAnswerCorrect, normalizeAnswer } from './ieltsScoring.js'
 
 function normalizePart(part, index) {
   if (!part) return null
@@ -321,10 +321,7 @@ function IeltsExamContainer({ onClose }) {
 
     const correctCount = countCorrectAnswers(examParts, userAnswers)
     setTransitionNotice('')
-    setResult({
-      correctCount,
-      bandScore: calculateListeningBand(correctCount),
-    })
+    setResult({ correctCount })
   }
 
   if (result) {
@@ -332,7 +329,6 @@ function IeltsExamContainer({ onClose }) {
       <ResultScreen
         correctCount={result.correctCount}
         totalQuestions={totalQuestionCount}
-        bandScore={result.bandScore}
         onRestart={resetExam}
         onClose={onClose}
       />

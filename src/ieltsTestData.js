@@ -33,7 +33,7 @@ export const part1Data = {
 export const part2Data = {
   part: 2,
   title: "Listening Part 2",
-  audioUrls: ["https://jufawgkygh9xq4ka.public.blob.vercel-storage.com/IELTS%2021%20AUDIO/C21T1P2.mp3"],
+  audioUrls: ["https://jufawgkygh9xq4ka.public.blob.vercel-storage.com/IELTS%2021%20AUDIO/C21T1P2.1.mp3", "https://jufawgkygh9xq4ka.public.blob.vercel-storage.com/IELTS%2021%20AUDIO/C21T1P2.2.mp3"],
   sections: [
     {
       id: 1,
@@ -64,7 +64,7 @@ export const part2Data = {
 export const part3Data = {
   part: 3,
   title: "Listening Part 3",
-  audioUrls: ["https://jufawgkygh9xq4ka.public.blob.vercel-storage.com/IELTS%2021%20AUDIO/C21T1P3.mp3"],
+  audioUrls: ["https://jufawgkygh9xq4ka.public.blob.vercel-storage.com/IELTS%2021%20AUDIO/C21T1P3.1.mp3", "https://jufawgkygh9xq4ka.public.blob.vercel-storage.com/IELTS%2021%20AUDIO/C21T1P3.2.mp3"],
   sections: [
     {
       id: 1,
