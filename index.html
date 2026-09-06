@@ -1230,6 +1230,9 @@
     <script type="module" src="/src/main.jsx"></script>
     <script type="module" src="/src/ChessCoachModal.jsx"></script>
     <script type="module" src="/src/CheckersCoachModal.jsx"></script>
+    <div id="ielts-listening-assessment-root"></div>
+    <script type="module" src="/src/IeltsListeningAssessment.jsx"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
     <script>
       // Close dropdown when clicking outside
       document.addEventListener('click', function(event) {
@@ -1239,8 +1242,118 @@
           menu.classList.add('hidden');
         }
       });
-    </script>
-    <div id="ielts-listening-assessment-root"></div>
+
+      const supportedLanguages = ["en", "uz", "bn", "ru"];
+      const languageStorageKey = "dilrabo-language";
+
+      // Centralized copy for easier review and editing.
+      const translations = {
+        en: {
+          meta: {
+            title: "Dilrabo Academy | Educational Academy",
+            description:
+              "Dilrabo Academy is a mobile-responsive educational academy landing page for ambitious learners seeking mentorship, confidence, and academic growth.",
+          },
+          brand: {
+            logoAlt: "Dilrabo Academy logo",
+            tagline: "Learn with intention",
+          },
+          nav: {
+            languageLabel: "Language switcher",
+            languageMenu: "Language",
+            about: "About",
+            programs: "Programs",
+            whyChoose: "Why Choose Us",
+            callCta: "Call the Academy",
+            toggleMenu: "Toggle menu",
+          },
+          hero: {
+            badge: "Academic coaching for modern learners",
+            titleLead: "A calm, ambitious place to",
+            titleAccent: "grow confidence and academic strength.",
+            body:
+              "Dilrabo Academy helps students build language fluency, exam readiness, and disciplined learning habits through thoughtful mentorship and beautifully structured lessons.",
+            ctaPrimary: "Discover the Academy",
+            ctaSecondary: "View Why Students Choose Us",
+            stat1Body: "Focused mentoring that adapts to each learner's pace and goals.",
+            stat2Title: "Small Groups",
+            stat2Body: "Collaborative classes with close feedback and clear accountability.",
+            stat3Title: "Elegant Systems",
+            stat3Body: "Clear plans, polished materials, and consistent progress reviews.",
+            founderAlt: "Founder of Dilrabo Academy",
+            founderLabel: "Founder-Led Learning",
+            founderBody:
+              "Warm guidance, disciplined planning, and a high-trust academic environment.",
+            signatureLabel: "Signature Approach",
+            signatureTitle: "Elegant teaching with measurable outcomes",
+            signatureItem1: "Reading, writing, and test preparation",
+            signatureItem2: "Strategic study routines and confidence building",
+            quickFactsLabel: "Quick Facts",
+            quickFact1Title: "Mobile-Ready",
+            quickFact1Body:
+              "Parents and students can reach the academy instantly from any device.",
+            quickFact2Title: "Human-Centered",
+            quickFact2Body:
+              "Lessons are carefully paced, encouraging, and built for real retention.",
+          },
+          about: {
+            label: "About Us",
+            title:
+              "An educational academy designed with grace, focus, and academic seriousness",
+            body1:
+              "Dilrabo Academy exists for students who need more than generic tutoring. We create a refined learning experience where clear instruction, emotional support, and steady standards work together.",
+            body2:
+              "Every lesson is planned to help learners feel prepared, capable, and proud of the progress they make over time.",
+            card1Title: "Personal attention",
+            card1Body:
+              "Each student is seen clearly, with instruction shaped around strengths, gaps, and goals.",
+            card2Title: "Elegant delivery",
+            card2Body:
+              "Calm visuals, polished materials, and thoughtfully paced sessions reduce noise and build trust.",
+            card3Title: "Visible progress",
+            card3Body:
+              "Students move through structured milestones that make improvement easy to recognize.",
+            card4Title: "Family confidence",
+            card4Body:
+              "Parents appreciate transparent communication and students feel safe asking questions.",
+          },
+          programs: {
+            label: "Our Academic Programs",
+            title: "Five refined pathways for ambitious students and academic clients",
+            body:
+              "Our programs combine strong fundamentals, strategic mentorship, and polished academic execution so every learner can grow with clarity, confidence, and direction.",
+            highlight1Title: "Focused",
+            highlight1Body:
+              "Each pathway is structured around practical outcomes and visible progress.",
+            highlight2Title: "Selective",
+            highlight2Body:
+              "High standards, clear guidance, and thoughtful pacing shape every program.",
+            highlight3Title: "Welcoming",
+            highlight3Body:
+              "Students and families receive calm support in a disciplined environment.",
+            card1Label: "Core Academic Foundation",
+            card1Title: "General English and Mathematics",
+            card1Body:
+              "We strengthen essential language and quantitative skills through steady instruction, clear milestones, and carefully paced support.",
+            card2Label: "International Exam Preparation",
+            card2Title: "IELTS, SAT, and CEFR",
+            card2Body:
+              "Students prepare with smart strategy, rigorous practice, and detailed feedback that builds calm, consistent performance.",
+            card2Cta: "View exam prep paths",
+            card3Label: "Strategic Growth",
+            card3Title: "Top-Tier University Admissions Support",
+            card3Body:
+              "We help ambitious applicants build strong academic profiles and navigate competitive admissions with polish and intention.",
+            card3Cta: "Explore Admissions Path",
+            card4Label: "Cognitive Development",
+            card4Title: "Competitive Chess & Checkers Coaching",
+            card4Body:
+              "Training in these mind games sharpens concentration, strategic thinking, and disciplined decision-making that supports wider academic growth.",
+            card4Cta: "Play Against Coach Dilrabo",
+            card5Label: "Research Services",
+            card5Title: "Independent Research Support and Academic Project Execution",
+            card5Body:
+              "We provide discreet, professional research assistance and carefully managed academic project execution for clients who need polished support.",
             card5Cta: "View Research Services",
           },
           admissionsModal: {
