@@ -4,7 +4,7 @@
   z-index: 90;
   display: grid;
   place-items: center;
-  padding: 2rem 1rem;
+  padding: 1rem;
   color: #1e2a44;
 }
 
@@ -20,13 +20,16 @@
 .coach-modal__panel {
   position: relative;
   width: min(100%, 68rem);
-  max-height: min(92vh, 58rem);
-  overflow-y: auto;
+  height: 96vh;
+  max-height: 52rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.82);
-  border-radius: 2rem;
+  border-radius: 1.5rem;
   background: rgba(255, 255, 255, 0.96);
   box-shadow: 0 24px 70px rgba(30, 42, 68, 0.22);
-  padding: clamp(1.25rem, 3vw, 2rem);
+  padding: clamp(1rem, 2vw, 1.5rem);
 }
 
 .coach-modal__header {
@@ -34,18 +37,19 @@
   grid-template-columns: auto minmax(0, 1fr) auto;
   gap: 1rem;
   align-items: center;
-  padding-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
   border-bottom: 1px solid rgba(30, 42, 68, 0.1);
+  flex-shrink: 0;
 }
 
 .coach-modal__avatar {
-  width: clamp(4.2rem, 12vw, 5.6rem);
-  height: clamp(4.2rem, 12vw, 5.6rem);
-  border-radius: 1.4rem;
+  width: clamp(3.2rem, 8vw, 4.4rem);
+  height: clamp(3.2rem, 8vw, 4.4rem);
+  border-radius: 1rem;
   object-fit: cover;
-  border: 3px solid #fff;
+  border: 2px solid #fff;
   background: #f6f0e8;
-  box-shadow: 0 16px 34px rgba(30, 42, 68, 0.16);
+  box-shadow: 0 8px 16px rgba(30, 42, 68, 0.16);
 }
 
 .coach-modal__eyebrow,
@@ -62,10 +66,10 @@
 }
 
 .coach-modal h2 {
-  margin: 0.35rem 0 0.45rem;
+  margin: 0.25rem 0 0.35rem;
   color: #1e2a44;
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
   line-height: 1;
 }
 
@@ -98,23 +102,31 @@
 
 .coach-modal__content {
   display: grid;
-  grid-template-columns: minmax(18rem, 29rem) minmax(16rem, 1fr);
+  grid-template-columns: minmax(18rem, 30rem) minmax(16rem, 1fr);
   gap: clamp(1rem, 3vw, 1.5rem);
   align-items: stretch;
-  padding-top: 1.5rem;
+  padding-top: 1rem;
+  flex: 1;
+  min-height: 0;
 }
 
 .coach-modal__board-wrap {
   width: 100%;
-  max-width: 29rem;
+  max-width: min(30rem, calc(96vh - 18rem));
   margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
 }
 
 .coach-modal__sidebar {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 0.5rem;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .coach-modal__status,
@@ -122,10 +134,10 @@
 .coach-modal__settings,
 .coach-modal__difficulty {
   border: 1px solid rgba(30, 42, 68, 0.1);
-  border-radius: 1rem;
+  border-radius: 0.75rem;
   background: #fff;
-  padding: 0.75rem;
-  box-shadow: 0 12px 34px rgba(30, 42, 68, 0.06);
+  padding: 0.5rem 0.75rem;
+  box-shadow: 0 4px 12px rgba(30, 42, 68, 0.04);
 }
 
 .coach-modal__status strong,

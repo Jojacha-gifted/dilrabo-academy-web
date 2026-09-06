@@ -66,10 +66,10 @@ function formatTime(ms) {
 }
 
 function getGameStatus(game, isThinking, profile, gameStatusReason) {
-  if (gameStatusReason === 'timeout_player') return 'Checkmate. You ran out of time.'
-  if (gameStatusReason === 'timeout_bot') return 'Victory. Coach Dilrabo ran out of time.'
+  if (gameStatusReason === 'timeout_player') return 'Time out. You lost on time.'
+  if (gameStatusReason === 'timeout_bot') return 'Time out. Coach Dilrabo lost on time.'
+  if (game.isCheckmate()) return 'Checkmate. Game over.'
   if (isThinking) return `${profile.label} is studying the position...`
-  if (game.isCheckmate()) return game.turn() === 'w' ? 'Checkmate. Coach Dilrabo wins this round.' : 'Checkmate. Excellent work, you won.'
   if (game.isDraw()) return 'Draw. Strong resistance from both sides.'
   if (game.inCheck()) return game.turn() === 'w' ? 'You are in check. Find a calm response.' : 'Coach Dilrabo is in check.'
   return game.turn() === 'w' ? 'Your move. Look for checks, captures, and threats.' : `${profile.label} is ready to respond.`
@@ -80,13 +80,14 @@ const PlayerClock = ({ timeMs, label, isTurn }) => {
   return (
     <div style={{
       display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-      padding: '0.5rem 1rem', background: isTurn ? '#a23e48' : '#e2e8f0',
+      padding: '0.4rem 0.75rem', background: isTurn ? '#a23e48' : '#e2e8f0',
       color: isTurn ? '#fff' : '#475569', borderRadius: '0.5rem',
-      fontWeight: 'bold', fontSize: '1.2rem', marginBottom: '0.5rem', marginTop: '0.5rem',
+      fontWeight: 'bold', fontSize: '1rem', marginBottom: '0.4rem', marginTop: '0.4rem',
       transition: 'all 0.2s ease',
-      boxShadow: isTurn ? '0 4px 12px rgba(162, 62, 72, 0.3)' : 'none'
+      boxShadow: isTurn ? '0 4px 12px rgba(162, 62, 72, 0.3)' : 'none',
+      flexShrink: 0
     }}>
-      <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px' }}>{label}</span>
+      <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px' }}>{label}</span>
       <span style={{ fontVariantNumeric: 'tabular-nums' }}>{formatTime(timeMs)}</span>
     </div>
   )
@@ -111,33 +112,40 @@ function CoachChessModal() {
   
   const [premoveSetting, setPremoveSetting] = useState(DEFAULT_PREMOVE)
   const [premoves, setPremoves] = useState([])
+  const [isEngineReady, setIsEngineReady] = useState(false)
 
   const botMoveTimeoutRef = useRef(null)
   const engineRef = useRef(null)
   const requestRef = useRef(null)
   const previousTimeRef = useRef(null)
+  const hasStartedOpeningMove = useRef(false)
+  const resetGameRef = useRef(null)
+  const moveTimeoutRef = useRef(null)
   
   const difficultyProfile = getDifficultyProfile(botDifficulty)
 
   const resetGame = useCallback(() => {
     window.clearTimeout(botMoveTimeoutRef.current)
+    if (moveTimeoutRef.current) clearTimeout(moveTimeoutRef.current)
     setGame(createGame())
     setIsThinking(false)
     setLastMove(null)
     setGameStatusReason(null)
     setPremoves([])
     setIsGameStarted(false)
+    hasStartedOpeningMove.current = false
     setCoachNote(`Fresh board. ${difficultyProfile.label} mode is active.`)
   }, [difficultyProfile.label])
 
   const startGame = useCallback(() => {
-    window.clearTimeout(botMoveTimeoutRef.current)
+    if (moveTimeoutRef.current) clearTimeout(moveTimeoutRef.current)
     setGame(createGame())
     setIsThinking(false)
     setLastMove(null)
     setCoachNote(`Fresh board. ${difficultyProfile.label} mode is active.`)
     setGameStatusReason(null)
     setPremoves([])
+    hasStartedOpeningMove.current = false
     
     let color = selectedColor
     if (color === 'random') {
@@ -153,23 +161,41 @@ function CoachChessModal() {
   }, [difficultyProfile.label, selectedColor, selectedTime])
 
   useEffect(() => {
+    resetGameRef.current = resetGame
+  }, [resetGame])
+
+  useEffect(() => {
     engineRef.current = new Worker('/stockfish.js')
+    
+    engineRef.current.onmessage = (event) => {
+      const msg = event.data
+      if (typeof msg === 'string' && msg === 'uciok') {
+        engineRef.current.postMessage('isready')
+      }
+      if (typeof msg === 'string' && msg === 'readyok') {
+        setIsEngineReady(true)
+      }
+    }
+    
     engineRef.current.postMessage('uci')
 
     window.CoachChessModal = {
       open: () => setIsOpen(true),
       close: () => setIsOpen(false),
-      reset: () => resetGame(),
+      reset: () => {
+        if (resetGameRef.current) resetGameRef.current()
+      },
     }
 
     return () => {
       window.clearTimeout(botMoveTimeoutRef.current)
+      if (moveTimeoutRef.current) clearTimeout(moveTimeoutRef.current)
       delete window.CoachChessModal
       if (engineRef.current) {
         engineRef.current.terminate()
       }
     }
-  }, [resetGame])
+  }, [])
 
   useEffect(() => {
     if (!isOpen) return undefined
@@ -191,18 +217,19 @@ function CoachChessModal() {
 
   // Bot opening move check
   useEffect(() => {
-    if (isGameStarted && game.fen() === createGame().fen() && activeColor === 'b' && game.turn() === 'w') {
+    if (isGameStarted && !hasStartedOpeningMove.current && game.fen() === createGame().fen() && activeColor === 'b' && game.turn() === 'w') {
+      hasStartedOpeningMove.current = true
       setIsThinking(true)
       makeBotMove(game, botDifficulty)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isGameStarted, activeColor])
+  }, [isGameStarted, activeColor, game])
 
   // Timer loop
   const animate = useCallback(time => {
     if (previousTimeRef.current !== undefined) {
       const deltaTime = time - previousTimeRef.current
-      if (isGameStarted && !game.isGameOver() && !gameStatusReason && playerTimeMs !== null && botTimeMs !== null) {
+      if (isGameStarted && !game.isGameOver() && !gameStatusReason && playerTimeMs !== null && botTimeMs !== null && game.history().length > 0) {
         if (game.turn() === activeColor) {
            setPlayerTimeMs(prev => Math.max(0, prev - deltaTime))
         } else {
@@ -258,17 +285,22 @@ function CoachChessModal() {
         const updatedGame = new Chess(currentGame.fen())
         const move = updatedGame.move({ from, to, promotion })
         
-        const timeProfile = TIME_CONTROLS[selectedTime]
-        if (timeProfile && timeProfile.baseMs !== null && timeProfile.incMs > 0) {
-          setBotTimeMs(prev => prev + timeProfile.incMs)
-        }
+        // Add a random artificial delay (400ms - 1200ms) to simulate human thinking.
+        // This ensures the bot's clock decreases and gives the player time to premove.
+        const delayMs = Math.floor(Math.random() * 800) + 400
+        moveTimeoutRef.current = setTimeout(() => {
+          const timeProfile = TIME_CONTROLS[selectedTime]
+          if (timeProfile && timeProfile.baseMs !== null && timeProfile.incMs > 0) {
+            setBotTimeMs(prev => prev + timeProfile.incMs)
+          }
 
-        setGame(updatedGame)
-        setLastMove({ from: move.from, to: move.to })
-        setCoachNote(move.captured
-          ? `${activeProfile.label} chose ${move.san}, winning material on ${move.to}.`
-          : `${activeProfile.label} played ${move.san}. Check the new threats before moving.`)
-        setIsThinking(false)
+          setGame(updatedGame)
+          setLastMove({ from: move.from, to: move.to })
+          setCoachNote(move.captured
+            ? `${activeProfile.label} chose ${move.san}, winning material on ${move.to}.`
+            : `${activeProfile.label} played ${move.san}. Check the new threats before moving.`)
+          setIsThinking(false)
+        }, delayMs)
       }
     }
 
@@ -276,16 +308,26 @@ function CoachChessModal() {
     engineRef.current.postMessage(`go depth ${activeProfile.searchDepth}`)
   }
 
-  function onDrop(sourceSquare, targetSquare) {
-    if (typeof sourceSquare === 'object') {
-       targetSquare = sourceSquare.targetSquare
-       sourceSquare = sourceSquare.sourceSquare
+  function onDrop(sourceSquare, targetSquare, piece) {
+    // Handle react-chessboard v5 where onPieceDrop receives a single object argument
+    if (typeof sourceSquare === 'object' && sourceSquare !== null) {
+      targetSquare = sourceSquare.targetSquare
+      piece = typeof sourceSquare.piece === 'string' ? sourceSquare.piece : sourceSquare.piece?.pieceType
+      sourceSquare = sourceSquare.sourceSquare
     }
-    
-    if (!sourceSquare || !targetSquare || game.isGameOver() || gameStatusReason || game.turn() !== activeColor) return false
+
+    if (game.isGameOver() || gameStatusReason || game.turn() !== activeColor) return false
 
     const movingPiece = game.get(sourceSquare)
     if (!movingPiece || movingPiece.color !== activeColor) return false
+
+    // Handle castling by dragging King to Rook
+    if (movingPiece.type === 'k') {
+      if (sourceSquare === 'e1' && targetSquare === 'h1') targetSquare = 'g1'
+      if (sourceSquare === 'e1' && targetSquare === 'a1') targetSquare = 'c1'
+      if (sourceSquare === 'e8' && targetSquare === 'h8') targetSquare = 'g8'
+      if (sourceSquare === 'e8' && targetSquare === 'a8') targetSquare = 'c8'
+    }
 
     const nextGame = new Chess(game.fen())
     let move
@@ -343,25 +385,25 @@ function CoachChessModal() {
     return (
       <div className="coach-modal" role="dialog" aria-modal="true" aria-labelledby="coach-modal-title">
         <button className="coach-modal__backdrop" type="button" aria-label="Close coach chess modal" onClick={() => setIsOpen(false)} />
-        <div className="coach-modal__panel" style={{ maxWidth: '500px', margin: '10vh auto', textAlign: 'center', padding: '2rem' }}>
-          <header className="coach-modal__header" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <img className="coach-modal__avatar" src={avatarImg} alt="Coach Dilrabo" style={{ marginBottom: '1rem' }} />
-            <h2 id="coach-modal-title">Select Your Challenge</h2>
-            <p>Choose your match parameters.</p>
+        <div className="coach-modal__panel" style={{ maxWidth: '540px', margin: 'auto', textAlign: 'center', padding: '1rem', height: 'auto', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+          <header className="coach-modal__header" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingBottom: '0.25rem' }}>
+            <img className="coach-modal__avatar" src={avatarImg} alt="Coach Dilrabo" style={{ marginBottom: '0.25rem', width: '3.5rem', height: '3.5rem' }} />
+            <h2 id="coach-modal-title" style={{ fontSize: '1.4rem', margin: '0.1rem 0' }}>Select Your Challenge</h2>
+            <p style={{ margin: 0, fontSize: '0.85rem' }}>Choose your match parameters.</p>
           </header>
 
-          <div style={{ margin: '2rem 0', textAlign: 'left' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+          <div style={{ flex: 1, minHeight: 0, margin: '0.5rem 0', textAlign: 'left', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginBottom: '0.5rem' }}>
               <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Play As</label>
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.15rem', fontWeight: 'bold', fontSize: '0.85rem' }}>Play As</label>
+                <div style={{ display: 'flex', gap: '0.25rem' }}>
                   {COLORS.map(c => (
                     <button
                       key={c.id}
                       type="button"
                       onClick={() => setSelectedColor(c.id)}
                       style={{
-                        flex: 1, padding: '0.5rem', borderRadius: '4px', cursor: 'pointer',
+                        flex: 1, padding: '0.35rem', borderRadius: '4px', cursor: 'pointer', fontSize: '0.85rem',
                         border: selectedColor === c.id ? '2px solid #a23e48' : '1px solid #ccc',
                         background: selectedColor === c.id ? 'rgba(162, 62, 72, 0.1)' : '#fff'
                       }}
@@ -373,8 +415,8 @@ function CoachChessModal() {
               </div>
 
               <div>
-                <label htmlFor="time-select" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Time Control</label>
-                <select id="time-select" value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)} style={{ width: '100%', padding: '0.65rem', borderRadius: '4px', border: '1px solid #ccc' }}>
+                <label htmlFor="time-select" style={{ display: 'block', marginBottom: '0.15rem', fontWeight: 'bold', fontSize: '0.85rem' }}>Time Control</label>
+                <select id="time-select" value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)} style={{ width: '100%', padding: '0.35rem', borderRadius: '4px', border: '1px solid #ccc', fontSize: '0.85rem' }}>
                   {Object.keys(TIME_CONTROLS).map(k => (
                     <option key={k} value={k}>{TIME_CONTROLS[k].label}</option>
                   ))}
@@ -382,8 +424,8 @@ function CoachChessModal() {
               </div>
 
               <div style={{ gridColumn: '1 / -1' }}>
-                <label htmlFor="premove-select" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Premoves</label>
-                <select id="premove-select" value={premoveSetting} onChange={(e) => setPremoveSetting(e.target.value)} style={{ width: '100%', padding: '0.65rem', borderRadius: '4px', border: '1px solid #ccc' }}>
+                <label htmlFor="premove-select" style={{ display: 'block', marginBottom: '0.15rem', fontWeight: 'bold', fontSize: '0.85rem' }}>Premoves</label>
+                <select id="premove-select" value={premoveSetting} onChange={(e) => setPremoveSetting(e.target.value)} style={{ width: '100%', padding: '0.35rem', borderRadius: '4px', border: '1px solid #ccc', fontSize: '0.85rem' }}>
                   {PREMOVE_SETTINGS.map(p => (
                     <option key={p.id} value={p.id}>{p.label}</option>
                   ))}
@@ -391,7 +433,7 @@ function CoachChessModal() {
               </div>
             </div>
 
-            <label htmlFor="difficulty-select" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+            <label htmlFor="difficulty-select" style={{ display: 'block', marginBottom: '0.15rem', fontWeight: 'bold', fontSize: '0.85rem' }}>
               Select Difficulty Level
             </label>
             <select
@@ -400,12 +442,12 @@ function CoachChessModal() {
               onChange={(e) => setBotDifficulty(e.target.value)}
               style={{
                 width: '100%',
-                padding: '0.75rem',
-                fontSize: '1.1rem',
+                padding: '0.4rem',
+                fontSize: '0.9rem',
                 borderRadius: '8px',
                 border: '1px solid #ccc',
                 backgroundColor: '#fff',
-                marginBottom: '1rem',
+                marginBottom: '0.25rem',
                 cursor: 'pointer'
               }}
             >
@@ -415,14 +457,21 @@ function CoachChessModal() {
                 </option>
               ))}
             </select>
-            <p style={{ color: '#666', fontSize: '0.95rem', minHeight: '3rem' }}>
+            <p style={{ color: '#666', fontSize: '0.8rem', minHeight: '2rem', margin: 0 }}>
               {DIFFICULTY_PROFILES[botDifficulty].description}
             </p>
           </div>
 
-          <div className="coach-modal__actions" style={{ justifyContent: 'center' }}>
-            <button type="button" onClick={startGame} style={{ backgroundColor: '#a23e48', color: '#fff', border: 'none', padding: '0.75rem 2rem', borderRadius: '4px', cursor: 'pointer', fontSize: '1rem', fontWeight: 'bold' }}>Start Game</button>
-            <button type="button" onClick={() => setIsOpen(false)} style={{ backgroundColor: '#eee', color: '#333', border: 'none', padding: '0.75rem 2rem', borderRadius: '4px', cursor: 'pointer', fontSize: '1rem' }}>Cancel</button>
+          <div className="coach-modal__actions" style={{ justifyContent: 'center', flexShrink: 0, marginTop: '0.25rem' }}>
+            <button 
+              type="button" 
+              onClick={startGame} 
+              disabled={!isEngineReady}
+              style={{ backgroundColor: isEngineReady ? '#a23e48' : '#e2e8f0', color: isEngineReady ? '#fff' : '#64748b', border: 'none', padding: '0.5rem 1.5rem', borderRadius: '4px', cursor: isEngineReady ? 'pointer' : 'not-allowed', fontSize: '0.9rem', fontWeight: 'bold', transition: 'all 0.2s' }}
+            >
+              {isEngineReady ? 'Start Game' : 'Loading Engine...'}
+            </button>
+            <button type="button" onClick={() => setIsOpen(false)} style={{ backgroundColor: '#eee', color: '#333', border: 'none', padding: '0.5rem 1.5rem', borderRadius: '4px', cursor: 'pointer', fontSize: '0.9rem' }}>Cancel</button>
           </div>
         </div>
       </div>
@@ -453,7 +502,10 @@ function CoachChessModal() {
                 boardOrientation={activeColor === 'w' ? 'white' : 'black'}
                 position={game.fen()}
                 allowDragging={!game.isGameOver() && !gameStatusReason}
-                canDragPiece={({ piece }) => piece?.charAt(0) === activeColor}
+                canDragPiece={({ piece }) => {
+                  const p = typeof piece === 'string' ? piece : piece?.pieceType
+                  return p?.charAt(0) === activeColor
+                }}
                 onPieceDrop={onDrop}
                 squareStyles={squareStyles}
                 lightSquareStyle={{ backgroundColor: '#f6f0e8' }}
@@ -463,6 +515,24 @@ function CoachChessModal() {
                 premoves={premoves}
                 onPremovesChange={handlePremovesChange}
                 clearPremovesOnRightClick={true}
+                options={{
+                  boardOrientation: activeColor === 'w' ? 'white' : 'black',
+                  position: game.fen(),
+                  allowDragging: !game.isGameOver() && !gameStatusReason,
+                  canDragPiece: ({ piece }) => {
+                    const p = typeof piece === 'string' ? piece : piece?.pieceType
+                    return p?.charAt(0) === activeColor
+                  },
+                  onPieceDrop: onDrop,
+                  squareStyles: squareStyles,
+                  lightSquareStyle: { backgroundColor: '#f6f0e8' },
+                  darkSquareStyle: { backgroundColor: '#1e2a44' },
+                  showAnimations: true,
+                  arePremovesAllowed: premoveSetting !== 'disabled',
+                  premoves: premoveSetting !== 'disabled' ? premoves : [],
+                  onPremovesChange: handlePremovesChange,
+                  clearPremovesOnRightClick: true
+                }}
               />
             </div>
             <PlayerClock timeMs={playerTimeMs} label="You" isTurn={game.turn() === activeColor && !game.isGameOver() && !gameStatusReason} />
