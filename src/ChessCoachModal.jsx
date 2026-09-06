@@ -65,14 +65,14 @@ function formatTime(ms) {
   return `${minutes}:${seconds.toString().padStart(2, '0')}`
 }
 
-function getGameStatus(game, isThinking, profile, gameStatusReason) {
+function getGameStatus(game, isThinking, profile, gameStatusReason, activeColor) {
   if (gameStatusReason === 'timeout_player') return 'Time out. You lost on time.'
   if (gameStatusReason === 'timeout_bot') return 'Time out. Coach Dilrabo lost on time.'
   if (game.isCheckmate()) return 'Checkmate. Game over.'
   if (isThinking) return `${profile.label} is studying the position...`
   if (game.isDraw()) return 'Draw. Strong resistance from both sides.'
-  if (game.inCheck()) return game.turn() === 'w' ? 'You are in check. Find a calm response.' : 'Coach Dilrabo is in check.'
-  return game.turn() === 'w' ? 'Your move. Look for checks, captures, and threats.' : `${profile.label} is ready to respond.`
+  if (game.inCheck()) return game.turn() === activeColor ? 'You are in check. Find a calm response.' : 'Coach Dilrabo is in check.'
+  return game.turn() === activeColor ? 'Your move. Look for checks, captures, and threats.' : `${profile.label} is ready to respond.`
 }
 
 const PlayerClock = ({ timeMs, label, isTurn }) => {
@@ -370,7 +370,7 @@ function CoachChessModal() {
     }
   }
 
-  const status = getGameStatus(game, isThinking, difficultyProfile, gameStatusReason)
+  const status = getGameStatus(game, isThinking, difficultyProfile, gameStatusReason, activeColor)
   const squareStyles = useMemo(() => {
     if (!lastMove) return {}
     return {
