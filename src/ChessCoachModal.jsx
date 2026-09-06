@@ -140,7 +140,6 @@ function CoachChessModal() {
       }
     }
 
-    engineRef.current.postMessage('isready')
     engineRef.current.postMessage(`position fen ${currentGame.fen()}`)
     engineRef.current.postMessage(`go depth ${activeProfile.searchDepth}`)
   }
