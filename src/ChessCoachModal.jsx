@@ -113,6 +113,7 @@ function CoachChessModal() {
   const [premoveSetting, setPremoveSetting] = useState(DEFAULT_PREMOVE)
   const [premoves, setPremoves] = useState([])
   const [isEngineReady, setIsEngineReady] = useState(false)
+  const [pendingPromotion, setPendingPromotion] = useState(null)
 
   const botMoveTimeoutRef = useRef(null)
   const engineRef = useRef(null)
@@ -132,6 +133,7 @@ function CoachChessModal() {
     setLastMove(null)
     setGameStatusReason(null)
     setPremoves([])
+    setPendingPromotion(null)
     setIsGameStarted(false)
     hasStartedOpeningMove.current = false
     setCoachNote(`Fresh board. ${difficultyProfile.label} mode is active.`)
@@ -308,27 +310,7 @@ function CoachChessModal() {
     engineRef.current.postMessage(`go depth ${activeProfile.searchDepth}`)
   }
 
-  function onDrop(sourceSquare, targetSquare, piece) {
-    // Handle react-chessboard v5 where onPieceDrop receives a single object argument
-    if (typeof sourceSquare === 'object' && sourceSquare !== null) {
-      targetSquare = sourceSquare.targetSquare
-      piece = typeof sourceSquare.piece === 'string' ? sourceSquare.piece : sourceSquare.piece?.pieceType
-      sourceSquare = sourceSquare.sourceSquare
-    }
-
-    if (game.isGameOver() || gameStatusReason || game.turn() !== activeColor) return false
-
-    const movingPiece = game.get(sourceSquare)
-    if (!movingPiece || movingPiece.color !== activeColor) return false
-
-    // Handle castling by dragging King to Rook
-    if (movingPiece.type === 'k') {
-      if (sourceSquare === 'e1' && targetSquare === 'h1') targetSquare = 'g1'
-      if (sourceSquare === 'e1' && targetSquare === 'a1') targetSquare = 'c1'
-      if (sourceSquare === 'e8' && targetSquare === 'h8') targetSquare = 'g8'
-      if (sourceSquare === 'e8' && targetSquare === 'a8') targetSquare = 'c8'
-    }
-
+  const executeMove = (sourceSquare, targetSquare, promotion = 'q') => {
     const nextGame = new Chess(game.fen())
     let move
 
@@ -336,7 +318,7 @@ function CoachChessModal() {
       move = nextGame.move({
         from: sourceSquare,
         to: targetSquare,
-        promotion: 'q',
+        promotion,
       })
     } catch {
       return false
@@ -360,6 +342,38 @@ function CoachChessModal() {
     }
 
     return true
+  }
+
+  function onDrop(sourceSquare, targetSquare, piece) {
+    // Handle react-chessboard v5 where onPieceDrop receives a single object argument
+    if (typeof sourceSquare === 'object' && sourceSquare !== null) {
+      targetSquare = sourceSquare.targetSquare
+      piece = typeof sourceSquare.piece === 'string' ? sourceSquare.piece : sourceSquare.piece?.pieceType
+      sourceSquare = sourceSquare.sourceSquare
+    }
+
+    if (game.isGameOver() || gameStatusReason || game.turn() !== activeColor || pendingPromotion) return false
+
+    const movingPiece = game.get(sourceSquare)
+    if (!movingPiece || movingPiece.color !== activeColor) return false
+
+    // Handle castling by dragging King to Rook
+    if (movingPiece.type === 'k') {
+      if (sourceSquare === 'e1' && targetSquare === 'h1') targetSquare = 'g1'
+      if (sourceSquare === 'e1' && targetSquare === 'a1') targetSquare = 'c1'
+      if (sourceSquare === 'e8' && targetSquare === 'h8') targetSquare = 'g8'
+      if (sourceSquare === 'e8' && targetSquare === 'a8') targetSquare = 'c8'
+    }
+
+    const moves = game.moves({ verbose: true });
+    const isPromotion = moves.some(m => m.from === sourceSquare && m.to === targetSquare && m.promotion);
+
+    if (isPromotion) {
+      setPendingPromotion({ from: sourceSquare, to: targetSquare });
+      return false; // Snap piece back temporarily while user selects promotion
+    }
+
+    return executeMove(sourceSquare, targetSquare)
   }
 
   const handlePremovesChange = (newPremoves) => {
@@ -497,11 +511,11 @@ function CoachChessModal() {
         <div className="coach-modal__content">
           <div className="coach-modal__board-wrap">
             <PlayerClock timeMs={botTimeMs} label="Coach Dilrabo" isTurn={game.turn() !== activeColor && !game.isGameOver() && !gameStatusReason} />
-            <div style={{ borderRadius: '1.35rem', overflow: 'hidden', border: '1px solid rgba(30, 42, 68, 0.14)', boxShadow: '0 18px 45px rgba(30, 42, 68, 0.14)' }}>
+            <div style={{ position: 'relative', borderRadius: '1.35rem', overflow: 'hidden', border: '1px solid rgba(30, 42, 68, 0.14)', boxShadow: '0 18px 45px rgba(30, 42, 68, 0.14)' }}>
               <Chessboard
                 boardOrientation={activeColor === 'w' ? 'white' : 'black'}
                 position={game.fen()}
-                allowDragging={!game.isGameOver() && !gameStatusReason}
+                allowDragging={!game.isGameOver() && !gameStatusReason && !pendingPromotion}
                 canDragPiece={({ piece }) => {
                   const p = typeof piece === 'string' ? piece : piece?.pieceType
                   return p?.charAt(0) === activeColor
@@ -518,7 +532,7 @@ function CoachChessModal() {
                 options={{
                   boardOrientation: activeColor === 'w' ? 'white' : 'black',
                   position: game.fen(),
-                  allowDragging: !game.isGameOver() && !gameStatusReason,
+                  allowDragging: !game.isGameOver() && !gameStatusReason && !pendingPromotion,
                   canDragPiece: ({ piece }) => {
                     const p = typeof piece === 'string' ? piece : piece?.pieceType
                     return p?.charAt(0) === activeColor
@@ -534,6 +548,27 @@ function CoachChessModal() {
                   clearPremovesOnRightClick: true
                 }}
               />
+              {pendingPromotion && (
+                <div className="promotion-modal-overlay">
+                  <div className="promotion-modal-panel">
+                    <div className="promotion-modal-title">Choose Promotion</div>
+                    <div className="promotion-piece-container">
+                      <div className="promotion-piece-btn" onClick={() => { executeMove(pendingPromotion.from, pendingPromotion.to, 'q'); setPendingPromotion(null); }}>
+                        {activeColor === 'w' ? '♕' : '♛'}
+                      </div>
+                      <div className="promotion-piece-btn" onClick={() => { executeMove(pendingPromotion.from, pendingPromotion.to, 'r'); setPendingPromotion(null); }}>
+                        {activeColor === 'w' ? '♖' : '♜'}
+                      </div>
+                      <div className="promotion-piece-btn" onClick={() => { executeMove(pendingPromotion.from, pendingPromotion.to, 'b'); setPendingPromotion(null); }}>
+                        {activeColor === 'w' ? '♗' : '♝'}
+                      </div>
+                      <div className="promotion-piece-btn" onClick={() => { executeMove(pendingPromotion.from, pendingPromotion.to, 'n'); setPendingPromotion(null); }}>
+                        {activeColor === 'w' ? '♘' : '♞'}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
             <PlayerClock timeMs={playerTimeMs} label="You" isTurn={game.turn() === activeColor && !game.isGameOver() && !gameStatusReason} />
           </div>
