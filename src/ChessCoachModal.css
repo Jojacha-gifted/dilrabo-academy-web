@@ -264,10 +264,19 @@
 
   .coach-modal__content {
     grid-template-columns: 1fr;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 1rem;
   }
 
   .coach-modal__board-wrap {
-    max-width: min(100%, 24rem);
+    max-width: min(100%, 26rem);
+    min-height: auto;
+    margin-bottom: 0.5rem;
+  }
+
+  .coach-modal__sidebar {
+    overflow-y: visible;
   }
 
   .coach-modal__settings dl {
