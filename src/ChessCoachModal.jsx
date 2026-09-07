@@ -102,6 +102,12 @@ function CoachChessModal() {
   const [lastMove, setLastMove] = useState(null)
   const [coachNote, setCoachNote] = useState('I will challenge you with legal, tactical moves. Use every move as practice.')
   
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [analysisProgress, setAnalysisProgress] = useState(0)
+  const [evaluatedMoves, setEvaluatedMoves] = useState(null)
+  const [reviewCursor, setReviewCursor] = useState(null)
+  const [playerAccuracy, setPlayerAccuracy] = useState(null)
+  
   const [selectedColor, setSelectedColor] = useState(DEFAULT_COLOR)
   const [activeColor, setActiveColor] = useState('w')
   
@@ -117,6 +123,7 @@ function CoachChessModal() {
 
   const botMoveTimeoutRef = useRef(null)
   const engineRef = useRef(null)
+  const analysisWorkerRef = useRef(null)
   const requestRef = useRef(null)
   const previousTimeRef = useRef(null)
   const hasStartedOpeningMove = useRef(false)
@@ -128,6 +135,9 @@ function CoachChessModal() {
   const resetGame = useCallback(() => {
     window.clearTimeout(botMoveTimeoutRef.current)
     if (moveTimeoutRef.current) clearTimeout(moveTimeoutRef.current)
+    if (analysisWorkerRef.current && isAnalyzing) {
+      analysisWorkerRef.current.postMessage('stop')
+    }
     setGame(createGame())
     setIsThinking(false)
     setLastMove(null)
@@ -137,7 +147,12 @@ function CoachChessModal() {
     setIsGameStarted(false)
     hasStartedOpeningMove.current = false
     setCoachNote(`Fresh board. ${difficultyProfile.label} mode is active.`)
-  }, [difficultyProfile.label])
+    setIsAnalyzing(false)
+    setAnalysisProgress(0)
+    setEvaluatedMoves(null)
+    setReviewCursor(null)
+    setPlayerAccuracy(null)
+  }, [difficultyProfile.label, isAnalyzing])
 
   const startGame = useCallback(() => {
     if (moveTimeoutRef.current) clearTimeout(moveTimeoutRef.current)
@@ -155,9 +170,16 @@ function CoachChessModal() {
     }
     setActiveColor(color === 'white' ? 'w' : 'b')
     
+    
     const timeProfile = TIME_CONTROLS[selectedTime]
     setPlayerTimeMs(timeProfile.baseMs)
     setBotTimeMs(timeProfile.baseMs)
+    
+    setIsAnalyzing(false)
+    setAnalysisProgress(0)
+    setEvaluatedMoves(null)
+    setReviewCursor(null)
+    setPlayerAccuracy(null)
     
     setIsGameStarted(true)
   }, [difficultyProfile.label, selectedColor, selectedTime])
@@ -168,6 +190,7 @@ function CoachChessModal() {
 
   useEffect(() => {
     engineRef.current = new Worker('/stockfish.js')
+    analysisWorkerRef.current = new Worker('/stockfish.js')
     
     engineRef.current.onmessage = (event) => {
       const msg = event.data
@@ -195,6 +218,9 @@ function CoachChessModal() {
       delete window.CoachChessModal
       if (engineRef.current) {
         engineRef.current.terminate()
+      }
+      if (analysisWorkerRef.current) {
+        analysisWorkerRef.current.terminate()
       }
     }
   }, [])
@@ -226,6 +252,121 @@ function CoachChessModal() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isGameStarted, activeColor, game])
+
+  const startAnalysis = useCallback((currentGame) => {
+    const history = currentGame.history({ verbose: true })
+    if (history.length === 0) return
+
+    setIsAnalyzing(true)
+    setAnalysisProgress(0)
+    
+    const tempGame = createGame()
+    const fensToEvaluate = [tempGame.fen()]
+    for (const move of history) {
+      tempGame.move(move)
+      fensToEvaluate.push(tempGame.fen())
+    }
+
+    let currentIndex = 0
+    const evaluations = []
+    let lastCp = null
+    let lastMate = null
+
+    const processNext = () => {
+      if (currentIndex >= fensToEvaluate.length) {
+        finishAnalysis(history, fensToEvaluate, evaluations)
+        return
+      }
+      setAnalysisProgress(Math.round((currentIndex / fensToEvaluate.length) * 100))
+      
+      analysisWorkerRef.current.postMessage(`position fen ${fensToEvaluate[currentIndex]}`)
+      analysisWorkerRef.current.postMessage('go depth 10')
+    }
+
+    const finishAnalysis = (historyMoves, fens, evals) => {
+      setIsAnalyzing(false)
+      const getCp = (e) => {
+        if (e.mate !== null && e.mate !== undefined) {
+          return Math.sign(e.mate) * (10000 - Math.abs(e.mate) * 100)
+        }
+        return e.cp || 0
+      }
+
+      const moves = []
+      let totalCpLossPlayer = 0
+      let playerMoveCount = 0
+
+      for (let i = 0; i < historyMoves.length; i++) {
+        const move = historyMoves[i]
+        const cpBefore = getCp(evals[i])
+        const cpAfter = getCp(evals[i + 1])
+        
+        let cpLoss = cpBefore + cpAfter
+        if (cpLoss < 0) cpLoss = 0
+
+        let classification = 'good'
+        if (cpLoss <= 15) classification = 'brilliant'
+        else if (cpLoss <= 50) classification = 'good'
+        else if (cpLoss <= 150) classification = 'inaccuracy'
+        else if (cpLoss <= 300) classification = 'mistake'
+        else classification = 'blunder'
+
+        moves.push({
+          ...move,
+          fen: fens[i + 1],
+          evaluation: evals[i + 1],
+          cpLoss,
+          classification
+        })
+
+        if (move.color === activeColor) {
+          totalCpLossPlayer += cpLoss
+          playerMoveCount++
+        }
+      }
+
+      setEvaluatedMoves(moves)
+      setReviewCursor(moves.length - 1)
+      
+      if (playerMoveCount > 0) {
+        const avgLoss = totalCpLossPlayer / playerMoveCount
+        const accuracy = Math.max(0, Math.min(100, 100 - (avgLoss / 2)))
+        setPlayerAccuracy(accuracy.toFixed(1))
+      }
+    }
+
+    analysisWorkerRef.current.onmessage = (e) => {
+      const msg = e.data
+      if (typeof msg !== 'string') return
+      
+      const depthMatch = msg.match(/info depth (\d+)/)
+      if (depthMatch) {
+        const cpMatch = msg.match(/score cp (-?\d+)/)
+        const mateMatch = msg.match(/score mate (-?\d+)/)
+        if (cpMatch) {
+          lastCp = parseInt(cpMatch[1], 10)
+          lastMate = null
+        } else if (mateMatch) {
+          lastMate = parseInt(mateMatch[1], 10)
+          lastCp = null
+        }
+      }
+
+      if (msg.startsWith('bestmove')) {
+        evaluations.push({ cp: lastCp, mate: lastMate })
+        currentIndex++
+        processNext()
+      }
+    }
+
+    processNext()
+  }, [activeColor])
+
+  useEffect(() => {
+    if (isGameStarted && (game.isGameOver() || gameStatusReason) && !isAnalyzing && !evaluatedMoves && game.history().length > 0) {
+      startAnalysis(game)
+    }
+  }, [game, gameStatusReason, isGameStarted, isAnalyzing, evaluatedMoves, startAnalysis])
 
   // Timer loop
   const animate = useCallback(time => {
@@ -352,7 +493,7 @@ function CoachChessModal() {
       sourceSquare = sourceSquare.sourceSquare
     }
 
-    if (game.isGameOver() || gameStatusReason || game.turn() !== activeColor || pendingPromotion) return false
+    if (game.isGameOver() || gameStatusReason || game.turn() !== activeColor || pendingPromotion || reviewCursor !== null) return false
 
     const movingPiece = game.get(sourceSquare)
     if (!movingPiece || movingPiece.color !== activeColor) return false
@@ -514,8 +655,8 @@ function CoachChessModal() {
             <div style={{ position: 'relative', borderRadius: '1.35rem', overflow: 'hidden', border: '1px solid rgba(30, 42, 68, 0.14)', boxShadow: '0 18px 45px rgba(30, 42, 68, 0.14)' }}>
               <Chessboard
                 boardOrientation={activeColor === 'w' ? 'white' : 'black'}
-                position={game.fen()}
-                allowDragging={!game.isGameOver() && !gameStatusReason && !pendingPromotion}
+                position={reviewCursor !== null && evaluatedMoves ? (reviewCursor === -1 ? createGame().fen() : evaluatedMoves[reviewCursor].fen) : game.fen()}
+                allowDragging={!game.isGameOver() && !gameStatusReason && !pendingPromotion && reviewCursor === null}
                 canDragPiece={({ piece }) => {
                   const p = typeof piece === 'string' ? piece : piece?.pieceType
                   return p?.charAt(0) === activeColor
@@ -531,8 +672,8 @@ function CoachChessModal() {
                 clearPremovesOnRightClick={true}
                 options={{
                   boardOrientation: activeColor === 'w' ? 'white' : 'black',
-                  position: game.fen(),
-                  allowDragging: !game.isGameOver() && !gameStatusReason && !pendingPromotion,
+                  position: reviewCursor !== null && evaluatedMoves ? (reviewCursor === -1 ? createGame().fen() : evaluatedMoves[reviewCursor].fen) : game.fen(),
+                  allowDragging: !game.isGameOver() && !gameStatusReason && !pendingPromotion && reviewCursor === null,
                   canDragPiece: ({ piece }) => {
                     const p = typeof piece === 'string' ? piece : piece?.pieceType
                     return p?.charAt(0) === activeColor
@@ -603,10 +744,43 @@ function CoachChessModal() {
               </dl>
             </div>
 
-            <div className="coach-modal__note">
-              <span>Coach note</span>
-              <p>{coachNote}</p>
-            </div>
+            {isAnalyzing ? (
+              <div className="coach-modal__analysis">
+                <span>Post-Game Analysis</span>
+                <p>Evaluating game history... {analysisProgress}%</p>
+                <div className="analysis-progress-bar">
+                  <div className="analysis-progress-fill" style={{ width: `${analysisProgress}%` }}></div>
+                </div>
+              </div>
+            ) : evaluatedMoves ? (
+              <div className="coach-modal__analysis">
+                <div className="analysis-header">
+                  <span>Post-Game Analysis</span>
+                  {playerAccuracy !== null && <div className="accuracy-score">Accuracy: <strong>{playerAccuracy}%</strong></div>}
+                </div>
+                <div className="analysis-move-list">
+                  {evaluatedMoves.map((m, i) => (
+                    <div 
+                      key={i} 
+                      className={`analysis-move-item ${reviewCursor === i ? 'active' : ''}`}
+                      onClick={() => setReviewCursor(i)}
+                    >
+                      <span className="move-number">{Math.floor(i/2) + 1}{i%2===0 ? '.' : '...'}</span>
+                      <span className="move-san">{m.san}</span>
+                      <span className={`move-class move-class--${m.classification}`}>
+                        {m.classification}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="coach-modal__note">
+                <span>Coach note</span>
+                <p>{coachNote}</p>
+              </div>
+            )}
+            
             <div className="coach-modal__actions">
               <button type="button" onClick={resetGame}>New game</button>
               <button type="button" onClick={() => setIsOpen(false)}>Close</button>
